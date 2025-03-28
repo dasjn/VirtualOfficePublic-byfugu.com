@@ -3,7 +3,13 @@ import { useState } from "react";
 import Background from "./components/Background";
 import Loader from "./components/Loader";
 import { Canvas } from "@react-three/fiber";
-import { KeyboardControls, useProgress } from "@react-three/drei";
+import {
+  AdaptiveDpr,
+  AdaptiveEvents,
+  KeyboardControls,
+  Preload,
+  useProgress,
+} from "@react-three/drei";
 import Experience from "./components/experience/Experience";
 import { Perf } from "r3f-perf";
 import UI3D from "./components/experience/UI3D";
@@ -51,7 +57,11 @@ export default function App() {
             far: 200,
             position: initialPosition,
           }}
+          dpr={[0.5, 2]}
         >
+          <AdaptiveDpr pixelated />
+          <AdaptiveEvents />
+          <Preload all />
           <Perf />
           {shouldShowLoaders ? (
             <Loader

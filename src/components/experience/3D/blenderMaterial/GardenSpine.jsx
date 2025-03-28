@@ -4,8 +4,9 @@ import { useGLTF, meshBounds } from "@react-three/drei";
 import * as THREE from "three";
 import { useFrame } from "@react-three/fiber";
 import { easing } from "maath";
-import TextComponent, { CARD_NAMES } from "./TextComponent";
+
 import { usePointerInteraction } from "@/hooks/usePointerInteraction";
+import TextComponent, { CARD_NAMES } from "../../TextComponent";
 
 export function GardenSpine(props) {
   const { nodes, materials } = useGLTF("/FUGU_Jardin_Espina_v01.glb");

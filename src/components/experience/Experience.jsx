@@ -15,7 +15,7 @@ import * as THREE from "three";
 import Player from "./Player";
 import Office from "./Office";
 import { useExperience } from "@/hooks/useExperience";
-import { GardenSpine } from "./GardenSpine";
+
 import { Alfombra } from "./3D/baked/Alfombra";
 import { LenguaVentana } from "./3D/baked/LenguaVentana";
 import { MarcoCuadro01 } from "./3D/baked/MarcoCuadro01";
@@ -42,7 +42,7 @@ import { Sofa } from "./3D/blenderMaterial/Sofa";
 import { MarcoTV } from "./3D/baked/MarcoTV";
 import { CameraController } from "@/controllers/CameraController";
 import { useThree } from "@react-three/fiber";
-import TextComponent from "./TextComponent";
+import { GardenSpine } from "./3D/blenderMaterial/GardenSpine";
 
 export default function Experience() {
   const {
@@ -197,10 +197,10 @@ export default function Experience() {
           "/hdr/HDRI_v01-gainmap.webp",
           "/hdr/HDRI_v01.json",
         ]}
-        environmentIntensity={0.8}
+        environmentIntensity={0.5}
         background
       />
-
+      <ambientLight intensity={1} />
       <CameraController />
       <Physics gravity={[0, -9.8, 0]}>
         {renderBigAssets()}
@@ -226,10 +226,10 @@ export default function Experience() {
         <ToneMapping
           adaptive
           resolution={256}
-          middleGrey={0.5}
-          maxLuminance={16.0}
+          middleGrey={1}
+          maxLuminance={32.0}
           averageLuminance={1.0}
-          adaptationRate={1.0}
+          adaptationRate={100.0}
         />
       </EffectComposer>
     </>
