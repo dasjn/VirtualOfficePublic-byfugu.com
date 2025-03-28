@@ -1,0 +1,1748 @@
+[
+  {
+    "country": "Afghanistan",
+    "iso_code": "AF",
+    "estimated_flight_time": {
+      "hours": 10,
+      "minutes": 30
+    },
+    "flag_url": "https://flagcdn.com/AF.svg"
+  },
+  {
+    "country": "Albania",
+    "iso_code": "AL",
+    "estimated_flight_time": {
+      "hours": 4,
+      "minutes": 15
+    },
+    "flag_url": "https://flagcdn.com/AL.svg"
+  },
+  {
+    "country": "Algeria",
+    "iso_code": "DZ",
+    "estimated_flight_time": {
+      "hours": 3,
+      "minutes": 0
+    },
+    "flag_url": "https://flagcdn.com/DZ.svg"
+  },
+  {
+    "country": "Andorra",
+    "iso_code": "AD",
+    "estimated_flight_time": {
+      "hours": 2,
+      "minutes": 45
+    },
+    "flag_url": "https://flagcdn.com/AD.svg"
+  },
+  {
+    "country": "Angola",
+    "iso_code": "AO",
+    "estimated_flight_time": {
+      "hours": 8,
+      "minutes": 30
+    },
+    "flag_url": "https://flagcdn.com/AO.svg"
+  },
+  {
+    "country": "Argentina",
+    "iso_code": "AR",
+    "estimated_flight_time": {
+      "hours": 11,
+      "minutes": 15
+    },
+    "flag_url": "https://flagcdn.com/AR.svg"
+  },
+  {
+    "country": "Armenia",
+    "iso_code": "AM",
+    "estimated_flight_time": {
+      "hours": 7,
+      "minutes": 30
+    },
+    "flag_url": "https://flagcdn.com/AM.svg"
+  },
+  {
+    "country": "Australia",
+    "iso_code": "AU",
+    "estimated_flight_time": {
+      "hours": 20,
+      "minutes": 0
+    },
+    "flag_url": "https://flagcdn.com/AU.svg"
+  },
+  {
+    "country": "Austria",
+    "iso_code": "AT",
+    "estimated_flight_time": {
+      "hours": 4,
+      "minutes": 30
+    },
+    "flag_url": "https://flagcdn.com/AT.svg"
+  },
+  {
+    "country": "Azerbaijan",
+    "iso_code": "AZ",
+    "estimated_flight_time": {
+      "hours": 7,
+      "minutes": 45
+    },
+    "flag_url": "https://flagcdn.com/AZ.svg"
+  },
+  {
+    "country": "Bahamas",
+    "iso_code": "BS",
+    "estimated_flight_time": {
+      "hours": 8,
+      "minutes": 15
+    },
+    "flag_url": "https://flagcdn.com/BS.svg"
+  },
+  {
+    "country": "Bahrain",
+    "iso_code": "BH",
+    "estimated_flight_time": {
+      "hours": 8,
+      "minutes": 30
+    },
+    "flag_url": "https://flagcdn.com/BH.svg"
+  },
+  {
+    "country": "Bangladesh",
+    "iso_code": "BD",
+    "estimated_flight_time": {
+      "hours": 11,
+      "minutes": 0
+    },
+    "flag_url": "https://flagcdn.com/BD.svg"
+  },
+  {
+    "country": "Barbados",
+    "iso_code": "BB",
+    "estimated_flight_time": {
+      "hours": 7,
+      "minutes": 30
+    },
+    "flag_url": "https://flagcdn.com/BB.svg"
+  },
+  {
+    "country": "Belarus",
+    "iso_code": "BY",
+    "estimated_flight_time": {
+      "hours": 5,
+      "minutes": 30
+    },
+    "flag_url": "https://flagcdn.com/BY.svg"
+  },
+  {
+    "country": "Belgium",
+    "iso_code": "BE",
+    "estimated_flight_time": {
+      "hours": 3,
+      "minutes": 45
+    },
+    "flag_url": "https://flagcdn.com/BE.svg"
+  },
+  {
+    "country": "Belize",
+    "iso_code": "BZ",
+    "estimated_flight_time": {
+      "hours": 10,
+      "minutes": 15
+    },
+    "flag_url": "https://flagcdn.com/BZ.svg"
+  },
+  {
+    "country": "Benin",
+    "iso_code": "BJ",
+    "estimated_flight_time": {
+      "hours": 5,
+      "minutes": 30
+    },
+    "flag_url": "https://flagcdn.com/BJ.svg"
+  },
+  {
+    "country": "Bhutan",
+    "iso_code": "BT",
+    "estimated_flight_time": {
+      "hours": 11,
+      "minutes": 30
+    },
+    "flag_url": "https://flagcdn.com/BT.svg"
+  },
+  {
+    "country": "Bolivia",
+    "iso_code": "BO",
+    "estimated_flight_time": {
+      "hours": 10,
+      "minutes": 45
+    },
+    "flag_url": "https://flagcdn.com/BO.svg"
+  },
+  {
+    "country": "Bosnia and Herzegovina",
+    "iso_code": "BA",
+    "estimated_flight_time": {
+      "hours": 4,
+      "minutes": 0
+    },
+    "flag_url": "https://flagcdn.com/BA.svg"
+  },
+  {
+    "country": "Botswana",
+    "iso_code": "BW",
+    "estimated_flight_time": {
+      "hours": 9,
+      "minutes": 45
+    },
+    "flag_url": "https://flagcdn.com/BW.svg"
+  },
+  {
+    "country": "Brazil",
+    "iso_code": "BR",
+    "estimated_flight_time": {
+      "hours": 7,
+      "minutes": 45
+    },
+    "flag_url": "https://flagcdn.com/BR.svg"
+  },
+  {
+    "country": "Brunei",
+    "iso_code": "BN",
+    "estimated_flight_time": {
+      "hours": 15,
+      "minutes": 0
+    },
+    "flag_url": "https://flagcdn.com/BN.svg"
+  },
+  {
+    "country": "Bulgaria",
+    "iso_code": "BG",
+    "estimated_flight_time": {
+      "hours": 4,
+      "minutes": 45
+    },
+    "flag_url": "https://flagcdn.com/BG.svg"
+  },
+  {
+    "country": "Burkina Faso",
+    "iso_code": "BF",
+    "estimated_flight_time": {
+      "hours": 4,
+      "minutes": 30
+    },
+    "flag_url": "https://flagcdn.com/BF.svg"
+  },
+  {
+    "country": "Burundi",
+    "iso_code": "BI",
+    "estimated_flight_time": {
+      "hours": 7,
+      "minutes": 0
+    },
+    "flag_url": "https://flagcdn.com/BI.svg"
+  },
+  {
+    "country": "Cabo Verde",
+    "iso_code": "CV",
+    "estimated_flight_time": {
+      "hours": 2,
+      "minutes": 15
+    },
+    "flag_url": "https://flagcdn.com/CV.svg"
+  },
+  {
+    "country": "Cambodia",
+    "iso_code": "KH",
+    "estimated_flight_time": {
+      "hours": 14,
+      "minutes": 30
+    },
+    "flag_url": "https://flagcdn.com/KH.svg"
+  },
+  {
+    "country": "Cameroon",
+    "iso_code": "CM",
+    "estimated_flight_time": {
+      "hours": 5,
+      "minutes": 30
+    },
+    "flag_url": "https://flagcdn.com/CM.svg"
+  },
+  {
+    "country": "Canada",
+    "iso_code": "CA",
+    "estimated_flight_time": {
+      "hours": 10,
+      "minutes": 0
+    },
+    "flag_url": "https://flagcdn.com/CA.svg"
+  },
+  {
+    "country": "Central African Republic",
+    "iso_code": "CF",
+    "estimated_flight_time": {
+      "hours": 7,
+      "minutes": 30
+    },
+    "flag_url": "https://flagcdn.com/CF.svg"
+  },
+  {
+    "country": "Chad",
+    "iso_code": "TD",
+    "estimated_flight_time": {
+      "hours": 6,
+      "minutes": 30
+    },
+    "flag_url": "https://flagcdn.com/TD.svg"
+  },
+  {
+    "country": "Chile",
+    "iso_code": "CL",
+    "estimated_flight_time": {
+      "hours": 12,
+      "minutes": 0
+    },
+    "flag_url": "https://flagcdn.com/CL.svg"
+  },
+  {
+    "country": "China",
+    "iso_code": "CN",
+    "estimated_flight_time": {
+      "hours": 12,
+      "minutes": 45
+    },
+    "flag_url": "https://flagcdn.com/CN.svg"
+  },
+  {
+    "country": "Colombia",
+    "iso_code": "CO",
+    "estimated_flight_time": {
+      "hours": 9,
+      "minutes": 0
+    },
+    "flag_url": "https://flagcdn.com/CO.svg"
+  },
+  {
+    "country": "Comoros",
+    "iso_code": "KM",
+    "estimated_flight_time": {
+      "hours": 9,
+      "minutes": 0
+    },
+    "flag_url": "https://flagcdn.com/KM.svg"
+  },
+  {
+    "country": "Congo (Congo-Brazzaville)",
+    "iso_code": "CG",
+    "estimated_flight_time": {
+      "hours": 7,
+      "minutes": 30
+    },
+    "flag_url": "https://flagcdn.com/CG.svg"
+  },
+  {
+    "country": "Congo (Congo-Kinshasa)",
+    "iso_code": "CD",
+    "estimated_flight_time": {
+      "hours": 8,
+      "minutes": 0
+    },
+    "flag_url": "https://flagcdn.com/CD.svg"
+  },
+  {
+    "country": "Costa Rica",
+    "iso_code": "CR",
+    "estimated_flight_time": {
+      "hours": 10,
+      "minutes": 0
+    },
+    "flag_url": "https://flagcdn.com/CR.svg"
+  },
+  {
+    "country": "Croatia",
+    "iso_code": "HR",
+    "estimated_flight_time": {
+      "hours": 4,
+      "minutes": 15
+    },
+    "flag_url": "https://flagcdn.com/HR.svg"
+  },
+  {
+    "country": "Cuba",
+    "iso_code": "CU",
+    "estimated_flight_time": {
+      "hours": 8,
+      "minutes": 45
+    },
+    "flag_url": "https://flagcdn.com/CU.svg"
+  },
+  {
+    "country": "Cyprus",
+    "iso_code": "CY",
+    "estimated_flight_time": {
+      "hours": 6,
+      "minutes": 30
+    },
+    "flag_url": "https://flagcdn.com/CY.svg"
+  },
+  {
+    "country": "Czechia",
+    "iso_code": "CZ",
+    "estimated_flight_time": {
+      "hours": 4,
+      "minutes": 15
+    },
+    "flag_url": "https://flagcdn.com/CZ.svg"
+  },
+  {
+    "country": "Denmark",
+    "iso_code": "DK",
+    "estimated_flight_time": {
+      "hours": 4,
+      "minutes": 45
+    },
+    "flag_url": "https://flagcdn.com/DK.svg"
+  },
+  {
+    "country": "Djibouti",
+    "iso_code": "DJ",
+    "estimated_flight_time": {
+      "hours": 8,
+      "minutes": 0
+    },
+    "flag_url": "https://flagcdn.com/DJ.svg"
+  },
+  {
+    "country": "Dominica",
+    "iso_code": "DM",
+    "estimated_flight_time": {
+      "hours": 8,
+      "minutes": 30
+    },
+    "flag_url": "https://flagcdn.com/DM.svg"
+  },
+  {
+    "country": "Dominican Republic",
+    "iso_code": "DO",
+    "estimated_flight_time": {
+      "hours": 8,
+      "minutes": 45
+    },
+    "flag_url": "https://flagcdn.com/DO.svg"
+  },
+  {
+    "country": "East Timor",
+    "iso_code": "TL",
+    "estimated_flight_time": {
+      "hours": 17,
+      "minutes": 30
+    },
+    "flag_url": "https://flagcdn.com/TL.svg"
+  },
+  {
+    "country": "Ecuador",
+    "iso_code": "EC",
+    "estimated_flight_time": {
+      "hours": 9,
+      "minutes": 15
+    },
+    "flag_url": "https://flagcdn.com/EC.svg"
+  },
+  {
+    "country": "Egypt",
+    "iso_code": "EG",
+    "estimated_flight_time": {
+      "hours": 6,
+      "minutes": 30
+    },
+    "flag_url": "https://flagcdn.com/EG.svg"
+  },
+  {
+    "country": "El Salvador",
+    "iso_code": "SV",
+    "estimated_flight_time": {
+      "hours": 10,
+      "minutes": 0
+    },
+    "flag_url": "https://flagcdn.com/SV.svg"
+  },
+  {
+    "country": "Equatorial Guinea",
+    "iso_code": "GQ",
+    "estimated_flight_time": {
+      "hours": 5,
+      "minutes": 30
+    },
+    "flag_url": "https://flagcdn.com/GQ.svg"
+  },
+  {
+    "country": "Eritrea",
+    "iso_code": "ER",
+    "estimated_flight_time": {
+      "hours": 8,
+      "minutes": 0
+    },
+    "flag_url": "https://flagcdn.com/ER.svg"
+  },
+  {
+    "country": "Estonia",
+    "iso_code": "EE",
+    "estimated_flight_time": {
+      "hours": 5,
+      "minutes": 0
+    },
+    "flag_url": "https://flagcdn.com/EE.svg"
+  },
+  {
+    "country": "Eswatini",
+    "iso_code": "SZ",
+    "estimated_flight_time": {
+      "hours": 9,
+      "minutes": 30
+    },
+    "flag_url": "https://flagcdn.com/SZ.svg"
+  },
+  {
+    "country": "Ethiopia",
+    "iso_code": "ET",
+    "estimated_flight_time": {
+      "hours": 7,
+      "minutes": 30
+    },
+    "flag_url": "https://flagcdn.com/ET.svg"
+  },
+  {
+    "country": "Fiji",
+    "iso_code": "FJ",
+    "estimated_flight_time": {
+      "hours": 24,
+      "minutes": 0
+    },
+    "flag_url": "https://flagcdn.com/FJ.svg"
+  },
+  {
+    "country": "Finland",
+    "iso_code": "FI",
+    "estimated_flight_time": {
+      "hours": 5,
+      "minutes": 30
+    },
+    "flag_url": "https://flagcdn.com/FI.svg"
+  },
+  {
+    "country": "France",
+    "iso_code": "FR",
+    "estimated_flight_time": {
+      "hours": 3,
+      "minutes": 15
+    },
+    "flag_url": "https://flagcdn.com/FR.svg"
+  },
+  {
+    "country": "Gabon",
+    "iso_code": "GA",
+    "estimated_flight_time": {
+      "hours": 6,
+      "minutes": 0
+    },
+    "flag_url": "https://flagcdn.com/GA.svg"
+  },
+  {
+    "country": "Gambia",
+    "iso_code": "GM",
+    "estimated_flight_time": {
+      "hours": 2,
+      "minutes": 30
+    },
+    "flag_url": "https://flagcdn.com/GM.svg"
+  },
+  {
+    "country": "Georgia",
+    "iso_code": "GE",
+    "estimated_flight_time": {
+      "hours": 7,
+      "minutes": 45
+    },
+    "flag_url": "https://flagcdn.com/GE.svg"
+  },
+  {
+    "country": "Germany",
+    "iso_code": "DE",
+    "estimated_flight_time": {
+      "hours": 4,
+      "minutes": 0
+    },
+    "flag_url": "https://flagcdn.com/DE.svg"
+  },
+  {
+    "country": "Ghana",
+    "iso_code": "GH",
+    "estimated_flight_time": {
+      "hours": 4,
+      "minutes": 15
+    },
+    "flag_url": "https://flagcdn.com/GH.svg"
+  },
+  {
+    "country": "Greece",
+    "iso_code": "GR",
+    "estimated_flight_time": {
+      "hours": 5,
+      "minutes": 15
+    },
+    "flag_url": "https://flagcdn.com/GR.svg"
+  },
+  {
+    "country": "Grenada",
+    "iso_code": "GD",
+    "estimated_flight_time": {
+      "hours": 8,
+      "minutes": 45
+    },
+    "flag_url": "https://flagcdn.com/GD.svg"
+  },
+  {
+    "country": "Guatemala",
+    "iso_code": "GT",
+    "estimated_flight_time": {
+      "hours": 10,
+      "minutes": 30
+    },
+    "flag_url": "https://flagcdn.com/GT.svg"
+  },
+  {
+    "country": "Guinea",
+    "iso_code": "GN",
+    "estimated_flight_time": {
+      "hours": 3,
+      "minutes": 15
+    },
+    "flag_url": "https://flagcdn.com/GN.svg"
+  },
+  {
+    "country": "Guinea-Bissau",
+    "iso_code": "GW",
+    "estimated_flight_time": {
+      "hours": 2,
+      "minutes": 30
+    },
+    "flag_url": "https://flagcdn.com/GW.svg"
+  },
+  {
+    "country": "Guyana",
+    "iso_code": "GY",
+    "estimated_flight_time": {
+      "hours": 9,
+      "minutes": 30
+    },
+    "flag_url": "https://flagcdn.com/GY.svg"
+  },
+  {
+    "country": "Haiti",
+    "iso_code": "HT",
+    "estimated_flight_time": {
+      "hours": 8,
+      "minutes": 45
+    },
+    "flag_url": "https://flagcdn.com/HT.svg"
+  },
+  {
+    "country": "Honduras",
+    "iso_code": "HN",
+    "estimated_flight_time": {
+      "hours": 10,
+      "minutes": 30
+    },
+    "flag_url": "https://flagcdn.com/HN.svg"
+  },
+  {
+    "country": "Hungary",
+    "iso_code": "HU",
+    "estimated_flight_time": {
+      "hours": 4,
+      "minutes": 45
+    },
+    "flag_url": "https://flagcdn.com/HU.svg"
+  },
+  {
+    "country": "Iceland",
+    "iso_code": "IS",
+    "estimated_flight_time": {
+      "hours": 5,
+      "minutes": 15
+    },
+    "flag_url": "https://flagcdn.com/IS.svg"
+  },
+  {
+    "country": "India",
+    "iso_code": "IN",
+    "estimated_flight_time": {
+      "hours": 10,
+      "minutes": 30
+    },
+    "flag_url": "https://flagcdn.com/IN.svg"
+  },
+  {
+    "country": "Indonesia",
+    "iso_code": "ID",
+    "estimated_flight_time": {
+      "hours": 15,
+      "minutes": 30
+    },
+    "flag_url": "https://flagcdn.com/ID.svg"
+  },
+  {
+    "country": "Iran",
+    "iso_code": "IR",
+    "estimated_flight_time": {
+      "hours": 7,
+      "minutes": 30
+    },
+    "flag_url": "https://flagcdn.com/IR.svg"
+  },
+  {
+    "country": "Iraq",
+    "iso_code": "IQ",
+    "estimated_flight_time": {
+      "hours": 7,
+      "minutes": 45
+    },
+    "flag_url": "https://flagcdn.com/IQ.svg"
+  },
+  {
+    "country": "Ireland",
+    "iso_code": "IE",
+    "estimated_flight_time": {
+      "hours": 3,
+      "minutes": 30
+    },
+    "flag_url": "https://flagcdn.com/IE.svg"
+  },
+  {
+    "country": "Israel",
+    "iso_code": "IL",
+    "estimated_flight_time": {
+      "hours": 5,
+      "minutes": 30
+    },
+    "flag_url": "https://flagcdn.com/IL.svg"
+  },
+  {
+    "country": "Italy",
+    "iso_code": "IT",
+    "estimated_flight_time": {
+      "hours": 3,
+      "minutes": 30
+    },
+    "flag_url": "https://flagcdn.com/IT.svg"
+  },
+  {
+    "country": "Ivory Coast",
+    "iso_code": "CI",
+    "estimated_flight_time": {
+      "hours": 4,
+      "minutes": 0
+    },
+    "flag_url": "https://flagcdn.com/CI.svg"
+  },
+  {
+    "country": "Jamaica",
+    "iso_code": "JM",
+    "estimated_flight_time": {
+      "hours": 8,
+      "minutes": 45
+    },
+    "flag_url": "https://flagcdn.com/JM.svg"
+  },
+  {
+    "country": "Japan",
+    "iso_code": "JP",
+    "estimated_flight_time": {
+      "hours": 13,
+      "minutes": 15
+    },
+    "flag_url": "https://flagcdn.com/JP.svg"
+  },
+  {
+    "country": "Jordan",
+    "iso_code": "JO",
+    "estimated_flight_time": {
+      "hours": 5,
+      "minutes": 45
+    },
+    "flag_url": "https://flagcdn.com/JO.svg"
+  },
+  {
+    "country": "Kazakhstan",
+    "iso_code": "KZ",
+    "estimated_flight_time": {
+      "hours": 9,
+      "minutes": 0
+    },
+    "flag_url": "https://flagcdn.com/KZ.svg"
+  },
+  {
+    "country": "Kenya",
+    "iso_code": "KE",
+    "estimated_flight_time": {
+      "hours": 8,
+      "minutes": 0
+    },
+    "flag_url": "https://flagcdn.com/KE.svg"
+  },
+  {
+    "country": "Kiribati",
+    "iso_code": "KI",
+    "estimated_flight_time": {
+      "hours": 23,
+      "minutes": 45
+    },
+    "flag_url": "https://flagcdn.com/KI.svg"
+  },
+  {
+    "country": "Kuwait",
+    "iso_code": "KW",
+    "estimated_flight_time": {
+      "hours": 7,
+      "minutes": 0
+    },
+    "flag_url": "https://flagcdn.com/KW.svg"
+  },
+  {
+    "country": "Kyrgyzstan",
+    "iso_code": "KG",
+    "estimated_flight_time": {
+      "hours": 9,
+      "minutes": 0
+    },
+    "flag_url": "https://flagcdn.com/KG.svg"
+  },
+  {
+    "country": "Laos",
+    "iso_code": "LA",
+    "estimated_flight_time": {
+      "hours": 14,
+      "minutes": 30
+    },
+    "flag_url": "https://flagcdn.com/LA.svg"
+  },
+  {
+    "country": "Latvia",
+    "iso_code": "LV",
+    "estimated_flight_time": {
+      "hours": 5,
+      "minutes": 0
+    },
+    "flag_url": "https://flagcdn.com/LV.svg"
+  },
+  {
+    "country": "Lebanon",
+    "iso_code": "LB",
+    "estimated_flight_time": {
+      "hours": 6,
+      "minutes": 0
+    },
+    "flag_url": "https://flagcdn.com/LB.svg"
+  },
+  {
+    "country": "Lesotho",
+    "iso_code": "LS",
+    "estimated_flight_time": {
+      "hours": 9,
+      "minutes": 45
+    },
+    "flag_url": "https://flagcdn.com/LS.svg"
+  },
+  {
+    "country": "Liberia",
+    "iso_code": "LR",
+    "estimated_flight_time": {
+      "hours": 3,
+      "minutes": 15
+    },
+    "flag_url": "https://flagcdn.com/LR.svg"
+  },
+  {
+    "country": "Libya",
+    "iso_code": "LY",
+    "estimated_flight_time": {
+      "hours": 4,
+      "minutes": 0
+    },
+    "flag_url": "https://flagcdn.com/LY.svg"
+  },
+  {
+    "country": "Liechtenstein",
+    "iso_code": "LI",
+    "estimated_flight_time": {
+      "hours": 4,
+      "minutes": 0
+    },
+    "flag_url": "https://flagcdn.com/LI.svg"
+  },
+  {
+    "country": "Lithuania",
+    "iso_code": "LT",
+    "estimated_flight_time": {
+      "hours": 4,
+      "minutes": 45
+    },
+    "flag_url": "https://flagcdn.com/LT.svg"
+  },
+  {
+    "country": "Luxembourg",
+    "iso_code": "LU",
+    "estimated_flight_time": {
+      "hours": 3,
+      "minutes": 30
+    },
+    "flag_url": "https://flagcdn.com/LU.svg"
+  },
+  {
+    "country": "Madagascar",
+    "iso_code": "MG",
+    "estimated_flight_time": {
+      "hours": 10,
+      "minutes": 0
+    },
+    "flag_url": "https://flagcdn.com/MG.svg"
+  },
+  {
+    "country": "Malawi",
+    "iso_code": "MW",
+    "estimated_flight_time": {
+      "hours": 9,
+      "minutes": 0
+    },
+    "flag_url": "https://flagcdn.com/MW.svg"
+  },
+  {
+    "country": "Malaysia",
+    "iso_code": "MY",
+    "estimated_flight_time": {
+      "hours": 14,
+      "minutes": 30
+    },
+    "flag_url": "https://flagcdn.com/MY.svg"
+  },
+  {
+    "country": "Maldives",
+    "iso_code": "MV",
+    "estimated_flight_time": {
+      "hours": 11,
+      "minutes": 0
+    },
+    "flag_url": "https://flagcdn.com/MV.svg"
+  },
+  {
+    "country": "Mali",
+    "iso_code": "ML",
+    "estimated_flight_time": {
+      "hours": 3,
+      "minutes": 45
+    },
+    "flag_url": "https://flagcdn.com/ML.svg"
+  },
+  {
+    "country": "Malta",
+    "iso_code": "MT",
+    "estimated_flight_time": {
+      "hours": 4,
+      "minutes": 45
+    },
+    "flag_url": "https://flagcdn.com/MT.svg"
+  },
+  {
+    "country": "Marshall Islands",
+    "iso_code": "MH",
+    "estimated_flight_time": {
+      "hours": 24,
+      "minutes": 0
+    },
+    "flag_url": "https://flagcdn.com/MH.svg"
+  },
+  {
+    "country": "Mauritania",
+    "iso_code": "MR",
+    "estimated_flight_time": {
+      "hours": 2,
+      "minutes": 30
+    },
+    "flag_url": "https://flagcdn.com/MR.svg"
+  },
+  {
+    "country": "Mauritius",
+    "iso_code": "MU",
+    "estimated_flight_time": {
+      "hours": 11,
+      "minutes": 0
+    },
+    "flag_url": "https://flagcdn.com/MU.svg"
+  },
+  {
+    "country": "Mexico",
+    "iso_code": "MX",
+    "estimated_flight_time": {
+      "hours": 10,
+      "minutes": 0
+    },
+    "flag_url": "https://flagcdn.com/MX.svg"
+  },
+  {
+    "country": "Micronesia",
+    "iso_code": "FM",
+    "estimated_flight_time": {
+      "hours": 22,
+      "minutes": 0
+    },
+    "flag_url": "https://flagcdn.com/FM.svg"
+  },
+  {
+    "country": "Moldova",
+    "iso_code": "MD",
+    "estimated_flight_time": {
+      "hours": 5,
+      "minutes": 0
+    },
+    "flag_url": "https://flagcdn.com/MD.svg"
+  },
+  {
+    "country": "Monaco",
+    "iso_code": "MC",
+    "estimated_flight_time": {
+      "hours": 3,
+      "minutes": 45
+    },
+    "flag_url": "https://flagcdn.com/MC.svg"
+  },
+  {
+    "country": "Mongolia",
+    "iso_code": "MN",
+    "estimated_flight_time": {
+      "hours": 12,
+      "minutes": 30
+    },
+    "flag_url": "https://flagcdn.com/MN.svg"
+  },
+  {
+    "country": "Montenegro",
+    "iso_code": "ME",
+    "estimated_flight_time": {
+      "hours": 4,
+      "minutes": 0
+    },
+    "flag_url": "https://flagcdn.com/ME.svg"
+  },
+  {
+    "country": "Morocco",
+    "iso_code": "MA",
+    "estimated_flight_time": {
+      "hours": 2,
+      "minutes": 15
+    },
+    "flag_url": "https://flagcdn.com/MA.svg"
+  },
+  {
+    "country": "Mozambique",
+    "iso_code": "MZ",
+    "estimated_flight_time": {
+      "hours": 10,
+      "minutes": 15
+    },
+    "flag_url": "https://flagcdn.com/MZ.svg"
+  },
+  {
+    "country": "Myanmar",
+    "iso_code": "MM",
+    "estimated_flight_time": {
+      "hours": 13,
+      "minutes": 30
+    },
+    "flag_url": "https://flagcdn.com/MM.svg"
+  },
+  {
+    "country": "Namibia",
+    "iso_code": "NA",
+    "estimated_flight_time": {
+      "hours": 9,
+      "minutes": 45
+    },
+    "flag_url": "https://flagcdn.com/NA.svg"
+  },
+  {
+    "country": "Nauru",
+    "iso_code": "NR",
+    "estimated_flight_time": {
+      "hours": 23,
+      "minutes": 0
+    },
+    "flag_url": "https://flagcdn.com/NR.svg"
+  },
+  {
+    "country": "Nepal",
+    "iso_code": "NP",
+    "estimated_flight_time": {
+      "hours": 11,
+      "minutes": 30
+    },
+    "flag_url": "https://flagcdn.com/NP.svg"
+  },
+  {
+    "country": "Netherlands",
+    "iso_code": "NL",
+    "estimated_flight_time": {
+      "hours": 3,
+      "minutes": 45
+    },
+    "flag_url": "https://flagcdn.com/NL.svg"
+  },
+  {
+    "country": "New Zealand",
+    "iso_code": "NZ",
+    "estimated_flight_time": {
+      "hours": 22,
+      "minutes": 45
+    },
+    "flag_url": "https://flagcdn.com/NZ.svg"
+  },
+  {
+    "country": "Nicaragua",
+    "iso_code": "NI",
+    "estimated_flight_time": {
+      "hours": 10,
+      "minutes": 15
+    },
+    "flag_url": "https://flagcdn.com/NI.svg"
+  },
+  {
+    "country": "Niger",
+    "iso_code": "NE",
+    "estimated_flight_time": {
+      "hours": 4,
+      "minutes": 30
+    },
+    "flag_url": "https://flagcdn.com/NE.svg"
+  },
+  {
+    "country": "Nigeria",
+    "iso_code": "NG",
+    "estimated_flight_time": {
+      "hours": 4,
+      "minutes": 30
+    },
+    "flag_url": "https://flagcdn.com/NG.svg"
+  },
+  {
+    "country": "North Korea",
+    "iso_code": "KP",
+    "estimated_flight_time": {
+      "hours": 13,
+      "minutes": 0
+    },
+    "flag_url": "https://flagcdn.com/KP.svg"
+  },
+  {
+    "country": "North Macedonia",
+    "iso_code": "MK",
+    "estimated_flight_time": {
+      "hours": 4,
+      "minutes": 15
+    },
+    "flag_url": "https://flagcdn.com/MK.svg"
+  },
+  {
+    "country": "Norway",
+    "iso_code": "NO",
+    "estimated_flight_time": {
+      "hours": 5,
+      "minutes": 0
+    },
+    "flag_url": "https://flagcdn.com/NO.svg"
+  },
+  {
+    "country": "Oman",
+    "iso_code": "OM",
+    "estimated_flight_time": {
+      "hours": 8,
+      "minutes": 0
+    },
+    "flag_url": "https://flagcdn.com/OM.svg"
+  },
+  {
+    "country": "Pakistan",
+    "iso_code": "PK",
+    "estimated_flight_time": {
+      "hours": 9,
+      "minutes": 30
+    },
+    "flag_url": "https://flagcdn.com/PK.svg"
+  },
+  {
+    "country": "Palau",
+    "iso_code": "PW",
+    "estimated_flight_time": {
+      "hours": 19,
+      "minutes": 0
+    },
+    "flag_url": "https://flagcdn.com/PW.svg"
+  },
+  {
+    "country": "Panama",
+    "iso_code": "PA",
+    "estimated_flight_time": {
+      "hours": 9,
+      "minutes": 45
+    },
+    "flag_url": "https://flagcdn.com/PA.svg"
+  },
+  {
+    "country": "Papua New Guinea",
+    "iso_code": "PG",
+    "estimated_flight_time": {
+      "hours": 22,
+      "minutes": 30
+    },
+    "flag_url": "https://flagcdn.com/PG.svg"
+  },
+  {
+    "country": "Paraguay",
+    "iso_code": "PY",
+    "estimated_flight_time": {
+      "hours": 10,
+      "minutes": 45
+    },
+    "flag_url": "https://flagcdn.com/PY.svg"
+  },
+  {
+    "country": "Peru",
+    "iso_code": "PE",
+    "estimated_flight_time": {
+      "hours": 9,
+      "minutes": 45
+    },
+    "flag_url": "https://flagcdn.com/PE.svg"
+  },
+  {
+    "country": "Philippines",
+    "iso_code": "PH",
+    "estimated_flight_time": {
+      "hours": 15,
+      "minutes": 30
+    },
+    "flag_url": "https://flagcdn.com/PH.svg"
+  },
+  {
+    "country": "Poland",
+    "iso_code": "PL",
+    "estimated_flight_time": {
+      "hours": 4,
+      "minutes": 30
+    },
+    "flag_url": "https://flagcdn.com/PL.svg"
+  },
+  {
+    "country": "Portugal",
+    "iso_code": "PT",
+    "estimated_flight_time": {
+      "hours": 2,
+      "minutes": 0
+    },
+    "flag_url": "https://flagcdn.com/PT.svg"
+  },
+  {
+    "country": "Qatar",
+    "iso_code": "QA",
+    "estimated_flight_time": {
+      "hours": 7,
+      "minutes": 45
+    },
+    "flag_url": "https://flagcdn.com/QA.svg"
+  },
+  {
+    "country": "Romania",
+    "iso_code": "RO",
+    "estimated_flight_time": {
+      "hours": 4,
+      "minutes": 30
+    },
+    "flag_url": "https://flagcdn.com/RO.svg"
+  },
+  {
+    "country": "Russia",
+    "iso_code": "RU",
+    "estimated_flight_time": {
+      "hours": 10,
+      "minutes": 15
+    },
+    "flag_url": "https://flagcdn.com/RU.svg"
+  },
+  {
+    "country": "Rwanda",
+    "iso_code": "RW",
+    "estimated_flight_time": {
+      "hours": 8,
+      "minutes": 0
+    },
+    "flag_url": "https://flagcdn.com/RW.svg"
+  },
+  {
+    "country": "Saint Kitts and Nevis",
+    "iso_code": "KN",
+    "estimated_flight_time": {
+      "hours": 8,
+      "minutes": 30
+    },
+    "flag_url": "https://flagcdn.com/KN.svg"
+  },
+  {
+    "country": "Saint Lucia",
+    "iso_code": "LC",
+    "estimated_flight_time": {
+      "hours": 8,
+      "minutes": 30
+    },
+    "flag_url": "https://flagcdn.com/LC.svg"
+  },
+  {
+    "country": "Saint Vincent and the Grenadines",
+    "iso_code": "VC",
+    "estimated_flight_time": {
+      "hours": 8,
+      "minutes": 30
+    },
+    "flag_url": "https://flagcdn.com/VC.svg"
+  },
+  {
+    "country": "Samoa",
+    "iso_code": "WS",
+    "estimated_flight_time": {
+      "hours": 23,
+      "minutes": 0
+    },
+    "flag_url": "https://flagcdn.com/WS.svg"
+  },
+  {
+    "country": "San Marino",
+    "iso_code": "SM",
+    "estimated_flight_time": {
+      "hours": 3,
+      "minutes": 45
+    },
+    "flag_url": "https://flagcdn.com/SM.svg"
+  },
+  {
+    "country": "Sao Tome and Principe",
+    "iso_code": "ST",
+    "estimated_flight_time": {
+      "hours": 4,
+      "minutes": 0
+    },
+    "flag_url": "https://flagcdn.com/ST.svg"
+  },
+  {
+    "country": "Saudi Arabia",
+    "iso_code": "SA",
+    "estimated_flight_time": {
+      "hours": 7,
+      "minutes": 30
+    },
+    "flag_url": "https://flagcdn.com/SA.svg"
+  },
+  {
+    "country": "Senegal",
+    "iso_code": "SN",
+    "estimated_flight_time": {
+      "hours": 2,
+      "minutes": 30
+    },
+    "flag_url": "https://flagcdn.com/SN.svg"
+  },
+  {
+    "country": "Serbia",
+    "iso_code": "RS",
+    "estimated_flight_time": {
+      "hours": 4,
+      "minutes": 0
+    },
+    "flag_url": "https://flagcdn.com/RS.svg"
+  },
+  {
+    "country": "Seychelles",
+    "iso_code": "SC",
+    "estimated_flight_time": {
+      "hours": 10,
+      "minutes": 15
+    },
+    "flag_url": "https://flagcdn.com/SC.svg"
+  },
+  {
+    "country": "Sierra Leone",
+    "iso_code": "SL",
+    "estimated_flight_time": {
+      "hours": 2,
+      "minutes": 45
+    },
+    "flag_url": "https://flagcdn.com/SL.svg"
+  },
+  {
+    "country": "Singapore",
+    "iso_code": "SG",
+    "estimated_flight_time": {
+      "hours": 14,
+      "minutes": 30
+    },
+    "flag_url": "https://flagcdn.com/SG.svg"
+  },
+  {
+    "country": "Slovakia",
+    "iso_code": "SK",
+    "estimated_flight_time": {
+      "hours": 4,
+      "minutes": 30
+    },
+    "flag_url": "https://flagcdn.com/SK.svg"
+  },
+  {
+    "country": "Slovenia",
+    "iso_code": "SI",
+    "estimated_flight_time": {
+      "hours": 4,
+      "minutes": 15
+    },
+    "flag_url": "https://flagcdn.com/SI.svg"
+  },
+  {
+    "country": "Solomon Islands",
+    "iso_code": "SB",
+    "estimated_flight_time": {
+      "hours": 24,
+      "minutes": 0
+    },
+    "flag_url": "https://flagcdn.com/SB.svg"
+  },
+  {
+    "country": "Somalia",
+    "iso_code": "SO",
+    "estimated_flight_time": {
+      "hours": 8,
+      "minutes": 45
+    },
+    "flag_url": "https://flagcdn.com/SO.svg"
+  },
+  {
+    "country": "South Africa",
+    "iso_code": "ZA",
+    "estimated_flight_time": {
+      "hours": 9,
+      "minutes": 15
+    },
+    "flag_url": "https://flagcdn.com/ZA.svg"
+  },
+  {
+    "country": "South Korea",
+    "iso_code": "KR",
+    "estimated_flight_time": {
+      "hours": 13,
+      "minutes": 30
+    },
+    "flag_url": "https://flagcdn.com/KR.svg"
+  },
+  {
+    "country": "South Sudan",
+    "iso_code": "SS",
+    "estimated_flight_time": {
+      "hours": 7,
+      "minutes": 45
+    },
+    "flag_url": "https://flagcdn.com/SS.svg"
+  },
+  {
+    "country": "Spain",
+    "iso_code": "ES",
+    "estimated_flight_time": {
+      "hours": 2,
+      "minutes": 30
+    },
+    "flag_url": "https://flagcdn.com/ES.svg"
+  },
+  {
+    "country": "Sri Lanka",
+    "iso_code": "LK",
+    "estimated_flight_time": {
+      "hours": 10,
+      "minutes": 45
+    },
+    "flag_url": "https://flagcdn.com/LK.svg"
+  },
+  {
+    "country": "Sudan",
+    "iso_code": "SD",
+    "estimated_flight_time": {
+      "hours": 6,
+      "minutes": 45
+    },
+    "flag_url": "https://flagcdn.com/SD.svg"
+  },
+  {
+    "country": "Suriname",
+    "iso_code": "SR",
+    "estimated_flight_time": {
+      "hours": 9,
+      "minutes": 30
+    },
+    "flag_url": "https://flagcdn.com/SR.svg"
+  },
+  {
+    "country": "Sweden",
+    "iso_code": "SE",
+    "estimated_flight_time": {
+      "hours": 5,
+      "minutes": 15
+    },
+    "flag_url": "https://flagcdn.com/SE.svg"
+  },
+  {
+    "country": "Switzerland",
+    "iso_code": "CH",
+    "estimated_flight_time": {
+      "hours": 4,
+      "minutes": 0
+    },
+    "flag_url": "https://flagcdn.com/CH.svg"
+  },
+  {
+    "country": "Syria",
+    "iso_code": "SY",
+    "estimated_flight_time": {
+      "hours": 6,
+      "minutes": 0
+    },
+    "flag_url": "https://flagcdn.com/SY.svg"
+  },
+  {
+    "country": "Taiwan",
+    "iso_code": "TW",
+    "estimated_flight_time": {
+      "hours": 14,
+      "minutes": 0
+    },
+    "flag_url": "https://flagcdn.com/TW.svg"
+  },
+  {
+    "country": "Tajikistan",
+    "iso_code": "TJ",
+    "estimated_flight_time": {
+      "hours": 9,
+      "minutes": 0
+    },
+    "flag_url": "https://flagcdn.com/TJ.svg"
+  },
+  {
+    "country": "Tanzania",
+    "iso_code": "TZ",
+    "estimated_flight_time": {
+      "hours": 8,
+      "minutes": 45
+    },
+    "flag_url": "https://flagcdn.com/TZ.svg"
+  },
+  {
+    "country": "Thailand",
+    "iso_code": "TH",
+    "estimated_flight_time": {
+      "hours": 13,
+      "minutes": 45
+    },
+    "flag_url": "https://flagcdn.com/TH.svg"
+  },
+  {
+    "country": "Togo",
+    "iso_code": "TG",
+    "estimated_flight_time": {
+      "hours": 4,
+      "minutes": 30
+    },
+    "flag_url": "https://flagcdn.com/TG.svg"
+  },
+  {
+    "country": "Tonga",
+    "iso_code": "TO",
+    "estimated_flight_time": {
+      "hours": 24,
+      "minutes": 0
+    },
+    "flag_url": "https://flagcdn.com/TO.svg"
+  },
+  {
+    "country": "Trinidad and Tobago",
+    "iso_code": "TT",
+    "estimated_flight_time": {
+      "hours": 8,
+      "minutes": 30
+    },
+    "flag_url": "https://flagcdn.com/TT.svg"
+  },
+  {
+    "country": "Tunisia",
+    "iso_code": "TN",
+    "estimated_flight_time": {
+      "hours": 3,
+      "minutes": 0
+    },
+    "flag_url": "https://flagcdn.com/TN.svg"
+  },
+  {
+    "country": "Turkey",
+    "iso_code": "TR",
+    "estimated_flight_time": {
+      "hours": 5,
+      "minutes": 45
+    },
+    "flag_url": "https://flagcdn.com/TR.svg"
+  },
+  {
+    "country": "Turkmenistan",
+    "iso_code": "TM",
+    "estimated_flight_time": {
+      "hours": 9,
+      "minutes": 15
+    },
+    "flag_url": "https://flagcdn.com/TM.svg"
+  },
+  {
+    "country": "Tuvalu",
+    "iso_code": "TV",
+    "estimated_flight_time": {
+      "hours": 24,
+      "minutes": 0
+    },
+    "flag_url": "https://flagcdn.com/TV.svg"
+  },
+  {
+    "country": "Uganda",
+    "iso_code": "UG",
+    "estimated_flight_time": {
+      "hours": 8,
+      "minutes": 15
+    },
+    "flag_url": "https://flagcdn.com/UG.svg"
+  },
+  {
+    "country": "Ukraine",
+    "iso_code": "UA",
+    "estimated_flight_time": {
+      "hours": 5,
+      "minutes": 0
+    },
+    "flag_url": "https://flagcdn.com/UA.svg"
+  },
+  {
+    "country": "United Arab Emirates",
+    "iso_code": "AE",
+    "estimated_flight_time": {
+      "hours": 8,
+      "minutes": 15
+    },
+    "flag_url": "https://flagcdn.com/AE.svg"
+  },
+  {
+    "country": "United Kingdom",
+    "iso_code": "GB",
+    "estimated_flight_time": {
+      "hours": 3,
+      "minutes": 45
+    },
+    "flag_url": "https://flagcdn.com/GB.svg"
+  },
+  {
+    "country": "United States",
+    "iso_code": "US",
+    "estimated_flight_time": {
+      "hours": 9,
+      "minutes": 30
+    },
+    "flag_url": "https://flagcdn.com/US.svg"
+  },
+  {
+    "country": "Uruguay",
+    "iso_code": "UY",
+    "estimated_flight_time": {
+      "hours": 11,
+      "minutes": 30
+    },
+    "flag_url": "https://flagcdn.com/UY.svg"
+  },
+  {
+    "country": "Uzbekistan",
+    "iso_code": "UZ",
+    "estimated_flight_time": {
+      "hours": 9,
+      "minutes": 15
+    },
+    "flag_url": "https://flagcdn.com/UZ.svg"
+  },
+  {
+    "country": "Vanuatu",
+    "iso_code": "VU",
+    "estimated_flight_time": {
+      "hours": 24,
+      "minutes": 0
+    },
+    "flag_url": "https://flagcdn.com/VU.svg"
+  },
+  {
+    "country": "Vatican City",
+    "iso_code": "VA",
+    "estimated_flight_time": {
+      "hours": 3,
+      "minutes": 45
+    },
+    "flag_url": "https://flagcdn.com/VA.svg"
+  },
+  {
+    "country": "Venezuela",
+    "iso_code": "VE",
+    "estimated_flight_time": {
+      "hours": 8,
+      "minutes": 30
+    },
+    "flag_url": "https://flagcdn.com/VE.svg"
+  },
+  {
+    "country": "Vietnam",
+    "iso_code": "VN",
+    "estimated_flight_time": {
+      "hours": 14,
+      "minutes": 30
+    },
+    "flag_url": "https://flagcdn.com/VN.svg"
+  },
+  {
+    "country": "Yemen",
+    "iso_code": "YE",
+    "estimated_flight_time": {
+      "hours": 8,
+      "minutes": 30
+    },
+    "flag_url": "https://flagcdn.com/YE.svg"
+  },
+  {
+    "country": "Zambia",
+    "iso_code": "ZM",
+    "estimated_flight_time": {
+      "hours": 9,
+      "minutes": 0
+    },
+    "flag_url": "https://flagcdn.com/ZM.svg"
+  },
+  {
+    "country": "Zimbabwe",
+    "iso_code": "ZW",
+    "estimated_flight_time": {
+      "hours": 9,
+      "minutes": 30
+    },
+    "flag_url": "https://flagcdn.com/ZW.svg"
+  }
+]
