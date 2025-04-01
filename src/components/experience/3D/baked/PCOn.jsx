@@ -5,61 +5,7 @@ import PropTypes from "prop-types";
 import { useFrame, useThree } from "@react-three/fiber";
 import { useEffect, useRef, useState, useMemo, useCallback } from "react";
 import { useExperience } from "@/hooks/useExperience";
-import { motion, AnimatePresence } from "framer-motion";
-
-// Estilos CSS para la pantalla y las animaciones
-const screenStyles = {
-  container: {
-    overflow: "hidden",
-    position: "relative",
-    background: "#000",
-  },
-  iframe: {
-    border: "none",
-  },
-  image: {
-    width: "100%",
-    height: "100%",
-    objectFit: "cover",
-  },
-};
-
-// Componente para el contenido de la pantalla con animaciones
-const ScreenContent = ({ isUserOnPC }) => {
-  return (
-    <div style={screenStyles.container}>
-      <AnimatePresence mode="wait">
-        {isUserOnPC ? (
-          <motion.div
-            key="iframe"
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.95 }}
-            transition={{ duration: 0.5, ease: "easeOut" }}
-            style={{ width: "auto", height: "auto" }}
-          >
-            <iframe src="https://byfugu.com" style={screenStyles.iframe} />
-          </motion.div>
-        ) : (
-          <motion.div
-            key="image"
-            initial={{ opacity: 0, scale: 0.95 }}
-            animate={{ opacity: 1, scale: 1 }}
-            exit={{ opacity: 0, scale: 0.95 }}
-            transition={{ duration: 0.5, ease: "easeOut" }}
-            style={{ width: "100%", height: "100%" }}
-          >
-            <img
-              src="/images/Desktop_Macbook_v3.webp"
-              style={screenStyles.image}
-              alt="Desktop"
-            />
-          </motion.div>
-        )}
-      </AnimatePresence>
-    </div>
-  );
-};
+import ComputerScreen from "../blenderMaterial/ComputerScreen";
 
 PCOn.propTypes = {
   material: PropTypes.instanceOf(THREE.Material),
@@ -225,26 +171,7 @@ export function PCOn({ material: bakedMaterial, ...props }) {
         position={[-3.578, 0.831, -4.865]}
         rotation={[-Math.PI / 2, 0, 0]}
       />
-      <mesh
-        geometry={nodes.Screen_Panel002.geometry}
-        material={bakedMaterial}
-        position={[-3.524, 1.183, -4.864]}
-        rotation={[0, 0, -0.003]}
-      >
-        <group rotation={[0, 0, THREE.MathUtils.degToRad(8)]}>
-          <Html
-            position={[0.001, 0, 0]}
-            zIndexRange={[100, 1000]}
-            transform
-            wrapperClass="computerScreen"
-            distanceFactor={0.19}
-            rotation={[0, Math.PI / 2, 0]}
-            occlude={isUserOnPC ? false : "blending"}
-          >
-            <ScreenContent isUserOnPC={isUserOnPC} />
-          </Html>
-        </group>
-      </mesh>
+      <ComputerScreen />
       <mesh
         geometry={nodes.Cable006.geometry}
         material={bakedMaterial}

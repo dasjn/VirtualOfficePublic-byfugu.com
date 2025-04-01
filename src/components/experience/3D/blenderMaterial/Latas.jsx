@@ -6,7 +6,7 @@ import { useEffect, useRef } from "react";
 import * as THREE from "three";
 
 export function Latas(props) {
-  const { nodes, materials } = useGLTF("/latas/TheOFFice_Lata_Shader_v01.glb");
+  const { nodes, materials } = useGLTF("/latas/TheOFFice_Lata_Shader_v02.glb");
   const groupRef = useRef();
 
   const {
@@ -86,7 +86,7 @@ export function Latas(props) {
       onPointerOut={handlePointerOut}
       raycast={meshBounds}
     >
-      <Instances geometry={nodes.Lata.geometry} material={materials.Lata}>
+      <Instances geometry={nodes.Lata_2001.geometry} material={materials.Lata}>
         <Instance position={[-0.036, 0.974, -0.353]} scale={0.015} />
         <Instance
           position={[0.112, 0.974, -0.434]}
@@ -113,4 +113,4 @@ export function Latas(props) {
   );
 }
 
-useGLTF.preload("/latas/TheOFFice_Lata_Shader_v01.glb");
+useGLTF.preload("/latas/TheOFFice_Lata_Shader_v02.glb");

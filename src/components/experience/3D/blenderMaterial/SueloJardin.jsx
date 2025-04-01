@@ -3,7 +3,7 @@ import { useGLTF } from "@react-three/drei";
 
 export function SueloJardin(props) {
   const { nodes, materials } = useGLTF(
-    "/suelo_jardin/TheOFFice_Sofa_Shader_v01.glb"
+    "/suelo_jardin/TheOFFice_SueloJardin_v01.glb"
   );
   return (
     <group {...props} dispose={null}>
@@ -18,4 +18,4 @@ export function SueloJardin(props) {
   );
 }
 
-useGLTF.preload("/suelo_jardin/TheOFFice_Sofa_Shader_v01.glb");
+useGLTF.preload("/suelo_jardin/TheOFFice_SueloJardin_v01.glb");

@@ -1,3 +1,4 @@
+// src/App.jsx
 import "./index.css";
 import { useState, useEffect, useRef } from "react";
 import Background from "./components/Background";
@@ -16,50 +17,40 @@ import UI3D from "./components/experience/UI3D";
 import AudioPlayer from "./components/audio/AudioPlayer";
 import CustomCursor from "./components/experience/CustomCursor";
 import { initialPosition } from "./data/constants";
-import { useThree } from "@react-three/fiber";
 
+// Importar configuración de GainMaps y hooks de precarga
+import { GAINMAPS } from "./data/gainmaps-config";
 import {
-  addGainMapsToPreload,
-  loadAllGainMaps,
-  useGainMapProgress,
   useInitGainMapPreloader,
-} from "./hooks/usePreloadGainMap";
-import { PAREDES_GAINMAP } from "./components/experience/3D/blenderMaterial/Paredes";
-import { SUELO_GAINMAP } from "./components/experience/3D/baked/Suelo";
+  useRegisterGainMaps,
+  useLoadGainMaps,
+  useGainMapProgress,
+} from "./hooks/useGainMapPreloader";
 
-// Lista de GainMaps a precargar
-const gainMapsToPreload = [
-  { id: PAREDES_GAINMAP.name, urls: PAREDES_GAINMAP.urls },
-  { id: SUELO_GAINMAP.name, urls: SUELO_GAINMAP.urls },
-  // Añadir más texturas aquí
-];
+// Componente para gestionar la carga de GainMaps
+function GainMapLoader() {
+  // Inicializar el preloader de GainMaps
+  const initialized = useInitGainMapPreloader();
 
-// Componente para inicializar el preloader
-function PreloadInitializer() {
-  const { gl } = useThree();
-  const initRef = useRef(false);
+  // Registrar todos los GainMaps
+  useRegisterGainMaps(GAINMAPS);
 
-  // Inicializar el preloader con el renderer
-  const isInitialized = useInitGainMapPreloader(gl);
+  // Cargar GainMaps y obtener estado
+  const { loading, error, ready } = useLoadGainMaps(initialized);
 
+  // Log de error si ocurre
   useEffect(() => {
-    if (isInitialized && !initRef.current) {
-      initRef.current = true;
-
-      console.log("GainMapPreloader inicializado, añadiendo texturas...");
-      // Añadir texturas al sistema de preload
-      addGainMapsToPreload(gainMapsToPreload);
-
-      // Iniciar la carga
-      loadAllGainMaps()
-        .then(() => {
-          console.log("Todas las texturas GainMap cargadas con éxito");
-        })
-        .catch((error) => {
-          console.error("Error durante la carga de texturas:", error);
-        });
+    if (error) {
+      console.error("Error cargando GainMaps:", error);
     }
-  }, [isInitialized]);
+  }, [error]);
+
+  // Log de estado cuando estén listos
+  useEffect(() => {
+    if (ready) {
+      console.log("✅ Todos los GainMaps han sido cargados");
+    }
+  }, [ready]);
 
   return null;
 }
@@ -72,12 +63,12 @@ export default function App() {
   // Referencia para tracking de tiempo máximo
   const maxLoadingTimeRef = useRef(null);
 
-  // Obtener progreso de drei y GainMap
+  // Obtener progreso de drei y del sistema de GainMaps
   const { progress: dreiProgress, active: dreiActive } = useProgress();
   const gainMapProgress = useGainMapProgress();
 
-  // Calcular progreso combinado
-  const combinedProgress = dreiProgress * 0.6 + gainMapProgress * 0.4;
+  // Calcular progreso combinado - ahora dando más peso a los GainMaps
+  const combinedProgress = dreiProgress * 0.4 + gainMapProgress * 0.6;
 
   // Comprobar si todos los recursos están listos
   const assetsReady = dreiProgress >= 100 && gainMapProgress >= 100;
@@ -121,7 +112,7 @@ export default function App() {
       console.log(
         `Progreso de carga: Drei ${dreiProgress.toFixed(
           1
-        )}%, GainMap ${gainMapProgress.toFixed(
+        )}%, GainMaps ${gainMapProgress.toFixed(
           1
         )}%, Combinado ${combinedProgress.toFixed(1)}%`
       );
@@ -159,8 +150,8 @@ export default function App() {
           <Preload all />
           <Perf />
 
-          {/* Inicializador de precarga siempre presente */}
-          <PreloadInitializer />
+          {/* Gestor de carga de GainMaps */}
+          <GainMapLoader />
 
           {shouldShowLoaders ? (
             <Loader

@@ -1,7 +1,7 @@
 /* eslint-disable react/no-unknown-property */
 import { useGLTF, Image, Html } from "@react-three/drei";
-import { usePointerInteraction } from "@/hooks/usePointerInteraction";
 import TextComponent, { CARD_NAMES } from "../../TextComponent";
+import { usePointerInteraction } from "@/hooks/usePointerInteraction";
 
 export function PlanoImgCuadro01(props) {
   // Cargar el modelo GLTF del plano

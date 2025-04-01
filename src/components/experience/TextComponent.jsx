@@ -2,6 +2,7 @@
 import { Html } from "@react-three/drei";
 import { motion, AnimatePresence } from "framer-motion";
 import PropTypes from "prop-types";
+import { useState, useEffect } from "react";
 
 // Definimos aquí las constantes para tener autocompletado
 export const CARD_NAMES = {
@@ -90,24 +91,42 @@ export default function TextComponent({
     description: "Descripción no encontrada",
   };
 
+  // Estado para controlar la visibilidad del componente en el DOM
+  const [showComponent, setShowComponent] = useState(false);
+
+  // Efecto para manejar la aparición y desaparición con un ligero retraso
+  useEffect(() => {
+    if (isNearby) {
+      setShowComponent(true);
+    } else {
+      // Permitir que la animación de salida se complete antes de remover del DOM
+      const timer = setTimeout(() => {
+        setShowComponent(false);
+      }, 500); // Duración igual a la animación de salida
+      return () => clearTimeout(timer);
+    }
+  }, [isNearby]);
+
   return (
     <Html position={position} center>
-      <AnimatePresence>
-        {isNearby && (
-          <motion.div
-            className="flex items-center justify-center w-screen h-screen"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            exit={{ opacity: 0 }}
-            transition={{ duration: 0.5, ease: "easeInOut" }}
-          >
-            <motion.div className="text-white gap-2 select-none flex flex-col p-4 w-96 gradient-keyboard bg-gradient-to-b from-[#39393960] to-[#61616160] rounded-3xl backdrop-blur-xl custom-box-shadow">
-              <p className="text-xl font-bold">{card.title}</p>
-              <p>{card.description}</p>
-            </motion.div>
-          </motion.div>
-        )}
-      </AnimatePresence>
+      {(isNearby || showComponent) && (
+        <div className="flex items-center justify-center w-screen h-screen">
+          <AnimatePresence>
+            {isNearby && (
+              <motion.div
+                className="text-white gap-2 select-none flex flex-col p-4 w-96 gradient-keyboard bg-gradient-to-b from-[#39393960] to-[#61616160] rounded-3xl backdrop-blur-xl custom-box-shadow"
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.95 }}
+                transition={{ duration: 0.5, ease: "easeInOut" }}
+              >
+                <p className="text-xl font-bold">{card.title}</p>
+                <p>{card.description}</p>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
+      )}
     </Html>
   );
 }

@@ -7,7 +7,7 @@ import * as THREE from "three";
 
 export function Piedras(props) {
   const { nodes, materials } = useGLTF(
-    "/piedras_jardin/TheOFFice_Piedras_Shader_v01.glb"
+    "/piedras_jardin/TheOFFice_Piedras_Shader_v02.glb"
   );
 
   const groupRef = useRef();
@@ -30,8 +30,8 @@ export function Piedras(props) {
         const box = new THREE.Box3();
         const positions = [
           new THREE.Vector3(-6.765, 0.555, 3.204),
-          new THREE.Vector3(-8.234, 0.433, 0.849),
-          new THREE.Vector3(-6.256, 0.519, -0.091),
+          new THREE.Vector3(-8.192, 0.534, 0.863),
+          new THREE.Vector3(-6.236, 0.537, -0.088),
         ];
 
         // Ampliar el tamaño del box para cada instancia
@@ -78,20 +78,20 @@ export function Piedras(props) {
   return (
     <group ref={groupRef} {...props} dispose={null}>
       <Instances
-        geometry={nodes.Cube057.geometry}
+        geometry={nodes.Cube070.geometry}
         material={materials["Piedra Volcanica LOW"]}
       >
         <Instance position={[-6.765, 0.555, 3.204]} rotation={[0, 0.726, 0]} />
         <Instance
-          position={[-8.234, 0.433, 0.849]}
-          rotation={[0.005, 0.638, 1.575]}
+          position={[-8.192, 0.534, 0.863]}
+          rotation={[-1.585, 0.037, -0.941]}
         />
         <Instance
           ref={gardenRef}
           onPointerOver={handlePointerOver}
           onPointerOut={handlePointerOut}
-          position={[-6.256, 0.519, -0.091]}
-          rotation={[0.008, -0.369, 1.569]}
+          position={[-6.236, 0.537, -0.088]}
+          rotation={[0.109, 1.179, -1.665]}
         >
           <TextComponent
             position={[0, 1, 0]}
@@ -104,4 +104,4 @@ export function Piedras(props) {
   );
 }
 
-useGLTF.preload("/piedras_jardin/TheOFFice_Piedras_Shader_v01.glb");
+useGLTF.preload("/piedras_jardin/TheOFFice_Piedras_Shader_v02.glb");

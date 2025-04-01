@@ -4,32 +4,34 @@ import { meshBounds, useGLTF } from "@react-three/drei";
 import TextComponent, { CARD_NAMES } from "../../TextComponent";
 import { usePointerInteraction } from "@/hooks/usePointerInteraction";
 import * as THREE from "three";
-import { useGainMapTexture } from "@/hooks/usePreloadGainMap";
+import { useGainMapTexture } from "@/hooks/useGainMapTexture";
+import { usePreloadModel } from "@/hooks/usePreloadHooks";
 
-// Constante para los recursos
-export const PAREDES_GAINMAP = {
-  name: "paredes_texture",
-  urls: [
-    "/paredes/Paredes_Bake_8K_v01.webp",
-    "/paredes/Paredes_Bake_8K_v01-gainmap.webp",
-    "/paredes/Paredes_Bake_8K_v01.json",
-  ],
-};
+// Definir la ruta del modelo como constante
+const MODEL_PATH = "/paredes/TheOFFice_Paredes_v08.glb";
+// Definir el ID del GainMap (debe coincidir con el ID en gainmaps-config.js)
+const GAINMAP_ID = "paredes_texture";
 
 export function Paredes(props) {
-  const { nodes, materials } = useGLTF("/paredes/TheOFFice_Paredes_v08.glb");
+  // Precargar el modelo una sola vez (evita duplicaciones)
+  usePreloadModel(MODEL_PATH);
 
-  // Obtener la textura del sistema de precarga
-  const texture = useGainMapTexture(PAREDES_GAINMAP.name);
+  // Cargar el modelo y la textura
+  const { nodes, materials } = useGLTF(MODEL_PATH);
+  // Obtener la textura GainMap (sistema centralizado de GainMaps)
+  const texture = useGainMapTexture(GAINMAP_ID);
 
-  // Material a usar
+  // Material a usar (con la textura GainMap si está disponible)
   const textureMaterial = useMemo(() => {
     if (!texture) {
+      // Fallback al material original si la textura no está disponible
       return materials["Paredes LOW"];
     }
+    // Crear un material con la textura GainMap
     return new THREE.MeshBasicMaterial({ map: texture });
   }, [texture, materials]);
 
+  // Hooks para interacción
   const {
     objectRef: refMeetingRoom,
     isNearby: isNearbyMeetingRoom,
@@ -114,5 +116,3 @@ export function Paredes(props) {
     </group>
   );
 }
-
-useGLTF.preload("/paredes/TheOFFice_Paredes_v08.glb");
