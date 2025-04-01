@@ -9,7 +9,7 @@ MarcoCuadro01.propTypes = {
 
 export function MarcoCuadro01({ material, ...props }) {
   const { nodes } = useGLTF(
-    "/big_assets_baked/TheOFFice_MarcoCuadro01_Baked_v01.glb"
+    "/big_assets_baked/TheOFFice_MarcoCuadro01_Baked_v03.glb"
   );
   return (
     <group {...props} dispose={null}>
@@ -22,4 +22,4 @@ export function MarcoCuadro01({ material, ...props }) {
   );
 }
 
-useGLTF.preload("/big_assets_baked/TheOFFice_MarcoCuadro01_Baked_v01.glb");
+useGLTF.preload("/big_assets_baked/TheOFFice_MarcoCuadro01_Baked_v03.glb");

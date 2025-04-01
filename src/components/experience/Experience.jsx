@@ -42,7 +42,9 @@ import { Sofa } from "./3D/blenderMaterial/Sofa";
 import { MarcoTV } from "./3D/baked/MarcoTV";
 import { CameraController } from "@/controllers/CameraController";
 import { useThree } from "@react-three/fiber";
+import TextComponent from "./TextComponent";
 import { GardenSpine } from "./3D/blenderMaterial/GardenSpine";
+import GardenGlass from "./3D/blenderMaterial/GardenGlass";
 
 export default function Experience() {
   const {
@@ -121,12 +123,16 @@ export default function Experience() {
 
   // Optimización: Memoizar texturas y materiales
   const bigAssetsTextureBaked = useTexture(
-    "/big_assets_baked/Bake_Assets_Big_v02.jpg"
+    "/big_assets_baked/Bake_Assets_Big_v03.jpg"
   );
   bigAssetsTextureBaked.flipY = false;
 
   const bigAssetsTextureBakedMaterial = useMemo(
-    () => new THREE.MeshBasicMaterial({ map: bigAssetsTextureBaked }),
+    () =>
+      new THREE.MeshBasicMaterial({
+        map: bigAssetsTextureBaked,
+        color: new THREE.Color(0x888888), // Un color gris oscuro que oscurecerá la textura
+      }),
     [bigAssetsTextureBaked]
   );
 
@@ -136,7 +142,11 @@ export default function Experience() {
   smallAssetsTextureBaked.flipY = false;
 
   const smallAssetsTextureBakedMaterial = useMemo(
-    () => new THREE.MeshStandardMaterial({ map: smallAssetsTextureBaked }),
+    () =>
+      new THREE.MeshBasicMaterial({
+        map: smallAssetsTextureBaked,
+        color: new THREE.Color(0x888888),
+      }),
     [smallAssetsTextureBaked]
   );
 
@@ -193,14 +203,14 @@ export default function Experience() {
     <>
       <Environment
         files={[
-          "/hdr/HDRI_v01.webp",
-          "/hdr/HDRI_v01-gainmap.webp",
-          "/hdr/HDRI_v01.json",
+          "/hdr/HDRI_v02.webp",
+          "/hdr/HDRI_v02-gainmap.webp",
+          "/hdr/HDRI_v02.json",
         ]}
-        environmentIntensity={0.5}
+        environmentIntensity={0.8}
         background
       />
-      <ambientLight intensity={1} />
+      {/* <ambientLight intensity={2} /> */}
       <CameraController />
       <Physics gravity={[0, -9.8, 0]}>
         {renderBigAssets()}
@@ -212,6 +222,7 @@ export default function Experience() {
 
       <group position={[0, -2, 0]}>
         <GardenSpine />
+        <GardenGlass />
       </group>
 
       <PointerLockControls
@@ -221,7 +232,7 @@ export default function Experience() {
       />
 
       {/* Efectos de post-procesamiento */}
-      <EffectComposer disableNormalPass multisampling={4}>
+      {/* <EffectComposer disableNormalPass multisampling={4}>
         <Bloom mipmapBlur luminanceThreshold={0.8} />
         <ToneMapping
           adaptive
@@ -231,7 +242,7 @@ export default function Experience() {
           averageLuminance={1.0}
           adaptationRate={100.0}
         />
-      </EffectComposer>
+      </EffectComposer> */}
     </>
   );
 }

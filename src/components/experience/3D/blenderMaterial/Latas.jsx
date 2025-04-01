@@ -2,9 +2,12 @@
 import { usePointerInteraction } from "@/hooks/usePointerInteraction";
 import { meshBounds, useGLTF, Instances, Instance } from "@react-three/drei";
 import TextComponent, { CARD_NAMES } from "../../TextComponent";
+import { useEffect, useRef } from "react";
+import * as THREE from "three";
 
 export function Latas(props) {
   const { nodes, materials } = useGLTF("/latas/TheOFFice_Lata_Shader_v01.glb");
+  const groupRef = useRef();
 
   const {
     objectRef: latasRef,
@@ -15,9 +18,68 @@ export function Latas(props) {
     maxDistance: 4,
   });
 
+  // Solución para el problema de frustum culling
+  useEffect(() => {
+    if (groupRef.current) {
+      // Asegurarse de que las instancias tengan un bounding box correcto
+      const computeBoundingSphere = () => {
+        // Crear un objeto para calcular el bounding box
+        const box = new THREE.Box3();
+        const positions = [
+          new THREE.Vector3(-0.036, 0.974, -0.353),
+          new THREE.Vector3(0.112, 0.974, -0.434),
+          new THREE.Vector3(0.117, 0.974, -0.32),
+          new THREE.Vector3(-0.268, 0.974, -0.48),
+        ];
+
+        // Ampliar el tamaño del box para cada instancia
+        const instanceSize = 0.1; // Ajustar según el tamaño real de las latas
+        positions.forEach((pos) => {
+          box.expandByPoint(
+            new THREE.Vector3(
+              pos.x - instanceSize,
+              pos.y - instanceSize,
+              pos.z - instanceSize
+            )
+          );
+          box.expandByPoint(
+            new THREE.Vector3(
+              pos.x + instanceSize,
+              pos.y + instanceSize,
+              pos.z + instanceSize
+            )
+          );
+        });
+
+        // Encontrar la instancia y actualizar su bounding sphere
+        groupRef.current.traverse((child) => {
+          if (child.isInstancedMesh) {
+            // Calcular una bounding sphere a partir del box
+            const sphere = new THREE.Sphere();
+            box.getBoundingSphere(sphere);
+
+            // Hacer la bounding sphere ligeramente más grande para asegurarnos
+            sphere.radius *= 1.2;
+
+            // Actualizar la bounding sphere de la mesh
+            child.boundingSphere = sphere;
+            child.frustumCulled = true;
+          }
+        });
+      };
+
+      // Ejecutar después de que todo se haya cargado
+      setTimeout(computeBoundingSphere, 100);
+    }
+  }, []);
+
   return (
     <group
-      ref={latasRef}
+      ref={(node) => {
+        // Asignar ambas referencias
+        groupRef.current = node;
+        if (latasRef) latasRef.current = node;
+      }}
       {...props}
       dispose={null}
       onPointerOver={handlePointerOver}
