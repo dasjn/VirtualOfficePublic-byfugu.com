@@ -8,7 +8,7 @@ import { useGainMapTexture } from "@/hooks/useGainMapTexture";
 import { usePreloadModel } from "@/hooks/usePreloadHooks";
 
 // Definir la ruta del modelo como constante
-const MODEL_PATH = "/paredes/TheOFFice_Paredes_v08.glb";
+const MODEL_PATH = "/paredes/TheOFFice_Paredes_v09.glb";
 // Definir el ID del GainMap (debe coincidir con el ID en gainmaps-config.js)
 const GAINMAP_ID = "paredes_texture";
 

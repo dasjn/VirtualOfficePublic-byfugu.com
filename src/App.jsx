@@ -14,57 +14,28 @@ import {
 import Experience from "./components/experience/Experience";
 import { Perf } from "r3f-perf";
 import UI3D from "./components/experience/UI3D";
+import MobileJoysticks from "./components/experience/MobileJoysticks"; // Importamos componente DOM
 import AudioPlayer from "./components/audio/AudioPlayer";
 import CustomCursor from "./components/experience/CustomCursor";
 import { initialPosition } from "./data/constants";
 
-// Importar configuración de GainMaps y hooks de precarga
-import { GAINMAPS } from "./data/gainmaps-config";
-import {
-  useInitGainMapPreloader,
-  useRegisterGainMaps,
-  useLoadGainMaps,
-  useGainMapProgress,
-} from "./hooks/useGainMapPreloader";
-
-// Componente para gestionar la carga de GainMaps
-function GainMapLoader() {
-  // Inicializar el preloader de GainMaps
-  const initialized = useInitGainMapPreloader();
-
-  // Registrar todos los GainMaps
-  useRegisterGainMaps(GAINMAPS);
-
-  // Cargar GainMaps y obtener estado
-  const { loading, error, ready } = useLoadGainMaps(initialized);
-
-  // Log de error si ocurre
-  useEffect(() => {
-    if (error) {
-      console.error("Error cargando GainMaps:", error);
-    }
-  }, [error]);
-
-  // Log de estado cuando estén listos
-  useEffect(() => {
-    if (ready) {
-      console.log("✅ Todos los GainMaps han sido cargados");
-    }
-  }, [ready]);
-
-  return null;
-}
+// Sólo importamos useGainMapProgress
+import { useGainMapProgress } from "./hooks/useGainMapPreloader";
+import { useExperience } from "./hooks/useExperience";
 
 export default function App() {
   // Estado original
   const [enterExperience, setEnterExperience] = useState(false);
   const [isPreLoading, setIsPreLoading] = useState(true);
 
+  // Obtener la función de actualización del tipo de dispositivo y el estado actual
+  const { updateDeviceType, deviceType, setIsPointerLocked } = useExperience();
+
   // Referencia para tracking de tiempo máximo
   const maxLoadingTimeRef = useRef(null);
 
   // Obtener progreso de drei y del sistema de GainMaps
-  const { progress: dreiProgress, active: dreiActive } = useProgress();
+  const { progress: dreiProgress } = useProgress();
   const gainMapProgress = useGainMapProgress();
 
   // Calcular progreso combinado - ahora dando más peso a los GainMaps
@@ -72,6 +43,38 @@ export default function App() {
 
   // Comprobar si todos los recursos están listos
   const assetsReady = dreiProgress >= 100 && gainMapProgress >= 100;
+
+  // Función para manejar la entrada a la experiencia
+  const handleEnterExperience = () => {
+    setEnterExperience(true);
+
+    // Si es un dispositivo táctil, configurar para experiencia móvil
+    if (deviceType?.isTouchDevice) {
+      // En dispositivos móviles, establecemos isPointerLocked como true
+      // para habilitar controles aunque no haya bloqueo de puntero real
+      setTimeout(() => {
+        setIsPointerLocked(true);
+      }, 100);
+    }
+  };
+
+  // Efecto para actualizar el tipo de dispositivo cuando cambia el tamaño de la ventana
+  useEffect(() => {
+    const handleResize = () => {
+      updateDeviceType();
+    };
+
+    // Ejecutar al montar para asegurar detección inicial
+    handleResize();
+
+    // Agregar listener para el evento resize
+    window.addEventListener("resize", handleResize);
+
+    // Limpiar el listener cuando el componente se desmonte
+    return () => {
+      window.removeEventListener("resize", handleResize);
+    };
+  }, [updateDeviceType]);
 
   // Establecer un tiempo máximo de carga (15 segundos)
   useEffect(() => {
@@ -131,11 +134,23 @@ export default function App() {
           { name: "leftKeyPressed", keys: ["ArrowLeft", "KeyA"] },
           { name: "escapeKeyPressed", keys: ["Escape"] },
           { name: "muteKeyPressed", keys: ["KeyM"] },
+          // Añadir teclas para eventos simulados en dispositivos táctiles
+          { name: "touchInteractPressed", keys: ["Space"] },
         ]}
       >
-        {!shouldShowLoaders && <UI3D />}
+        {/* Controles de teclado para escritorio */}
+        {!shouldShowLoaders && !deviceType?.isTouchDevice && <UI3D />}
+
+        {/* Controles móviles como componente DOM separado */}
+        {!shouldShowLoaders && deviceType?.isTouchDevice && <MobileJoysticks />}
+
         {enterExperience && <AudioPlayer />}
-        <CustomCursor enterExperience={enterExperience} />
+
+        {/* Mostrar el cursor personalizado solo en dispositivos no táctiles */}
+        {!deviceType?.isTouchDevice && (
+          <CustomCursor enterExperience={enterExperience} />
+        )}
+
         <Canvas
           camera={{
             fov: 50,
@@ -148,16 +163,14 @@ export default function App() {
           <AdaptiveDpr pixelated />
           <AdaptiveEvents />
           <Preload all />
-          <Perf />
-
-          {/* Gestor de carga de GainMaps */}
-          <GainMapLoader />
+          {/* Mostrar Perf solo en desarrollo y preferiblemente en desktop */}
+          {!deviceType?.isPhone && <Perf />}
 
           {shouldShowLoaders ? (
             <Loader
               progress={combinedProgress}
               enterExperience={enterExperience}
-              setEnterExperience={setEnterExperience}
+              setEnterExperience={handleEnterExperience} // Usar la nueva función
               setIsPreLoading={setIsPreLoading}
             />
           ) : (

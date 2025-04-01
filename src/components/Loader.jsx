@@ -1,8 +1,11 @@
 import { Html } from "@react-three/drei";
 import PropTypes from "prop-types";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import Landing from "./Landing";
 import { useExperience } from "@/hooks/useExperience";
+import { GAINMAPS } from "@/data/gainmaps-config";
+import GainMapPreloader from "@/utils/GainMapPreloader";
+import { useThree } from "@react-three/fiber";
 
 Loader.propTypes = {
   progress: PropTypes.number.isRequired,
@@ -19,7 +22,40 @@ export default function Loader({
 }) {
   const [progressState, setProgressState] = useState(0);
   const { setCursorHover } = useExperience();
+  const { gl } = useThree();
 
+  // Referencia para evitar inicializaciones repetidas
+  const initializedRef = useRef(false);
+  const loadStartedRef = useRef(false);
+
+  // Inicializar el GainMapPreloader al montar el componente
+  useEffect(() => {
+    if (!initializedRef.current && gl) {
+      const success = GainMapPreloader.initialize(gl);
+      if (success) {
+        console.log("✅ GainMapPreloader inicializado correctamente");
+        initializedRef.current = true;
+
+        // Registrar todos los GainMaps una vez inicializado
+        GAINMAPS.forEach((map) => {
+          GainMapPreloader.register(map.id, map.urls);
+        });
+      }
+    }
+  }, [gl]);
+
+  // Iniciar la carga de GainMaps cuando el usuario decide entrar a la experiencia
+  useEffect(() => {
+    if (enterExperience && initializedRef.current && !loadStartedRef.current) {
+      console.log("🔄 Iniciando carga de GainMaps desde el Loader");
+      loadStartedRef.current = true;
+      GainMapPreloader.loadAll().catch((err) => {
+        console.error("❌ Error cargando GainMaps:", err);
+      });
+    }
+  }, [enterExperience]);
+
+  // Animación suave del progreso
   useEffect(() => {
     let animationFrameId;
 
@@ -27,7 +63,7 @@ export default function Loader({
       setProgressState((prevProgress) => {
         // Calcula un progreso suavizado acercándose al valor de `progress`
         const diff = progress - prevProgress;
-        const increment = Math.sign(diff) * Math.min(1, Math.abs(diff) * 0.02); // Ajusta la velocidad
+        const increment = Math.sign(diff) * Math.min(1, Math.abs(diff) * 0.02);
         const newProgress = prevProgress + increment;
 
         // Si el progreso es casi igual al final, lo fija
@@ -46,7 +82,7 @@ export default function Loader({
     // Al alcanzar el 100% de carga, desactiva `isPreLoading` después de un breve retardo
     if (progress === 100 && progressState >= 99) {
       const delayTimer = setTimeout(() => setIsPreLoading(false), 1000);
-      return () => clearTimeout(delayTimer); // Limpieza del temporizador
+      return () => clearTimeout(delayTimer);
     }
 
     return () => cancelAnimationFrame(animationFrameId);
@@ -55,7 +91,6 @@ export default function Loader({
   return (
     <>
       {!enterExperience ? (
-        // Aquí puedes agregar cualquier contenido o componente que desees mostrar cuando `enterExperience` es verdadero
         <Html center zIndexRange={[0, 1]} portal={false}>
           <Landing
             setEnterExperience={setEnterExperience}
@@ -81,12 +116,10 @@ export default function Loader({
               className="bg-white bg-opacity-100 h-full"
               style={{
                 width: `${progressState}%`,
-                transition: "width 1s ease-out", // Animación con transición de 1 segundo
+                transition: "width 1s ease-out",
               }}
             ></div>
           </div>
-
-          {/* <p className="mt-4">{progress.toFixed(0)} % loaded</p> */}
         </Html>
       )}
     </>

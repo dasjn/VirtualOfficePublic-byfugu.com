@@ -5,15 +5,10 @@
 export const GAINMAPS = [
   {
     id: "paredes_texture",
-    // urls: [
-    //   "/paredes/Paredes_Bake_8k_v02.webp",
-    //   "/paredes/Paredes_Bake_8k_v02-gainmap.webp",
-    //   "/paredes/Paredes_Bake_8k_v02.json",
-    // ],
     urls: [
-      "/paredes/Paredes_Bake_8K_v01.webp",
-      "/paredes/Paredes_Bake_8K_v01-gainmap.webp",
-      "/paredes/Paredes_Bake_8K_v01.json",
+      "/paredes/Paredes_Bake_8k_v02.webp",
+      "/paredes/Paredes_Bake_8k_v02-gainmap.webp",
+      "/paredes/Paredes_Bake_8k_v02.json",
     ],
   },
   {

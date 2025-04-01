@@ -17,6 +17,7 @@ class GainMapPreloader {
     this.isLoadingFlag = false;
     this.error = null;
     this.textureMap = new Map(); // Almacena las texturas por id
+    this.hasLoadedAll = false;
   }
 
   /**
@@ -78,70 +79,75 @@ class GainMapPreloader {
    * @returns {Promise} - Promesa que se resuelve cuando todos los GainMaps están cargados
    */
   async loadAll() {
+    // Check if already initialized
     if (!this.isInitialized) {
       console.warn(
-        "[GainMapPreloader] No inicializado. Los GainMaps se cargarán cuando se inicialice."
+        "[GainMapPreloader] Not initialized. GainMaps will load when initialized."
       );
       return;
     }
 
+    // Check if already loaded
+    if (this.hasLoadedAll) {
+      console.log("[GainMapPreloader] GainMaps already loaded");
+      return;
+    }
+
+    // Check if loading is in progress
     if (this.isLoadingFlag) {
-      console.warn("[GainMapPreloader] Ya hay una carga en progreso");
+      console.warn("[GainMapPreloader] Loading already in progress");
       return;
     }
 
     this.isLoadingFlag = true;
     this.error = null;
     console.log(
-      `[GainMapPreloader] Iniciando carga de ${this.loadingQueue.length} GainMaps`
+      `[GainMapPreloader] Starting load of ${this.loadingQueue.length} GainMaps`
     );
 
-    // Crear promesas para cada GainMap
-    const promises = this.loadingQueue.map(async ({ id, urls }) => {
-      try {
-        const result = await this.gainMapLoader.loadAsync(urls);
+    // Use Promise.all with a limit to control concurrent loads
+    const CONCURRENT_LIMIT = 1; // Adjust based on your needs
+    for (let i = 0; i < this.loadingQueue.length; i += CONCURRENT_LIMIT) {
+      const batch = this.loadingQueue.slice(i, i + CONCURRENT_LIMIT);
 
-        // Guardar la textura resultante en el mapa
-        const texture = result.renderTarget.texture;
-        this.textureMap.set(id, texture);
+      const batchPromises = batch.map(async ({ id, urls }) => {
+        try {
+          // Add a timeout to prevent indefinite loading
+          const result = await Promise.race([
+            this.gainMapLoader.loadAsync(urls),
+            new Promise((_, reject) =>
+              setTimeout(() => reject(new Error(`Timeout loading ${id}`)), 5000)
+            ),
+          ]);
 
-        // Incrementar contador y notificar progreso
-        this.loadedMaps++;
-        this.notifyProgress();
-        console.log(`[GainMapPreloader] GainMap cargado: ${id}`);
-        return { id, result };
-      } catch (error) {
-        console.error(
-          `[GainMapPreloader] Error cargando GainMap ${id}:`,
-          error
-        );
-        // Incrementar contador para no bloquear progreso
-        this.loadedMaps++;
-        this.notifyProgress();
-        throw error;
-      }
-    });
+          const texture = result.renderTarget.texture;
+          this.textureMap.set(id, texture);
 
-    try {
-      // Esperar a que se completen todas las cargas
-      const results = await Promise.allSettled(promises);
-      this.loadingQueue = [];
-      this.isLoadingFlag = false;
+          this.loadedMaps++;
+          this.notifyProgress();
+          console.log(`[GainMapPreloader] GainMap loaded: ${id}`);
+          return { id, result };
+        } catch (error) {
+          console.error(
+            `[GainMapPreloader] Error loading GainMap ${id}:`,
+            error
+          );
+          this.loadedMaps++;
+          this.notifyProgress();
+          return { id, error };
+        }
+      });
 
-      // Verificar si hubo errores
-      const hasErrors = results.some((result) => result.status === "rejected");
-      if (hasErrors) {
-        this.error = new Error("Algunos GainMaps no se pudieron cargar");
-      }
-
-      console.log("[GainMapPreloader] Carga de GainMaps completada");
-      return results;
-    } catch (error) {
-      this.error = error;
-      this.isLoadingFlag = false;
-      console.error("[GainMapPreloader] Error en la carga:", error);
-      throw error;
+      // Wait for this batch to complete before starting the next
+      await Promise.allSettled(batchPromises);
     }
+
+    // Mark as completely loaded
+    this.hasLoadedAll = true;
+    this.loadingQueue = [];
+    this.isLoadingFlag = false;
+
+    console.log("[GainMapPreloader] GainMaps loading completed");
   }
 
   /**
@@ -219,10 +225,12 @@ class GainMapPreloader {
    * Restablece el estado del preloader
    */
   reset() {
-    this.loadingQueue = [];
+    this.hasLoadedAll = false;
     this.loadedMaps = 0;
     this.totalMaps = 0;
     this.error = null;
+    this.loadingQueue = [];
+    this.textureMap.clear();
     this.notifyProgress();
   }
 }

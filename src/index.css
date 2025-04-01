@@ -1,3 +1,6 @@
+/* Añade estos estilos a tu index.css para mejorar la experiencia móvil */
+
+/* Estilos base (ya existentes) */
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
@@ -80,4 +83,136 @@ body,
   border: none;
   background-color: black;
   opacity: 1;
+}
+
+/* NUEVOS ESTILOS PARA DISPOSITIVOS MÓVILES */
+
+/* Prevenir zoom y comportamientos táctiles no deseados */
+* {
+  touch-action: manipulation;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Prevenir selección de texto en dispositivos táctiles */
+body {
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  overflow: hidden;
+}
+
+/* Estilos para joysticks */
+.nipple {
+  opacity: 0.7 !important;
+  transition: opacity 0.3s ease;
+}
+
+.nipple.active {
+  opacity: 0.9 !important;
+}
+
+.front {
+  background-color: rgba(255, 255, 255, 0.7) !important;
+}
+
+.back {
+  background-color: rgba(0, 0, 0, 0.3) !important;
+  border: 1px solid rgba(255, 255, 255, 0.5) !important;
+}
+
+/* Media queries para ajustar tamaños en diferentes dispositivos */
+@media (max-width: 768px) {
+  /* Ajustes para teléfonos */
+  .nipple {
+    transform: scale(0.8);
+  }
+
+  /* Ajustar tamaño de los botones y controles */
+  .mobile-button {
+    transform: scale(0.9);
+  }
+
+  /* Aumentar tamaño del crosshair/punto central para facilitar la selección */
+  .cursor-center {
+    transform: scale(1.5);
+  }
+}
+
+@media (min-width: 769px) and (max-width: 1024px) {
+  /* Ajustes para tablets */
+  .nipple {
+    transform: scale(0.9);
+  }
+}
+
+/* Ajustes para orientación de pantalla en dispositivos móviles */
+@media (max-width: 768px) and (orientation: portrait) {
+  /* Mostrar mensaje de rotación */
+  .rotation-message {
+    display: flex;
+  }
+}
+
+@media (max-width: 768px) and (orientation: landscape) {
+  /* Ocultar mensaje de rotación */
+  .rotation-message {
+    display: none;
+  }
+}
+
+/* Mensaje de rotación para dispositivos móviles */
+.rotation-message {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.9);
+  z-index: 10000;
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  color: white;
+  text-align: center;
+  padding: 20px;
+}
+
+.rotation-message svg {
+  width: 80px;
+  height: 80px;
+  margin-bottom: 20px;
+  animation: rotate 2s infinite ease-in-out;
+}
+
+@keyframes rotate {
+  0% {
+    transform: rotate(0deg);
+  }
+  50% {
+    transform: rotate(90deg);
+  }
+  100% {
+    transform: rotate(0deg);
+  }
+}
+
+/* Mejoras para la accesibilidad táctil */
+button,
+.touch-target {
+  min-width: 44px;
+  min-height: 44px;
+}
+
+/* Ajustes para controles táctiles y dispositivos en modo de alto contraste */
+@media (prefers-contrast: more) {
+  .nipple .front {
+    background-color: rgba(255, 255, 255, 0.9) !important;
+  }
+
+  .nipple .back {
+    background-color: rgba(0, 0, 0, 0.5) !important;
+    border: 2px solid rgba(255, 255, 255, 0.8) !important;
+  }
 }

@@ -40,11 +40,12 @@ export function useRegisterGainMaps(gainMaps = []) {
  * @param {boolean} autoLoad - Si true, carga automáticamente al montar el componente
  * @returns {Object} - {loading, error, progress, ready, loadAll}
  */
-export function useLoadGainMaps(autoLoad = true) {
+export function useLoadGainMaps(initialized) {
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
   const [progress, setProgress] = useState(gainMapPreloader.getProgress());
   const [ready, setReady] = useState(gainMapPreloader.isReady());
+  const [loadCalled, setLoadCalled] = useState(false);
 
   // Suscribirse al progreso
   useEffect(() => {
@@ -56,45 +57,26 @@ export function useLoadGainMaps(autoLoad = true) {
     return removeListener;
   }, []);
 
-  // Función para cargar manualmente - usando useCallback para evitar recreaciones
-  const loadAll = useCallback(async () => {
-    if (loading) return;
-
-    try {
-      console.log("🔄 Iniciando carga de GainMaps...");
-      const startTime = performance.now();
-
-      setLoading(true);
-      setError(null);
-
-      // Aquí es donde necesitamos modificar el gainMapPreloader para que
-      // registre tiempos por cada textura individual
-      await gainMapPreloader.loadAll();
-
-      const endTime = performance.now();
-      console.log(
-        `✅ Carga de GainMaps completada en ${(endTime - startTime).toFixed(
-          2
-        )}ms`
-      );
-
-      setError(gainMapPreloader.getError());
-      setLoading(false);
-    } catch (err) {
-      console.error("❌ Error en carga de GainMaps:", err);
-      setError(err);
-      setLoading(false);
-    }
-  }, [loading]);
-
-  // Carga automática
+  // Modificar la carga para que solo se llame una vez
   useEffect(() => {
-    if (autoLoad) {
-      loadAll();
-    }
-  }, [autoLoad, loadAll]); // Ahora incluimos loadAll en las dependencias
+    const loadMaps = async () => {
+      if (initialized && !loadCalled) {
+        try {
+          setLoading(true);
+          await gainMapPreloader.loadAll();
+          setLoading(false);
+          setLoadCalled(true);
+        } catch (err) {
+          setError(err);
+          setLoading(false);
+        }
+      }
+    };
 
-  return { loading, error, progress, ready, loadAll };
+    loadMaps();
+  }, [initialized, loadCalled]);
+
+  return { loading, error, progress, ready };
 }
 
 /**
@@ -105,7 +87,14 @@ export function useGainMapProgress() {
   const [progress, setProgress] = useState(gainMapPreloader.getProgress());
 
   useEffect(() => {
-    const removeListener = gainMapPreloader.addProgressListener(setProgress);
+    // Asegurarse de obtener el progreso actual al montar el componente
+    setProgress(gainMapPreloader.getProgress());
+
+    // Suscribirse a cambios en el progreso
+    const removeListener = gainMapPreloader.addProgressListener((value) => {
+      setProgress(value);
+    });
+
     return removeListener;
   }, []);
 

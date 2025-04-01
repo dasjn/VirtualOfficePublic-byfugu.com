@@ -34,7 +34,7 @@ export function Suelo(props) {
       <mesh
         geometry={nodes.Suelo003.geometry}
         material={textureMaterial}
-        position={[0.236, 4.114, 0.607]}
+        position={[0.236, 4.124, 0.607]}
       />
     </group>
   );

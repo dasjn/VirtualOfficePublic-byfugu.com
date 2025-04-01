@@ -4,7 +4,7 @@ import * as THREE from "three";
 import { RigidBody } from "@react-three/rapier";
 import WallColliders from "./WallColliders";
 import { Suelo } from "./3D/baked/Suelo";
-import { Paredes } from "./3D/blenderMaterial/Paredes";
+import { Paredes } from "./3D/baked/Paredes";
 import { Luces } from "./3D/blenderMaterial/Luces";
 
 export default function Office(props) {

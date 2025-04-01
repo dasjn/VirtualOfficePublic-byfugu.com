@@ -19,7 +19,7 @@ export function Alfombra({ material, ...props }) {
       <mesh
         geometry={nodes.Fugu_Office_Alfombra002.geometry}
         material={material}
-        position={[0.854, 0.001, -5.061]}
+        position={[0.854, 0.011, -5.061]}
       />
     </group>
   );

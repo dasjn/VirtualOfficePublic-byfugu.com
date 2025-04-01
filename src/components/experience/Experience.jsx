@@ -45,6 +45,7 @@ import { useThree } from "@react-three/fiber";
 import TextComponent from "./TextComponent";
 import { GardenSpine } from "./3D/blenderMaterial/GardenSpine";
 import GardenGlass from "./3D/blenderMaterial/GardenGlass";
+import { MobileJoysticksLogic } from "./MobileJoysticks";
 
 export default function Experience() {
   const {
@@ -56,6 +57,7 @@ export default function Experience() {
     rigidBodyRef,
     startCameraMovement,
     meshComputerRef,
+    deviceType,
   } = useExperience();
 
   const { camera } = useThree();
@@ -210,7 +212,7 @@ export default function Experience() {
         environmentIntensity={0.8}
         background
       />
-      {/* <ambientLight intensity={2} /> */}
+      {deviceType?.isTouchDevice && <MobileJoysticksLogic />}
       <CameraController />
       <Physics gravity={[0, -9.8, 0]}>
         {renderBigAssets()}

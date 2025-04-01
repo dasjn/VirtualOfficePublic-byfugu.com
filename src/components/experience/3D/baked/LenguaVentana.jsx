@@ -14,7 +14,7 @@ export function LenguaVentana({ material, ...props }) {
   );
 
   // Posición de la malla
-  const position = [3.1, 4.53, -0.151];
+  const position = [3.1, 4.54, -0.151];
 
   // Dimensiones estimadas para el collider cuboide
   // Ajusta estos valores según el tamaño real de tu objeto

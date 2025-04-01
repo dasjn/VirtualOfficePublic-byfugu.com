@@ -13,11 +13,36 @@ const sharedVectors = {
 // Optimización: Función de easing reutilizable
 const easeOutCubic = (x) => 1 - Math.pow(1 - x, 3);
 
+// Función para detectar el tipo de dispositivo
+const detectDeviceType = () => {
+  const isTouchDevice =
+    "ontouchstart" in window ||
+    navigator.maxTouchPoints > 0 ||
+    navigator.msMaxTouchPoints > 0;
+
+  // Detectar si es móvil o tablet basado en el tamaño de pantalla
+  const isPhone = isTouchDevice && window.innerWidth < 768;
+  const isTablet =
+    isTouchDevice && window.innerWidth >= 768 && window.innerWidth < 1024;
+  const isDesktop = !isTouchDevice || window.innerWidth >= 1024;
+
+  return {
+    isTouchDevice,
+    isPhone,
+    isTablet,
+    isDesktop,
+  };
+};
+
 export const useExperienceStore = create((set, get) => ({
   // Referencias
   rigidBodyRef: createRef(),
   pointerLockRef: createRef(),
   meshComputerRef: createRef(),
+
+  // Estados de dispositivo
+  deviceType: detectDeviceType(),
+  updateDeviceType: () => set({ deviceType: detectDeviceType() }),
 
   // Estados
   isPointerLocked: false,
