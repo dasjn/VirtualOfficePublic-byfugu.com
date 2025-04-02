@@ -1,5 +1,5 @@
 /* eslint-disable react/no-unknown-property */
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useMemo } from "react";
 import { useGLTF, Html } from "@react-three/drei";
 import { useExperience } from "@/hooks/useExperience";
 import * as THREE from "three";
@@ -43,6 +43,19 @@ export default function ComputerScreen(props) {
     }
   }, [isUserOnPC]);
 
+  // Crear un material básico que use la misma textura
+  const basicMaterial = useMemo(() => {
+    // Crear un nuevo material básico
+    const material = new THREE.MeshBasicMaterial({ color: 0xeeeeee });
+
+    // Si el material original tiene un mapa de textura, copiarlo al nuevo material
+    if (materials["Pantalla ON"].map) {
+      material.map = materials["Pantalla ON"].map;
+    }
+
+    return material;
+  }, [materials]);
+
   // Usar el material original
   const screenMaterial = React.useMemo(() => {
     if (isUserOnPC || showIframe) {
@@ -53,8 +66,10 @@ export default function ComputerScreen(props) {
       return transparentMaterial;
     }
     // Si no está en PC, devolver el material original
-    return materials["Pantalla ON"];
-  }, [isUserOnPC, materials, showIframe]);
+    // Crear un material básico que use la misma textura
+
+    return basicMaterial;
+  }, [isUserOnPC, materials, showIframe, basicMaterial]);
   return (
     <group {...props} dispose={null}>
       <mesh

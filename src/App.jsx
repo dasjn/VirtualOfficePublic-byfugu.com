@@ -27,12 +27,19 @@ export default function App() {
   // Estado original
   const [enterExperience, setEnterExperience] = useState(false);
   const [isPreLoading, setIsPreLoading] = useState(true);
+  // Estado para controlar si los assets están listos
+  const [assetsAreReady, setAssetsAreReady] = useState(false);
+  // Estado para controlar si el tiempo mínimo ha pasado
+  const [minimumTimeElapsed, setMinimumTimeElapsed] = useState(false);
 
   // Obtener la función de actualización del tipo de dispositivo y el estado actual
   const { updateDeviceType, deviceType, setIsPointerLocked } = useExperience();
 
-  // Referencia para tracking de tiempo máximo
+  // Referencias
   const maxLoadingTimeRef = useRef(null);
+  const enterTimeRef = useRef(null);
+  const minimumTimerRef = useRef(null);
+  const transitionTimerRef = useRef(null);
 
   // Obtener progreso de drei y del sistema de GainMaps
   const { progress: dreiProgress } = useProgress();
@@ -41,12 +48,31 @@ export default function App() {
   // Calcular progreso combinado - ahora dando más peso a los GainMaps
   const combinedProgress = dreiProgress * 0.4 + gainMapProgress * 0.6;
 
-  // Comprobar si todos los recursos están listos
-  const assetsReady = dreiProgress >= 100 && gainMapProgress >= 100;
+  // Constante para tiempo mínimo y máximo de carga
+  const MINIMUM_LOADING_TIME = 5000; // 5 segundos
+  const MAXIMUM_LOADING_TIME = 15000; // 15 segundos
 
   // Función para manejar la entrada a la experiencia
   const handleEnterExperience = () => {
+    // Registrar el tiempo en que el usuario inició la experiencia
+    enterTimeRef.current = Date.now();
     setEnterExperience(true);
+
+    // Configurar el temporizador de tiempo mínimo
+    minimumTimerRef.current = setTimeout(() => {
+      console.log(
+        `⏱️ Tiempo mínimo de carga (${MINIMUM_LOADING_TIME}ms) completado`
+      );
+      setMinimumTimeElapsed(true);
+    }, MINIMUM_LOADING_TIME);
+
+    // Configurar el temporizador de tiempo máximo como respaldo
+    maxLoadingTimeRef.current = setTimeout(() => {
+      console.log(
+        "⚠️ Tiempo máximo de carga alcanzado, entrando a la experiencia"
+      );
+      setIsPreLoading(false);
+    }, MAXIMUM_LOADING_TIME);
 
     // Si es un dispositivo táctil, configurar para experiencia móvil
     if (deviceType?.isTouchDevice) {
@@ -76,51 +102,82 @@ export default function App() {
     };
   }, [updateDeviceType]);
 
-  // Establecer un tiempo máximo de carga (15 segundos)
+  // Actualizar el estado de los assets cuando el progreso combinado llega a 100%
   useEffect(() => {
-    if (enterExperience && isPreLoading) {
-      maxLoadingTimeRef.current = setTimeout(() => {
-        if (isPreLoading) {
-          console.warn(
-            "Tiempo máximo de carga alcanzado, forzando entrada a la experiencia"
-          );
-          setIsPreLoading(false);
-        }
-      }, 15000);
+    if (combinedProgress >= 100 && !assetsAreReady) {
+      console.log("🎮 Assets listos para usar");
+      setAssetsAreReady(true);
     }
+  }, [combinedProgress, assetsAreReady]);
 
-    return () => {
-      if (maxLoadingTimeRef.current) {
-        clearTimeout(maxLoadingTimeRef.current);
-      }
-    };
-  }, [enterExperience, isPreLoading]);
-
-  // Desactivar la pantalla de carga cuando todo esté listo
+  // EFECTO CLAVE: Este efecto se encarga específicamente de verificar
+  // cuando ambas condiciones (assets listos y tiempo mínimo) se cumplen
   useEffect(() => {
-    if (enterExperience && assetsReady && isPreLoading) {
-      // Pequeño retraso para asegurar que todos los componentes estén listos
-      const timer = setTimeout(() => {
-        console.log("Todos los assets cargados, entrando a la experiencia");
+    // Solo verificar si ambas condiciones se cumplen cuando estamos cargando
+    if (
+      enterExperience &&
+      assetsAreReady &&
+      minimumTimeElapsed &&
+      isPreLoading
+    ) {
+      console.log("🎯 AMBAS CONDICIONES CUMPLIDAS - Finalizando carga...");
+
+      // Pequeño retraso para asegurar consistencia entre estados
+      transitionTimerRef.current = setTimeout(() => {
+        console.log(
+          "✅ Tiempo mínimo y assets listos, entrando a la experiencia"
+        );
         setIsPreLoading(false);
-      }, 1000);
-
-      return () => clearTimeout(timer);
+      }, 100);
     }
-  }, [enterExperience, assetsReady, isPreLoading]);
+  }, [enterExperience, assetsAreReady, minimumTimeElapsed, isPreLoading]);
+
+  // Limpieza de todos los temporizadores al desmontar
+  useEffect(() => {
+    return () => {
+      if (minimumTimerRef.current) clearTimeout(minimumTimerRef.current);
+      if (maxLoadingTimeRef.current) clearTimeout(maxLoadingTimeRef.current);
+      if (transitionTimerRef.current) clearTimeout(transitionTimerRef.current);
+    };
+  }, []);
 
   // Monitorear progreso
   useEffect(() => {
     if (enterExperience) {
+      const elapsedSinceEnter = enterTimeRef.current
+        ? Math.floor((Date.now() - enterTimeRef.current) / 1000)
+        : 0;
+
       console.log(
-        `Progreso de carga: Drei ${dreiProgress.toFixed(
+        `Progreso (${elapsedSinceEnter}s): Drei ${dreiProgress.toFixed(
           1
         )}%, GainMaps ${gainMapProgress.toFixed(
           1
         )}%, Combinado ${combinedProgress.toFixed(1)}%`
       );
+
+      // Registrar en la consola el estado actual de las condiciones
+      console.log(`Estado de carga:
+      - Assets listos: ${assetsAreReady ? "SI" : "NO"}
+      - Tiempo mínimo completado: ${minimumTimeElapsed ? "SI" : "NO"}
+      - Sigue cargando: ${isPreLoading ? "SI" : "NO"}`);
     }
-  }, [enterExperience, dreiProgress, gainMapProgress, combinedProgress]);
+  }, [
+    enterExperience,
+    dreiProgress,
+    gainMapProgress,
+    combinedProgress,
+    assetsAreReady,
+    minimumTimeElapsed,
+    isPreLoading,
+  ]);
+
+  // IMPORTANTE: Esta es una función vacía que pasaremos al Loader
+  // para evitar que modifique isPreLoading directamente
+  const dummySetIsPreLoading = () => {
+    // No hace nada, el control de isPreLoading está gestionado internamente en este componente
+    console.log("⚠️ Intento de cambiar isPreLoading desde el Loader ignorado");
+  };
 
   const shouldShowLoaders = !enterExperience || isPreLoading;
 
@@ -170,8 +227,8 @@ export default function App() {
             <Loader
               progress={combinedProgress}
               enterExperience={enterExperience}
-              setEnterExperience={handleEnterExperience} // Usar la nueva función
-              setIsPreLoading={setIsPreLoading}
+              setEnterExperience={handleEnterExperience}
+              setIsPreLoading={dummySetIsPreLoading} // Usamos la función dummy para evitar cambios directos
             />
           ) : (
             <Experience />

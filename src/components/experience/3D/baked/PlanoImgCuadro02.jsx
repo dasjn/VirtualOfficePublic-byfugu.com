@@ -2,11 +2,13 @@
 import { usePointerInteraction } from "@/hooks/usePointerInteraction";
 import { useGLTF, Image } from "@react-three/drei";
 import TextComponent, { CARD_NAMES } from "../../TextComponent";
+import { useEffect, useMemo } from "react";
+import { MeshBasicMaterial, TextureLoader } from "three";
 
 export function PlanoImgCuadro02(props) {
   // Cargar el modelo GLTF del plano
   const { nodes, materials } = useGLTF(
-    "/big_assets_baked/TheOFFice_PlanoImgCuadro_v02.glb"
+    "/big_assets_baked/TheOFFice_Cuadro02_v02.glb"
   );
 
   const {
@@ -18,25 +20,30 @@ export function PlanoImgCuadro02(props) {
     maxDistance: 4,
   });
 
+  // Crear un material básico que use la misma textura
+  const basicMaterial = useMemo(() => {
+    // Crear un nuevo material básico
+    const material = new MeshBasicMaterial({ color: 0xcccccc });
+
+    // Si el material original tiene un mapa de textura, copiarlo al nuevo material
+    if (materials["Cuadro Img 02"].map) {
+      material.map = materials["Cuadro Img 02"].map;
+    }
+
+    return material;
+  }, [materials]);
+
   // Usamos `Image` de `@react-three/drei` para colocar la imagen sobre el plano
   return (
     <group {...props} dispose={null}>
       <mesh
         ref={cuadroRef}
         geometry={nodes.CuadroImg003.geometry}
-        material={nodes.CuadroImg003.material}
-        position={[4.322, 2.261, 1.602]}
+        material={basicMaterial}
+        position={[4.299, 2.261, 1.602]}
         onPointerOver={handlePointerOver}
         onPointerOut={handlePointerOut}
       >
-        {/* Colocamos la imagen usando el componente `Image` */}
-        <Image
-          position={[-0.05, 0, 0]} // Ajustamos la posición para que la imagen esté sobre el plano
-          rotation={[0, -Math.PI / 2, 0]}
-          url="/images/Fugu_RRSS_RN_v07.jpg" // Ruta de la imagen
-          scale={1.5}
-          raycast={() => null} // Desactivamos el raycast si no es necesario
-        />
         <TextComponent
           position={[-1, 0, 0]}
           cardName={CARD_NAMES.Cuadro2}

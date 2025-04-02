@@ -2,10 +2,12 @@
 import { useGLTF, Image, Html } from "@react-three/drei";
 import TextComponent, { CARD_NAMES } from "../../TextComponent";
 import { usePointerInteraction } from "@/hooks/usePointerInteraction";
+import { useMemo } from "react";
+import { MeshBasicMaterial } from "three";
 
 export function PlanoImgCuadro01(props) {
   // Cargar el modelo GLTF del plano
-  const { nodes } = useGLTF(
+  const { nodes, materials } = useGLTF(
     "/big_assets_baked/TheOFFice_PlanoImgCuadro_v01.glb"
   );
 
@@ -18,28 +20,33 @@ export function PlanoImgCuadro01(props) {
     maxDistance: 4,
   });
 
+  // Crear un material básico que use la misma textura
+  const basicMaterial = useMemo(() => {
+    // Crear un nuevo material básico
+    const material = new MeshBasicMaterial({ color: 0xcccccc });
+
+    // Si el material original tiene un mapa de textura, copiarlo al nuevo material
+    if (materials["Cuadro Img 01"].map) {
+      material.map = materials["Cuadro Img 01"].map;
+    }
+
+    return material;
+  }, [materials]);
+
   // Usamos `Image` de `@react-three/drei` para colocar la imagen sobre el plano
   return (
     <group {...props} dispose={null}>
       <mesh
         ref={cuadroRef}
-        geometry={nodes.CuadroImg002.geometry} // El plano donde pondremos la imagen
-        material={nodes.CuadroImg002.material} // Mantén el material original del modelo
-        position={[4.322, 2.261, -6.071]} // Ajusta la posición del plano
+        geometry={nodes.CuadroImg002.geometry}
+        material={basicMaterial}
+        position={[4.322, 2.261, -6.071]}
         onPointerOver={handlePointerOver}
         onPointerOut={handlePointerOut}
       >
-        {/* Colocamos la imagen usando el componente `Image` */}
-        <Image
-          position={[-0.05, 0, 0]} // Ajustamos la posición para que la imagen esté sobre el plano
-          rotation={[0, -Math.PI / 2, 0]}
-          scale={1.5} // Escalamos la imagen para que encaje en el plano
-          url="/images/Fugu_RRSS_RN_v01.jpg" // Ruta de la imagen
-          raycast={() => null} // Desactivamos el raycast si no es necesario
-        />
         <TextComponent
           position={[-1, 0, 0]}
-          cardName={CARD_NAMES.Cuadro1}
+          cardName={CARD_NAMES.Cuadro2}
           isNearby={isNearby}
         />
       </mesh>

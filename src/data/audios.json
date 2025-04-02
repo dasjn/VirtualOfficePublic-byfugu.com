@@ -1,5 +1,11 @@
 [
-  { "name": "Main_Theme", "url": "/audio/TheOnffice_v5_A_Chill_Evening.mp3" },
-  { "name": "Second_Theme", "url": "/audio/TheOnffice_v5_Tight_Deadline.mp3" },
-  { "name": "Third_Theme", "url": "/audio/TheOnffice_Almost_Weekend_SD.mp3" }
+  {
+    "name": "A_Chill_Evening",
+    "url": "/audio/TheOnffice_v5_A_Chill_Evening.mp3"
+  },
+  {
+    "name": "Tight_Deadline",
+    "url": "/audio/TheOnffice_v5_Tight_Deadline.mp3"
+  },
+  { "name": "Almost_Weekend", "url": "/audio/TheOnffice_Almost_Weekend_SD.mp3" }
 ]

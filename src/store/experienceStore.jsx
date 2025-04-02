@@ -72,6 +72,13 @@ export const useExperienceStore = create((set, get) => ({
   animationCooldown: false,
   setAnimationCooldown: (value) => set({ animationCooldown: value }),
 
+  hasShownWelcomeModal: localStorage.getItem("hasShownWelcomeModal") === "true",
+  setHasShownWelcomeModal: (value) => {
+    // Save to localStorage for persistence across sessions
+    // localStorage.setItem("hasShownWelcomeModal", value);
+    set({ hasShownWelcomeModal: value });
+  },
+
   // Optimización: Función optimizada para detener el movimiento de la cámara
   stopCameraMovement: () => {
     const { cameraMovement } = get();

@@ -63,8 +63,13 @@ export default function Experience() {
   const { camera } = useThree();
 
   useEffect(() => {
-    camera.lookAt(0, 0, 0);
+    camera.lookAt(-1, 1.5, 0);
   }, [camera]);
+
+  // useEffect(() => {
+  //   const audioElement = new Audio("/audio/Closing_Door_The_Onffice.mp3");
+  //   audioElement.play();
+  // },[]);
 
   // Optimización: Vector reutilizable para posiciones
   const worldPositionComputer = useMemo(() => new THREE.Vector3(), []);
@@ -212,7 +217,7 @@ export default function Experience() {
         environmentIntensity={0.8}
         background
       />
-      {deviceType?.isTouchDevice && <MobileJoysticksLogic />}
+      {/* {deviceType?.isTouchDevice && <MobileJoysticksLogic />} */}
       <CameraController />
       <Physics gravity={[0, -9.8, 0]}>
         {renderBigAssets()}

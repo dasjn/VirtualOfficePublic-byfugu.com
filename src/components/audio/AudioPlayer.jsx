@@ -1,6 +1,6 @@
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useCallback } from "react";
 import { useExperience } from "@/hooks/useExperience";
-import audioData from "@/data/audios.json"; // Importa el JSON de audios
+import audioData from "@/data/audios.json";
 
 const AudioPlayer = () => {
   const {
@@ -10,101 +10,238 @@ const AudioPlayer = () => {
     setIsAudioPlaying,
     isPointerLocked,
   } = useExperience();
-  const audioRef = useRef(null);
-  const [isFirstAudioLoad, setIsFirstAudioLoad] = useState(true);
 
-  return <></>;
+  // References for the audio system
+  const audioContextRef = useRef(null);
+  const gainNodeRef = useRef(null);
+  const audioSourceRef = useRef(null);
+  const audioElementRef = useRef(null);
+  const fadeIntervalRef = useRef(null);
+  const audioLoadedRef = useRef(false);
 
-  // useEffect(() => {
-  //   // Si no hay audio seleccionado, establece el Main_Theme del JSON como predeterminado
-  //   if (!selectedAudio) {
-  //     const defaultAudio = audioData.find(
-  //       (audio) => audio.name === "Main_Theme"
-  //     );
-  //     if (defaultAudio) {
-  //       setSelectedAudio(defaultAudio);
-  //     }
-  //   }
-  // }, [selectedAudio, setSelectedAudio]);
+  // Configuration
+  const DEFAULT_VOLUME = 0.75;
+  const FADE_DURATION = 1000; // in milliseconds
+  const FADE_STEP = 0.05;
 
-  // // Manejo de la tecla "M" para toggle del audio
-  // useEffect(() => {
-  //   const handleKeyPress = (event) => {
-  //     // Si se presiona la tecla "M"
-  //     if (event.key === "m" || event.key === "M") {
-  //       const audio = audioRef.current;
-  //       if (audio) {
-  //         if (isAudioPlaying) {
-  //           // Si el audio está sonando, se pausa
-  //           audio.pause();
-  //         } else {
-  //           // Si el audio está pausado, se reproduce
-  //           audio.play();
-  //         }
-  //         setIsAudioPlaying(!isAudioPlaying); // Alternar el estado de reproducción
-  //       }
-  //     }
-  //   };
+  // Function to perform fade-in and fade-out (with useCallback)
+  const fadeAudio = useCallback(
+    (start, end, onComplete) => {
+      if (fadeIntervalRef.current) {
+        clearInterval(fadeIntervalRef.current);
+      }
 
-  //   // Añadir el event listener
-  //   window.addEventListener("keydown", handleKeyPress);
+      // If AudioContext is suspended, resume it
+      if (
+        audioContextRef.current &&
+        audioContextRef.current.state === "suspended"
+      ) {
+        audioContextRef.current.resume();
+      }
 
-  //   // Limpieza: eliminar el event listener cuando el componente se desmonte
-  //   return () => {
-  //     window.removeEventListener("keydown", handleKeyPress);
-  //   };
-  // }, [isAudioPlaying, setIsAudioPlaying]);
+      let currentVolume = start;
+      const step = end - start > 0 ? FADE_STEP : -FADE_STEP;
+      const interval = FADE_DURATION / (Math.abs(end - start) / Math.abs(step));
 
-  // useEffect(() => {
-  //   const audio = audioRef.current;
+      fadeIntervalRef.current = setInterval(() => {
+        currentVolume += step;
 
-  //   if (audio && selectedAudio) {
-  //     audio.src = selectedAudio.url; // Establecer el audio seleccionado
+        // Check if we've reached the final volume
+        if (
+          (step > 0 && currentVolume >= end) ||
+          (step < 0 && currentVolume <= end)
+        ) {
+          currentVolume = end;
+          clearInterval(fadeIntervalRef.current);
+          if (onComplete) onComplete();
+        }
 
-  //     if (isFirstAudioLoad) {
-  //       // Realiza el fade-in si es la primera carga
-  //       audio.volume = 0; // Inicia el volumen en 0
-  //       audio.play().then(() => {
-  //         let currentVolume = 0;
-  //         const volumeInterval = setInterval(() => {
-  //           if (currentVolume < 0.75) {
-  //             currentVolume += 0.01;
+        // Apply the volume if gainNode exists
+        if (gainNodeRef.current) {
+          gainNodeRef.current.gain.value = currentVolume;
+        }
+      }, interval);
+    },
+    [FADE_STEP, FADE_DURATION]
+  );
 
-  //             audio.volume = Math.min(currentVolume, 0.75);
-  //           } else {
-  //             clearInterval(volumeInterval);
-  //             setIsFirstAudioLoad(false); // Marca como completado el fade-in
-  //           }
-  //         }, 100); // Incremento gradual cada 100ms
-  //       });
-  //     } else {
-  //       // Si no es la primera carga, establece el volumen por defecto directamente
-  //       audio.volume = 0.75;
-  //       audio.play();
-  //     }
+  // Function to start audio with fade-in (with useCallback)
+  const startAudioWithFade = useCallback(() => {
+    if (!gainNodeRef.current || !audioElementRef.current) return;
 
-  //     setIsAudioPlaying(true);
-  //   }
+    // Make sure the audio is playing before fading in
+    const playPromise = audioElementRef.current.play();
+    if (playPromise !== undefined) {
+      playPromise
+        .then(() => {
+          // Successful playback
+          fadeAudio(0, DEFAULT_VOLUME);
+          setIsAudioPlaying(true);
+        })
+        .catch((error) => {
+          console.error("Error playing audio:", error);
+          // Attempt to resume the context if suspended (autoplay policies)
+          if (
+            audioContextRef.current &&
+            audioContextRef.current.state === "suspended"
+          ) {
+            audioContextRef.current
+              .resume()
+              .then(() => audioElementRef.current.play())
+              .then(() => {
+                fadeAudio(0, DEFAULT_VOLUME);
+                setIsAudioPlaying(true);
+              });
+          }
+        });
+    }
+  }, [fadeAudio, DEFAULT_VOLUME, setIsAudioPlaying]);
 
-  //   // Limpieza: detiene el audio al desmontar
-  //   return () => {
-  //     if (audio) {
-  //       audio.pause();
-  //       audio.currentTime = 0;
-  //       setIsAudioPlaying(false);
-  //     }
-  //   };
-  // }, [selectedAudio, setIsAudioPlaying, isFirstAudioLoad]);
+  // Function to pause audio with fade-out (with useCallback)
+  const pauseAudioWithFade = useCallback(() => {
+    if (!gainNodeRef.current || !audioElementRef.current) return;
 
-  // return (
-  //   <div>
-  //     {selectedAudio ? (
-  //       <audio ref={audioRef} loop />
-  //     ) : (
-  //       <p>No hay audio seleccionado para reproducir.</p>
-  //     )}
-  //   </div>
-  // );
+    // We'll just fade out without disconnecting the source
+    fadeAudio(gainNodeRef.current.gain.value, 0, () => {
+      audioElementRef.current.pause();
+      setIsAudioPlaying(false);
+    });
+  }, [fadeAudio, setIsAudioPlaying]);
+
+  // Function to change audio track (with useCallback)
+  const changeAudio = useCallback(
+    (newAudio) => {
+      if (!audioContextRef.current) return;
+
+      const loadAndPlayAudio = () => {
+        // Create a new audio element
+        const audioElement = new Audio(newAudio.url);
+        audioElementRef.current = audioElement;
+        audioElement.loop = true;
+
+        // Connect to AudioContext
+        const source =
+          audioContextRef.current.createMediaElementSource(audioElement);
+        source.connect(gainNodeRef.current);
+        audioSourceRef.current = source;
+
+        // Start playback and fade-in
+        audioElement
+          .play()
+          .then(() => {
+            startAudioWithFade();
+            audioLoadedRef.current = true;
+          })
+          .catch((error) => {
+            console.error("Error playing audio:", error);
+            // Attempt to resume the context if suspended (autoplay policies)
+            if (
+              audioContextRef.current &&
+              audioContextRef.current.state === "suspended"
+            ) {
+              audioContextRef.current.resume();
+            }
+          });
+      };
+
+      // If there's already a track playing, fade out before changing
+      if (audioSourceRef.current) {
+        // Modified: Instead of using stopAudioWithFade, we'll disconnect the old source after fade
+        fadeAudio(gainNodeRef.current.gain.value, 0, () => {
+          if (audioElementRef.current) {
+            audioElementRef.current.pause();
+          }
+          if (audioSourceRef.current) {
+            audioSourceRef.current.disconnect();
+            audioSourceRef.current = null;
+          }
+          loadAndPlayAudio();
+        });
+      } else {
+        loadAndPlayAudio();
+      }
+    },
+    [startAudioWithFade, fadeAudio]
+  );
+
+  // Initialize AudioContext
+  useEffect(() => {
+    // Initialize AudioContext
+    const AudioContext = window.AudioContext || window.webkitAudioContext;
+    audioContextRef.current = new AudioContext();
+    gainNodeRef.current = audioContextRef.current.createGain();
+    gainNodeRef.current.gain.value = 0; // Start with volume 0 for fade-in
+    gainNodeRef.current.connect(audioContextRef.current.destination);
+
+    // Cleanup when unmounting
+    return () => {
+      if (
+        audioContextRef.current &&
+        audioContextRef.current.state !== "closed"
+      ) {
+        if (fadeIntervalRef.current) {
+          clearInterval(fadeIntervalRef.current);
+        }
+
+        if (audioSourceRef.current) {
+          audioSourceRef.current.disconnect();
+        }
+
+        audioContextRef.current.close();
+      }
+    };
+  }, []);
+
+  // Set default audio (separate to avoid circular dependencies)
+  useEffect(() => {
+    if (!selectedAudio) {
+      const defaultAudio = audioData.find(
+        (audio) => audio.name === "A_Chill_Evening"
+      );
+      if (defaultAudio) {
+        setSelectedAudio(defaultAudio);
+      }
+    }
+  }, [selectedAudio, setSelectedAudio]);
+
+  // Effect to change track when selectedAudio changes
+  useEffect(() => {
+    if (selectedAudio && audioContextRef.current) {
+      changeAudio(selectedAudio);
+    }
+  }, [selectedAudio, changeAudio]);
+
+  // Handle the "M" key to mute/unmute audio
+  useEffect(() => {
+    const handleKeyPress = (event) => {
+      if ((event.key === "m" || event.key === "M") && audioLoadedRef.current) {
+        if (isAudioPlaying) {
+          pauseAudioWithFade();
+        } else if (audioElementRef.current) {
+          startAudioWithFade();
+        }
+      }
+    };
+
+    window.addEventListener("keydown", handleKeyPress);
+    return () => {
+      window.removeEventListener("keydown", handleKeyPress);
+    };
+  }, [isAudioPlaying, pauseAudioWithFade, startAudioWithFade]);
+
+  // Adjust audio volume when pointer is locked/unlocked
+  useEffect(() => {
+    if (!audioLoadedRef.current || !gainNodeRef.current) return;
+
+    if (!isPointerLocked && isAudioPlaying) {
+      fadeAudio(gainNodeRef.current.gain.value, 0.1);
+    } else if (isPointerLocked && isAudioPlaying) {
+      fadeAudio(gainNodeRef.current.gain.value, DEFAULT_VOLUME);
+    }
+  }, [isPointerLocked, isAudioPlaying, DEFAULT_VOLUME, fadeAudio]);
+
+  // Component doesn't render anything visible, just handles audio logic
+  return null;
 };
 
 export default AudioPlayer;

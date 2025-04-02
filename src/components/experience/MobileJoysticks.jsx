@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from "react";
+import React, { useEffect, useMemo, useRef } from "react";
 import nipplejs from "nipplejs";
 import { useExperience } from "@/hooks/useExperience";
 import { useFrame, useThree } from "@react-three/fiber";
@@ -63,9 +63,8 @@ export function MobileJoysticksLogic() {
   const leftVectorRef = useRef({ x: 0, y: 0 });
   const rightVectorRef = useRef({ x: 0, y: 0 });
 
-  // Para un control más suave de la cámara
-  const cameraRotationRef = useRef({ x: 0, y: 0 });
-  const euler = new THREE.Euler(0, 0, 0, "YXZ");
+  // Use useMemo to create the Euler object only once
+  const euler = useMemo(() => new THREE.Euler(0, 0, 0, "YXZ"), []);
   const PI_2 = Math.PI / 2;
 
   const {
@@ -79,7 +78,7 @@ export function MobileJoysticksLogic() {
   const { camera } = useThree();
 
   // Vector reutilizable para cálculos
-  const movementVector = new THREE.Vector3();
+  const movementVector = useMemo(() => new THREE.Vector3(), []);
 
   // Sensibilidad del movimiento de cámara (ajustar según sea necesario)
   const CAMERA_SENSITIVITY = 0.7;
@@ -171,10 +170,6 @@ export function MobileJoysticksLogic() {
 
     // Inicializar rotación de cámara
     euler.setFromQuaternion(camera.quaternion);
-    cameraRotationRef.current = {
-      x: euler.x,
-      y: euler.y,
-    };
 
     // Limpiar al desmontar
     return () => {
@@ -222,7 +217,7 @@ export function MobileJoysticksLogic() {
 
       // Establecer la velocidad (ajustada a una velocidad razonable)
       rigidBodyRef.current.setLinvel({
-        x: movementVector.x * 70, // Ajustar según necesites
+        x: movementVector.x * 70,
         y: currentVel.y,
         z: movementVector.z * 70,
       });
@@ -236,22 +231,17 @@ export function MobileJoysticksLogic() {
     }
 
     // PARTE 2: Manejo de la rotación de cámara con joystick derecho
-    // Aquí implementamos un enfoque similar al que usaría PointerLockControls
     if (rightVectorRef.current.x !== 0 || rightVectorRef.current.y !== 0) {
       // Actualizar rotación X (mirar arriba/abajo)
-      cameraRotationRef.current.x -= rightVectorRef.current.y;
+      euler.x -= rightVectorRef.current.y;
+
       // Limitar rotación X para evitar dar la vuelta completa
-      cameraRotationRef.current.x = Math.max(
-        -PI_2,
-        Math.min(PI_2, cameraRotationRef.current.x)
-      );
+      euler.x = Math.max(-PI_2, Math.min(PI_2, euler.x));
 
       // Actualizar rotación Y (mirar izquierda/derecha)
-      cameraRotationRef.current.y -= rightVectorRef.current.x;
+      euler.y -= rightVectorRef.current.x;
 
       // Aplicar rotaciones a la cámara usando quaternion
-      euler.x = cameraRotationRef.current.x;
-      euler.y = cameraRotationRef.current.y;
       camera.quaternion.setFromEuler(euler);
     }
   });

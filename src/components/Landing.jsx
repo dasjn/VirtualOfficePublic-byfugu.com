@@ -83,7 +83,7 @@ export default function Landing({ setEnterExperience, setCursorHover }) {
             </div>
           ) : (
             <>
-              <span className="self-baseline material-icons text-[#5C5C5C] p-2">
+              <span className="self-baseline material-symbols-outlined text-[#5C5C5C] p-2">
                 search
               </span>
               <input

@@ -27,7 +27,8 @@ export default function Key({ keyName, keyLetter, keyTitle, keyIcon }) {
   return (
     <>
       {keyTitle && keyIcon ? (
-        <div className="self-center text-base">
+        <div className="self-center text-base flex gap-1">
+          <span className="material-symbols-outlined">{keyIcon}</span>
           <p>{keyTitle}</p>
         </div>
       ) : null}
