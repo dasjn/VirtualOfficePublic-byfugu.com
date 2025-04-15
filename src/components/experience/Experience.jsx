@@ -46,6 +46,10 @@ import TextComponent from "./TextComponent";
 import { GardenSpine } from "./3D/blenderMaterial/GardenSpine";
 import GardenGlass from "./3D/blenderMaterial/GardenGlass";
 import { MobileJoysticksLogic } from "./MobileJoysticks";
+import GlobosCielo from "./3D/blenderMaterial/GlobosCielo";
+
+import MueblesYSigns from "./3D/baked/MueblesYSigns";
+import JardinYluces from "./3D/baked/JardinYLuces";
 
 export default function Experience() {
   const {
@@ -58,18 +62,24 @@ export default function Experience() {
     startCameraMovement,
     meshComputerRef,
     deviceType,
+    setExperienceMounted,
   } = useExperience();
 
   const { camera } = useThree();
 
   useEffect(() => {
     camera.lookAt(-1, 1.5, 0);
-  }, [camera]);
 
-  // useEffect(() => {
-  //   const audioElement = new Audio("/audio/Closing_Door_The_Onffice.mp3");
-  //   audioElement.play();
-  // },[]);
+    // Notificar que la experiencia está montada
+    setTimeout(() => {
+      setExperienceMounted(true);
+    }, 100); // Pequeño retraso para asegurar que todo está renderizado
+
+    return () => {
+      // Limpiar el estado cuando el componente se desmonta
+      setExperienceMounted(false);
+    };
+  }, [camera, setExperienceMounted]);
 
   // Optimización: Vector reutilizable para posiciones
   const worldPositionComputer = useMemo(() => new THREE.Vector3(), []);
@@ -167,6 +177,10 @@ export default function Experience() {
         <MarcoCuadro02 material={bigAssetsTextureBakedMaterial} />
         <MarcoVentana material={bigAssetsTextureBakedMaterial} />
         <MarcoTV material={bigAssetsTextureBakedMaterial} />
+
+        <JardinYluces />
+        <MueblesYSigns />
+
         <PanelTV />
         <PlanoImgCuadro01 />
         <PlanoImgCuadro02 />
@@ -194,13 +208,13 @@ export default function Experience() {
     () => (
       <group position={[0, -2, 0]}>
         <Latas />
-        <SetUpMesa />
+        {/* <SetUpMesa />
         <OfficeMesa />
         <Piedras />
         <MeetingRoomSign />
-        <WCSign />
+        <WCSign /> */}
         <Sofa />
-        <SueloJardin />
+        {/* <SueloJardin /> */}
       </group>
     ),
     []
@@ -230,6 +244,7 @@ export default function Experience() {
       <group position={[0, -2, 0]}>
         <GardenSpine />
         <GardenGlass />
+        <GlobosCielo />
       </group>
 
       <PointerLockControls

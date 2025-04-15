@@ -23,7 +23,7 @@ export default function Office(props) {
         <Suelo />
       </RigidBody>
       <Paredes />
-      <Luces />
+      {/* <Luces /> */}
     </group>
   );
 }

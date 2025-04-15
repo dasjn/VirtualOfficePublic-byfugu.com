@@ -3,7 +3,6 @@ import React, { useState, useEffect, useMemo } from "react";
 import { useGLTF, Html } from "@react-three/drei";
 import { useExperience } from "@/hooks/useExperience";
 import * as THREE from "three";
-import { AnimatePresence, motion } from "framer-motion";
 
 const screenStyles = {
   container: {
@@ -28,18 +27,28 @@ export default function ComputerScreen(props) {
 
   const { isUserOnPC } = useExperience();
   const [showIframe, setShowIframe] = useState(false);
+  const [isIframeVisible, setIsIframeVisible] = useState(false);
 
   // Efecto para controlar la visibilidad del iframe
   useEffect(() => {
     if (isUserOnPC) {
       setShowIframe(true);
+      // Pequeño retraso antes de iniciar la animación de entrada (similar al delay de Framer Motion)
+      const showTimer = setTimeout(() => {
+        setIsIframeVisible(true);
+      }, 200); // 0.2s de retraso para la entrada
+
+      return () => clearTimeout(showTimer);
     } else {
-      // Cuando isUserOnPC pasa a false, mantenemos showIframe true
-      // para permitir que se complete la animación de salida
-      const timer = setTimeout(() => {
+      // Cuando isUserOnPC pasa a false, primero animamos la salida
+      setIsIframeVisible(false);
+
+      // Y después de que termine la animación, ocultamos el iframe
+      const hideTimer = setTimeout(() => {
         setShowIframe(false);
       }, 500); // Este tiempo debe ser igual o mayor a la duración de la animación de salida
-      return () => clearTimeout(timer);
+
+      return () => clearTimeout(hideTimer);
     }
   }, [isUserOnPC]);
 
@@ -67,9 +76,9 @@ export default function ComputerScreen(props) {
     }
     // Si no está en PC, devolver el material original
     // Crear un material básico que use la misma textura
-
     return basicMaterial;
   }, [isUserOnPC, materials, showIframe, basicMaterial]);
+
   return (
     <group {...props} dispose={null}>
       <mesh
@@ -91,27 +100,22 @@ export default function ComputerScreen(props) {
               rotation={[0, Math.PI / 2, 0]}
             >
               <div style={screenStyles.container}>
-                <AnimatePresence mode="wait">
-                  {isUserOnPC && (
-                    <motion.div
-                      key="iframe"
-                      initial={{ opacity: 0, scale: 0.95 }}
-                      animate={{ opacity: 1, scale: 1 }}
-                      exit={{ opacity: 0, scale: 0.95 }}
-                      transition={{
-                        duration: 0.5,
-                        ease: "easeOut",
-                        delay: isUserOnPC ? 0.2 : 0, // Solo retraso en la entrada
-                      }}
-                      style={{ width: "auto", height: "auto" }}
-                    >
-                      <iframe
-                        src="https://byfugu.com"
-                        style={screenStyles.iframe}
-                      />
-                    </motion.div>
-                  )}
-                </AnimatePresence>
+                {(isUserOnPC || showIframe) && (
+                  <div
+                    key="iframe"
+                    className={`transform transition-all duration-500 ease-out ${
+                      isIframeVisible
+                        ? "opacity-100 scale-100"
+                        : "opacity-0 scale-95"
+                    }`}
+                    style={{ width: "auto", height: "auto" }}
+                  >
+                    <iframe
+                      src="https://byfugu.com"
+                      style={screenStyles.iframe}
+                    />
+                  </div>
+                )}
               </div>
             </Html>
           </group>

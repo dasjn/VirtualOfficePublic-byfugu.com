@@ -8,11 +8,11 @@ pnpm-debug.log*
 lerna-debug.log*
 
 node_modules
-videos
 dist
 dist-ssr
 *.local
-package-lock.json
+public
+assets
 
 # Editor directories and files
 .vscode/*
@@ -24,9 +24,3 @@ package-lock.json
 *.njsproj
 *.sln
 *.sw?
-
-*.glb
-*.png
-*.mp3
-*.svg
-public

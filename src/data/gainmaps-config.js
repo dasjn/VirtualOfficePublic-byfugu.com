@@ -27,6 +27,22 @@ export const GAINMAPS = [
       "/hdr/HDRI_v02.json",
     ],
   },
+  {
+    id: "jardin_y_luces_texture",
+    urls: [
+      "/jardin_y_luces/JardinLuces_Bake_v01.webp",
+      "/jardin_y_luces/JardinLuces_Bake_v01-gainmap.webp",
+      "/jardin_y_luces/JardinLuces_Bake_v01.json",
+    ],
+  },
+  {
+    id: "muebles_y_signs_texture",
+    urls: [
+      "/muebles_y_signs/MueblesySigns_Bake_v01.webp",
+      "/muebles_y_signs/MueblesySigns_Bake_v01-gainmap.webp",
+      "/muebles_y_signs/MueblesySigns_Bake_v01.json",
+    ],
+  },
   // Añade aquí todos los demás GainMaps de tu aplicación
 ];
 

@@ -4,10 +4,10 @@ import BehanceIcon from "@/icons/BehanceIcon";
 import InstagramIcon from "@/icons/InstagramIcon";
 import { useEffect, useState } from "react";
 
-const WelcomeModal = ({ onAccept, setCursorHover }) => {
+const PauseModal = ({ onAccept, setCursorHover }) => {
   const { handlePointerOver, handlePointerOut } =
     useCursorHover(setCursorHover);
-  const { isPointerLocked } = useExperience();
+  const { isPointerLocked, isUserOnPC } = useExperience();
   const [isVisible, setIsVisible] = useState(false);
 
   // Efecto para animar la entrada al montar el componente
@@ -48,24 +48,18 @@ const WelcomeModal = ({ onAccept, setCursorHover }) => {
           isVisible ? "opacity-100 scale-100" : "opacity-0 scale-90"
         }`}
       >
-        <div className="flex flex-col gap-2">
-          <p className="text-xl font-bold">Welcome to the ONFFICE</p>
-          <p>
-            We don&apos;t work in one place — we exist in many. This is our
-            virtual space. Built to explore, connect, and collaborate — from
-            anywhere.
+        <div className="flex flex-col gap-2 items-center">
+          <span className="bg-opacity-40 bg-white rounded-full w-16 h-16 flex items-center justify-center font-bold cursor-none transform">
+            <span className="material-symbols-outlined">drag_click</span>
+          </span>
+        </div>
+        <div className="flex flex-col gap-2 text-center">
+          <p className="text-xl font-bold">
+            Onffice&apos;s Experience is currently stopped. Please click to
+            resume.
           </p>
         </div>
         <div className="flex flex-col border-y-[1px] py-6 text-sm gap-2">
-          <p className="font-bold">Disclaimer</p>
-          <p>
-            This is an early access version. You might run into bugs or
-            performance issues — we&apos;re still refining. If you spot anything
-            weird, feel free to let us know.
-          </p>
-          <p className="italic text-xs">·Current Release: ONFFICE_1_01.2</p>
-        </div>
-        <div className="flex flex-col border-b-[1px] pb-6 text-sm gap-2">
           <div className="inline-flex items-center justify-center">
             <button
               className="bg-[#2364B3] py-3 px-10 rounded-full font-bold text-xl transform transition-transform duration-200 hover:scale-105 active:scale-95"
@@ -131,4 +125,4 @@ const WelcomeModal = ({ onAccept, setCursorHover }) => {
   );
 };
 
-export default WelcomeModal;
+export default PauseModal;

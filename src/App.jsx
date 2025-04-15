@@ -33,7 +33,12 @@ export default function App() {
   const [minimumTimeElapsed, setMinimumTimeElapsed] = useState(false);
 
   // Obtener la función de actualización del tipo de dispositivo y el estado actual
-  const { updateDeviceType, deviceType, setIsPointerLocked } = useExperience();
+  const {
+    updateDeviceType,
+    deviceType,
+    setIsPointerLocked,
+    experienceMounted,
+  } = useExperience();
 
   // Referencias
   const maxLoadingTimeRef = useRef(null);
@@ -51,6 +56,8 @@ export default function App() {
   // Constante para tiempo mínimo y máximo de carga
   const MINIMUM_LOADING_TIME = 5000; // 5 segundos
   const MAXIMUM_LOADING_TIME = 15000; // 15 segundos
+
+  const shouldShowLoaders = !enterExperience || isPreLoading;
 
   // Función para manejar la entrada a la experiencia
   const handleEnterExperience = () => {
@@ -111,26 +118,43 @@ export default function App() {
   }, [combinedProgress, assetsAreReady]);
 
   // EFECTO CLAVE: Este efecto se encarga específicamente de verificar
-  // cuando ambas condiciones (assets listos y tiempo mínimo) se cumplen
+  // cuando todas las condiciones (assets listos, tiempo mínimo y experiencia montada) se cumplen
   useEffect(() => {
-    // Solo verificar si ambas condiciones se cumplen cuando estamos cargando
+    // Solo verificar si todas las condiciones se cumplen cuando estamos cargando
     if (
       enterExperience &&
       assetsAreReady &&
       minimumTimeElapsed &&
       isPreLoading
     ) {
-      console.log("🎯 AMBAS CONDICIONES CUMPLIDAS - Finalizando carga...");
+      console.log(
+        "🎯 CONDICIONES BÁSICAS CUMPLIDAS - Esperando a que la experiencia esté montada..."
+      );
+
+      // Si estamos esperando a que la experiencia se monte, no hacemos nada aún
+      if (!experienceMounted && !shouldShowLoaders) {
+        console.log(
+          "⏳ Esperando a que la experiencia esté montada completamente..."
+        );
+        return;
+      }
 
       // Pequeño retraso para asegurar consistencia entre estados
       transitionTimerRef.current = setTimeout(() => {
         console.log(
-          "✅ Tiempo mínimo y assets listos, entrando a la experiencia"
+          "✅ Tiempo mínimo, assets listos y experiencia montada, completando transición"
         );
         setIsPreLoading(false);
       }, 100);
     }
-  }, [enterExperience, assetsAreReady, minimumTimeElapsed, isPreLoading]);
+  }, [
+    enterExperience,
+    assetsAreReady,
+    minimumTimeElapsed,
+    isPreLoading,
+    experienceMounted,
+    shouldShowLoaders,
+  ]);
 
   // Limpieza de todos los temporizadores al desmontar
   useEffect(() => {
@@ -160,6 +184,7 @@ export default function App() {
       console.log(`Estado de carga:
       - Assets listos: ${assetsAreReady ? "SI" : "NO"}
       - Tiempo mínimo completado: ${minimumTimeElapsed ? "SI" : "NO"}
+      - Experiencia montada: ${experienceMounted ? "SI" : "NO"}
       - Sigue cargando: ${isPreLoading ? "SI" : "NO"}`);
     }
   }, [
@@ -169,6 +194,7 @@ export default function App() {
     combinedProgress,
     assetsAreReady,
     minimumTimeElapsed,
+    experienceMounted,
     isPreLoading,
   ]);
 
@@ -178,8 +204,6 @@ export default function App() {
     // No hace nada, el control de isPreLoading está gestionado internamente en este componente
     console.log("⚠️ Intento de cambiar isPreLoading desde el Loader ignorado");
   };
-
-  const shouldShowLoaders = !enterExperience || isPreLoading;
 
   return (
     <>
@@ -231,7 +255,7 @@ export default function App() {
               setIsPreLoading={dummySetIsPreLoading} // Usamos la función dummy para evitar cambios directos
             />
           ) : (
-            <Experience />
+            <Experience fadeIn={!isPreLoading} />
           )}
         </Canvas>
       </KeyboardControls>

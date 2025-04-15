@@ -44,6 +44,10 @@ export const useExperienceStore = create((set, get) => ({
   deviceType: detectDeviceType(),
   updateDeviceType: () => set({ deviceType: detectDeviceType() }),
 
+  // Estado para controlar la transición de la experiencia
+  experienceMounted: false,
+  setExperienceMounted: (value) => set({ experienceMounted: value }),
+
   // Estados
   isPointerLocked: false,
   setIsPointerLocked: (value) => set({ isPointerLocked: value }),

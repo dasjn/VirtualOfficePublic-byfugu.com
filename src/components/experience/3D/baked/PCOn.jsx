@@ -13,14 +13,15 @@ PCOn.propTypes = {
 
 export function PCOn({ material: bakedMaterial, ...props }) {
   const { nodes } = useGLTF("/small_assets_baked/TheOFFice_PcOn_Baked_v02.glb");
+  const { setCursorHover } = useExperience();
 
   // Optimización: usar useMemo para el material
-  const testMaterialRef = useMemo(
+  const emissiveMaterial = useMemo(
     () =>
       new THREE.MeshStandardMaterial({
         color: "#000000", // Color base
         emissive: new THREE.Color(0.4, 0.3, 0), // Color de la emisión
-        emissiveIntensity: 0.1, // Intensidad de emisión inicial
+        emissiveIntensity: 0, // Intensidad de emisión inicial
       }),
     []
   );
@@ -60,23 +61,29 @@ export function PCOn({ material: bakedMaterial, ...props }) {
 
       // Si el ratón está cerca y sobre el objeto, aumentamos la intensidad
       if (currentDistance < 3 && isMouseOver && !isUserOnPC) {
-        setTargetIntensity(10);
+        setTargetIntensity(3);
       } else {
-        setTargetIntensity(0.1);
+        setTargetIntensity(0);
       }
     }
 
     // Interpolamos la intensidad de emisión para un cambio suave
-    const emissiveIntensity = testMaterialRef.emissiveIntensity;
-    testMaterialRef.emissiveIntensity = THREE.MathUtils.lerp(
+    const emissiveIntensity = emissiveMaterial.emissiveIntensity;
+    emissiveMaterial.emissiveIntensity = THREE.MathUtils.lerp(
       emissiveIntensity,
       targetIntensity,
       lerpSpeed
     );
   });
 
-  const handlePointerOver = useCallback(() => setIsMouseOver(true), []);
-  const handlePointerOut = useCallback(() => setIsMouseOver(false), []);
+  const handlePointerOver = useCallback(() => {
+    setIsMouseOver(true);
+    setCursorHover(true);
+  }, [setCursorHover]);
+  const handlePointerOut = useCallback(() => {
+    setIsMouseOver(false);
+    setCursorHover(false);
+  }, [setCursorHover]);
 
   // Optimización: useCallback para evitar recreación en cada render
   const handleComputerClick = useCallback(() => {
@@ -156,7 +163,7 @@ export function PCOn({ material: bakedMaterial, ...props }) {
       <mesh
         ref={meshComputerRef}
         geometry={nodes.Screen_Body006.geometry}
-        material={testMaterialRef} // Usamos testMaterial con emisión
+        material={emissiveMaterial} // Usamos testMaterial con emisión
         position={[-3.526, 1.184, -4.864]}
         onPointerOver={handlePointerOver}
         onPointerOut={handlePointerOut}

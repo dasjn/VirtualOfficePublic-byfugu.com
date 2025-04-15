@@ -1,6 +1,5 @@
 // TextComponent.jsx
 import { Html } from "@react-three/drei";
-import { motion, AnimatePresence } from "framer-motion";
 import PropTypes from "prop-types";
 import { useState, useEffect } from "react";
 
@@ -93,38 +92,71 @@ export default function TextComponent({
 
   // Estado para controlar la visibilidad del componente en el DOM
   const [showComponent, setShowComponent] = useState(false);
+  // Estado para controlar la animación
+  const [animationState, setAnimationState] = useState("hidden"); // "hidden", "entering", "visible", "exiting"
 
   // Efecto para manejar la aparición y desaparición con un ligero retraso
   useEffect(() => {
+    let showTimer, animateInTimer, animateOutTimer, hideTimer;
+
     if (isNearby) {
+      // Mostrar el componente
       setShowComponent(true);
+
+      // Iniciar animación de entrada después de un pequeño delay
+      animateInTimer = setTimeout(() => {
+        setAnimationState("entering");
+
+        // Cambiar a estado visible cuando termina la animación
+        showTimer = setTimeout(() => {
+          setAnimationState("visible");
+        }, 500); // Duración de la animación de entrada
+      }, 50);
     } else {
-      // Permitir que la animación de salida se complete antes de remover del DOM
-      const timer = setTimeout(() => {
-        setShowComponent(false);
-      }, 500); // Duración igual a la animación de salida
-      return () => clearTimeout(timer);
+      // Si estaba visible, iniciar animación de salida
+      if (showComponent) {
+        setAnimationState("exiting");
+
+        // Ocultar el componente cuando termina la animación de salida
+        hideTimer = setTimeout(() => {
+          setShowComponent(false);
+          setAnimationState("hidden");
+        }, 500); // Duración de la animación de salida
+      }
     }
-  }, [isNearby]);
+
+    // Limpiar temporizadores
+    return () => {
+      clearTimeout(showTimer);
+      clearTimeout(animateInTimer);
+      clearTimeout(animateOutTimer);
+      clearTimeout(hideTimer);
+    };
+  }, [isNearby, showComponent]);
+
+  // Determinar clases de animación según el estado
+  const getAnimationClasses = () => {
+    switch (animationState) {
+      case "entering":
+      case "visible":
+        return "opacity-100 scale-100";
+      case "exiting":
+        return "opacity-0 scale-95";
+      default:
+        return "opacity-0 scale-95";
+    }
+  };
 
   return (
     <Html position={position} center>
-      {(isNearby || showComponent) && (
+      {showComponent && (
         <div className="flex items-center justify-center w-screen h-screen">
-          <AnimatePresence>
-            {isNearby && (
-              <motion.div
-                className="text-white gap-2 select-none flex flex-col p-4 w-96 gradient-keyboard bg-gradient-to-b from-[#39393960] to-[#61616160] rounded-3xl backdrop-blur-xl custom-box-shadow"
-                initial={{ opacity: 0, scale: 0.95 }}
-                animate={{ opacity: 1, scale: 1 }}
-                exit={{ opacity: 0, scale: 0.95 }}
-                transition={{ duration: 0.5, ease: "easeInOut" }}
-              >
-                <p className="text-xl font-bold">{card.title}</p>
-                <p>{card.description}</p>
-              </motion.div>
-            )}
-          </AnimatePresence>
+          <div
+            className={`text-white gap-2 select-none flex flex-col p-4 w-96 gradient-keyboard bg-gradient-to-b from-[#39393960] to-[#61616160] rounded-3xl backdrop-blur-xl custom-box-shadow transform transition-all duration-500 ease-in-out ${getAnimationClasses()}`}
+          >
+            <p className="text-xl font-bold">{card.title}</p>
+            <p>{card.description}</p>
+          </div>
         </div>
       )}
     </Html>
