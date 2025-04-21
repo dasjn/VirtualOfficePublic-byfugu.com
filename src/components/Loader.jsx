@@ -1,11 +1,8 @@
 import { Html } from "@react-three/drei";
 import PropTypes from "prop-types";
-import { useEffect, useState, useRef } from "react";
+import { useEffect, useState } from "react";
 import Landing from "./Landing";
 import { useExperience } from "@/hooks/useExperience";
-import { GAINMAPS } from "@/data/gainmaps-config";
-import GainMapPreloader from "@/utils/GainMapPreloader";
-import { useThree } from "@react-three/fiber";
 
 Loader.propTypes = {
   progress: PropTypes.number.isRequired,
@@ -22,38 +19,6 @@ export default function Loader({
 }) {
   const [progressState, setProgressState] = useState(0);
   const { setCursorHover } = useExperience();
-  const { gl } = useThree();
-
-  // Referencia para evitar inicializaciones repetidas
-  const initializedRef = useRef(false);
-  const loadStartedRef = useRef(false);
-
-  // Inicializar el GainMapPreloader al montar el componente
-  useEffect(() => {
-    if (!initializedRef.current && gl) {
-      const success = GainMapPreloader.initialize(gl);
-      if (success) {
-        console.log("✅ GainMapPreloader inicializado correctamente");
-        initializedRef.current = true;
-
-        // Registrar todos los GainMaps una vez inicializado
-        GAINMAPS.forEach((map) => {
-          GainMapPreloader.register(map.id, map.urls);
-        });
-      }
-    }
-  }, [gl]);
-
-  // Iniciar la carga de GainMaps cuando el usuario decide entrar a la experiencia
-  useEffect(() => {
-    if (enterExperience && initializedRef.current && !loadStartedRef.current) {
-      console.log("🔄 Iniciando carga de GainMaps desde el Loader");
-      loadStartedRef.current = true;
-      GainMapPreloader.loadAll().catch((err) => {
-        console.error("❌ Error cargando GainMaps:", err);
-      });
-    }
-  }, [enterExperience]);
 
   // Animación suave del progreso
   useEffect(() => {

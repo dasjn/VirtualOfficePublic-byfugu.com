@@ -50,6 +50,7 @@ import GlobosCielo from "./3D/blenderMaterial/GlobosCielo";
 
 import MueblesYSigns from "./3D/baked/MueblesYSigns";
 import JardinYluces from "./3D/baked/JardinYLuces";
+import Sobres from "./3D/baked/Sobres";
 
 export default function Experience() {
   const {
@@ -199,6 +200,7 @@ export default function Experience() {
         <PCOff material={smallAssetsTextureBakedMaterial} />
         <PCOn material={smallAssetsTextureBakedMaterial} />
         <Tarjetas material={smallAssetsTextureBakedMaterial} />
+        <Sobres />
       </group>
     ),
     [smallAssetsTextureBakedMaterial]
@@ -208,13 +210,7 @@ export default function Experience() {
     () => (
       <group position={[0, -2, 0]}>
         <Latas />
-        {/* <SetUpMesa />
-        <OfficeMesa />
-        <Piedras />
-        <MeetingRoomSign />
-        <WCSign /> */}
         <Sofa />
-        {/* <SueloJardin /> */}
       </group>
     ),
     []

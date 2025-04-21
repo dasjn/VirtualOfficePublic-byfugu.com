@@ -2,8 +2,7 @@
 import { useEffect, useMemo } from "react";
 import { useGLTF, useTexture } from "@react-three/drei";
 import * as THREE from "three";
-import { useGainMapTexture } from "@/hooks/useGainMapTexture";
-import { usePreloadModel } from "@/hooks/usePreloadHooks";
+import { usePreloadModel, usePreloadTexture } from "@/hooks/usePreloadHooks";
 
 // Constantes para rutas de modelos
 const MODEL_PATHS = {
@@ -13,8 +12,7 @@ const MODEL_PATHS = {
   SIGN_WC: "/muebles_y_signs/TheOFFice_SignWC_Bake_v06.glb",
 };
 
-// ID del GainMap
-const GAINMAP_ID = "muebles_y_signs_texture";
+const TEXTURE_PATH = "/muebles_y_signs/MueblesySigns_Bake_v01.webp";
 
 export default function MueblesYSigns(props) {
   // Precargar todos los modelos
@@ -22,6 +20,7 @@ export default function MueblesYSigns(props) {
   usePreloadModel(MODEL_PATHS.OFFICE);
   usePreloadModel(MODEL_PATHS.SIGN_MR);
   usePreloadModel(MODEL_PATHS.SIGN_WC);
+  usePreloadTexture(TEXTURE_PATH);
 
   // Cargar los modelos
   const { nodes: nodesSetup } = useGLTF(MODEL_PATHS.SETUP);
@@ -29,36 +28,53 @@ export default function MueblesYSigns(props) {
   const { nodes: nodesMR } = useGLTF(MODEL_PATHS.SIGN_MR);
   const { nodes: nodesWC } = useGLTF(MODEL_PATHS.SIGN_WC);
 
-  // Cargar textura GainMap
-  const texture = useGainMapTexture(GAINMAP_ID);
+  // Cargar textura
+  const texture = useTexture(TEXTURE_PATH);
 
-  // Material con GainMap o fallback
-  const textureMaterial = useMemo(() => {
+  // Crear varios materiales con diferentes propiedades
+  const materials = useMemo(() => {
     if (!texture) {
-      return nodesSetup.Mesa_SetUp002.material;
+      return {
+        setup: nodesSetup.Mesa_SetUp002.material,
+        office: nodesSetup.Mesa_SetUp002.material,
+        signs: nodesSetup.Mesa_SetUp002.material,
+      };
     }
-    return new THREE.MeshBasicMaterial({
-      map: texture,
-    });
+
+    return {
+      setup: new THREE.MeshBasicMaterial({
+        map: texture,
+        color: 0x999999,
+      }),
+      office: new THREE.MeshBasicMaterial({
+        map: texture,
+        color: 0x666666,
+      }),
+      signs: new THREE.MeshBasicMaterial({
+        map: texture,
+        color: 0xcccccc,
+        emissive: 0x333333,
+        emissiveIntensity: 0.2,
+      }),
+    };
   }, [texture, nodesSetup]);
 
   return (
-    <group>
+    <group {...props} dispose={null}>
       {/* Mesa de setup con sillas */}
-      <group {...props} dispose={null}>
-        {/* Mesa */}
+      <group>
         <mesh
           castShadow
           receiveShadow
           geometry={nodesSetup.Mesa_SetUp002.geometry}
-          material={textureMaterial}
+          material={materials.setup}
           position={[-2.918, 0.484, -4.449]}
         />
         <mesh
           castShadow
           receiveShadow
           geometry={nodesSetup.Silla_01.geometry}
-          material={textureMaterial}
+          material={materials.setup}
           position={[-2.449, 0.554, -5.099]}
           rotation={[0, -0.682, Math.PI / 2]}
         />
@@ -66,7 +82,7 @@ export default function MueblesYSigns(props) {
           castShadow
           receiveShadow
           geometry={nodesSetup.Silla_02.geometry}
-          material={textureMaterial}
+          material={materials.setup}
           position={[-2.802, 0.554, -6.526]}
           rotation={[0, -1.566, 1.571]}
         />
@@ -74,66 +90,60 @@ export default function MueblesYSigns(props) {
           castShadow
           receiveShadow
           geometry={nodesSetup.Silla_03.geometry}
-          material={textureMaterial}
+          material={materials.setup}
           position={[-2.802, 0.554, -8.381]}
           rotation={[0, -1.566, 1.571]}
         />
       </group>
 
       {/* Mesa de oficina con butacas */}
-      <group {...props} dispose={null}>
+      <group>
         <mesh
           castShadow
           receiveShadow
           geometry={nodesOffice.Tablero_Mesa001.geometry}
-          material={textureMaterial}
+          material={materials.office}
           position={[0.006, 0.252, -0.157]}
         />
         <mesh
           castShadow
           receiveShadow
           geometry={nodesOffice.Butaca_2.geometry}
-          material={textureMaterial}
+          material={materials.office}
           position={[-1.02, 0.01, -0.304]}
         />
         <mesh
           castShadow
           receiveShadow
           geometry={nodesOffice.Butaca_3.geometry}
-          material={textureMaterial}
+          material={materials.office}
           position={[-0.288, 0.01, 0.84]}
         />
         <mesh
           castShadow
           receiveShadow
           geometry={nodesOffice.Butaca_1.geometry}
-          material={textureMaterial}
+          material={materials.office}
           position={[0.944, 0.01, -0.63]}
         />
       </group>
 
-      {/* Cartel de sala de reuniones */}
-      <group>
-        <mesh
-          castShadow
-          receiveShadow
-          geometry={nodesMR.Cube069.geometry}
-          material={textureMaterial}
-          position={[-3.867, 2.168, -1.696]}
-          rotation={[0, -Math.PI / 2, 0]}
-        />
-      </group>
-
-      {/* Cartel de WC */}
-      <group>
-        <mesh
-          castShadow
-          receiveShadow
-          geometry={nodesWC.Cube068.geometry}
-          material={textureMaterial}
-          position={[2.315, 2.168, 4.71]}
-        />
-      </group>
+      {/* Carteles con material emissive para destacar */}
+      <mesh
+        castShadow
+        receiveShadow
+        geometry={nodesMR.Cube069.geometry}
+        material={materials.signs}
+        position={[-3.867, 2.168, -1.696]}
+        rotation={[0, -Math.PI / 2, 0]}
+      />
+      <mesh
+        castShadow
+        receiveShadow
+        geometry={nodesWC.Cube068.geometry}
+        material={materials.signs}
+        position={[2.315, 2.168, 4.71]}
+      />
     </group>
   );
 }

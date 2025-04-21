@@ -1,32 +1,30 @@
 /* eslint-disable react/no-unknown-property */
-import { useGainMapTexture } from "@/hooks/useGainMapTexture";
-import { useGLTF } from "@react-three/drei";
-import { usePreloadModel } from "@/hooks/usePreloadHooks";
-import { useMemo } from "react";
+import { useGLTF, useTexture } from "@react-three/drei";
+import { usePreloadModel, usePreloadTexture } from "@/hooks/usePreloadHooks";
+import { useEffect, useMemo } from "react";
 import * as THREE from "three";
 
 // Constantes para los recursos
 const MODEL_PATH = "/suelo/TheOFFice_Suelo_Baked_v03.glb";
-const GAINMAP_ID = "suelo_texture";
+const TEXTURE_PATH = "/suelo/Bake_Suelo_v03.webp";
 
 export function Suelo(props) {
   // Precargar el modelo (evita duplicaciones)
   usePreloadModel(MODEL_PATH);
+  usePreloadTexture(TEXTURE_PATH);
+
+  const texture = useTexture(TEXTURE_PATH);
 
   // Cargar el modelo normalmente
-  const { nodes, materials } = useGLTF(MODEL_PATH);
+  const { nodes } = useGLTF(MODEL_PATH);
 
-  // Obtener la textura GainMap (ya precargada centralmente)
-  const texture = useGainMapTexture(GAINMAP_ID);
-
-  // Material a usar (con la textura GainMap si está disponible)
   const textureMaterial = useMemo(() => {
     if (!texture) {
       // Si la textura no está disponible, usar el material original como fallback
       return nodes.Suelo003.material;
     }
     // Crear un material con la textura GainMap
-    return new THREE.MeshBasicMaterial({ map: texture });
+    return new THREE.MeshBasicMaterial({ map: texture, color: 0x999999 });
   }, [nodes, texture]);
 
   return (

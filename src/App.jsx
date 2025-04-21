@@ -14,13 +14,12 @@ import {
 import Experience from "./components/experience/Experience";
 import { Perf } from "r3f-perf";
 import UI3D from "./components/experience/UI3D";
-import MobileJoysticks from "./components/experience/MobileJoysticks"; // Importamos componente DOM
+import MobileJoysticks from "./components/experience/MobileJoysticks";
 import AudioPlayer from "./components/audio/AudioPlayer";
 import CustomCursor from "./components/experience/CustomCursor";
 import { initialPosition } from "./data/constants";
 
-// Sólo importamos useGainMapProgress
-import { useGainMapProgress } from "./hooks/useGainMapPreloader";
+// Removida la importación de useGainMapProgress
 import { useExperience } from "./hooks/useExperience";
 
 export default function App() {
@@ -46,12 +45,8 @@ export default function App() {
   const minimumTimerRef = useRef(null);
   const transitionTimerRef = useRef(null);
 
-  // Obtener progreso de drei y del sistema de GainMaps
-  const { progress: dreiProgress } = useProgress();
-  const gainMapProgress = useGainMapProgress();
-
-  // Calcular progreso combinado - ahora dando más peso a los GainMaps
-  const combinedProgress = dreiProgress * 0.4 + gainMapProgress * 0.6;
+  // Obtener progreso solo de drei
+  const { progress } = useProgress();
 
   // Constante para tiempo mínimo y máximo de carga
   const MINIMUM_LOADING_TIME = 5000; // 5 segundos
@@ -109,13 +104,13 @@ export default function App() {
     };
   }, [updateDeviceType]);
 
-  // Actualizar el estado de los assets cuando el progreso combinado llega a 100%
+  // Actualizar el estado de los assets cuando el progreso llega a 100%
   useEffect(() => {
-    if (combinedProgress >= 100 && !assetsAreReady) {
+    if (progress >= 100 && !assetsAreReady) {
       console.log("🎮 Assets listos para usar");
       setAssetsAreReady(true);
     }
-  }, [combinedProgress, assetsAreReady]);
+  }, [progress, assetsAreReady]);
 
   // EFECTO CLAVE: Este efecto se encarga específicamente de verificar
   // cuando todas las condiciones (assets listos, tiempo mínimo y experiencia montada) se cumplen
@@ -172,13 +167,7 @@ export default function App() {
         ? Math.floor((Date.now() - enterTimeRef.current) / 1000)
         : 0;
 
-      console.log(
-        `Progreso (${elapsedSinceEnter}s): Drei ${dreiProgress.toFixed(
-          1
-        )}%, GainMaps ${gainMapProgress.toFixed(
-          1
-        )}%, Combinado ${combinedProgress.toFixed(1)}%`
-      );
+      console.log(`Progreso (${elapsedSinceEnter}s): ${progress.toFixed(1)}%`);
 
       // Registrar en la consola el estado actual de las condiciones
       console.log(`Estado de carga:
@@ -189,9 +178,7 @@ export default function App() {
     }
   }, [
     enterExperience,
-    dreiProgress,
-    gainMapProgress,
-    combinedProgress,
+    progress,
     assetsAreReady,
     minimumTimeElapsed,
     experienceMounted,
@@ -249,7 +236,7 @@ export default function App() {
 
           {shouldShowLoaders ? (
             <Loader
-              progress={combinedProgress}
+              progress={progress}
               enterExperience={enterExperience}
               setEnterExperience={handleEnterExperience}
               setIsPreLoading={dummySetIsPreLoading} // Usamos la función dummy para evitar cambios directos

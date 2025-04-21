@@ -1,34 +1,31 @@
 /* eslint-disable react/no-unknown-property */
 import { useMemo } from "react";
-import { meshBounds, useGLTF } from "@react-three/drei";
+import { meshBounds, useGLTF, useTexture } from "@react-three/drei";
 import TextComponent, { CARD_NAMES } from "../../TextComponent";
 import { usePointerInteraction } from "@/hooks/usePointerInteraction";
 import * as THREE from "three";
-import { useGainMapTexture } from "@/hooks/useGainMapTexture";
-import { usePreloadModel } from "@/hooks/usePreloadHooks";
+import { usePreloadModel, usePreloadTexture } from "@/hooks/usePreloadHooks";
 
-// Definir la ruta del modelo como constante
 const MODEL_PATH = "/paredes/TheOFFice_Paredes_v09.glb";
-// Definir el ID del GainMap (debe coincidir con el ID en gainmaps-config.js)
-const GAINMAP_ID = "paredes_texture";
+const TEXTURE_PATH = "/paredes/Paredes_Bake_8k_v02.webp";
 
 export function Paredes(props) {
   // Precargar el modelo una sola vez (evita duplicaciones)
   usePreloadModel(MODEL_PATH);
+  usePreloadTexture(TEXTURE_PATH);
 
   // Cargar el modelo y la textura
   const { nodes, materials } = useGLTF(MODEL_PATH);
-  // Obtener la textura GainMap (sistema centralizado de GainMaps)
-  const texture = useGainMapTexture(GAINMAP_ID);
 
-  // Material a usar (con la textura GainMap si está disponible)
+  const texture = useTexture(TEXTURE_PATH);
+
   const textureMaterial = useMemo(() => {
     if (!texture) {
       // Fallback al material original si la textura no está disponible
       return materials["Paredes LOW"];
     }
     // Crear un material con la textura GainMap
-    return new THREE.MeshBasicMaterial({ map: texture });
+    return new THREE.MeshBasicMaterial({ map: texture, color: 0xbbbbbb });
   }, [texture, materials]);
 
   // Hooks para interacción
