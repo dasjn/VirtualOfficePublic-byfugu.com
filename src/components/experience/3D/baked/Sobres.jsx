@@ -1,7 +1,9 @@
 /* eslint-disable react/no-unknown-property */
 import React, { useMemo, useRef } from "react";
-import { useGLTF, useTexture } from "@react-three/drei";
+import { meshBounds, useGLTF, useTexture } from "@react-three/drei";
 import * as THREE from "three";
+import { usePointerInteraction } from "@/hooks/usePointerInteraction";
+import TextComponent, { CARD_NAMES } from "../../TextComponent";
 
 export default function Sobres(props) {
   const { nodes } = useGLTF("/sobres/TheONFFICE_Sobres_v01.glb");
@@ -17,8 +19,22 @@ export default function Sobres(props) {
     });
   }, [texture]);
 
+  const {
+    objectRef: sobresRef,
+    isNearby,
+    handlePointerOver,
+    handlePointerOut,
+  } = usePointerInteraction({
+    maxDistance: 4,
+  });
+
   return (
-    <group {...props} dispose={null}>
+    <group
+      ref={sobresRef}
+      onPointerOver={handlePointerOver}
+      onPointerOut={handlePointerOut}
+      raycast={meshBounds}
+    >
       <mesh
         scale={1.5}
         castShadow
@@ -44,6 +60,11 @@ export default function Sobres(props) {
         material={textureMaterial}
         position={[-3.431, 0.735, -7.636]}
         rotation={[0, 0.166, 0]}
+      />
+      <TextComponent
+        position={[0, 1, 0]}
+        cardName={CARD_NAMES.Sobres}
+        isNearby={isNearby}
       />
     </group>
   );

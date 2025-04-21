@@ -15,6 +15,7 @@ export const CARD_NAMES = {
   GoogleHome: "GoogleHome",
   MeetingRoom: "MeetingRoom",
   Exit: "Exit",
+  Sobres: "Sobres",
 };
 
 // Datos de las tarjetas
@@ -76,6 +77,11 @@ const cardData = [
     title: "Offline? Not through here.",
     description:
       "Want to leave? Just press 'Escape' and close the tab. We won't take it personally",
+  },
+  {
+    name: "Sobres",
+    title: "These invites? Yeah… we forgot to send them out too.",
+    description: "Good thing you found your way in anyway.",
   },
 ];
 

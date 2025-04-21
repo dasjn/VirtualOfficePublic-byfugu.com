@@ -166,94 +166,107 @@ export default function UI3D() {
 
         {/* Audio controls and Keyboard controls (for desktop devices) - in a single container with gap */}
         {!isTouchDevice && experienceMounted && (
-          <div className="absolute bottom-[2%] left-[2%] flex flex-col gap-4">
-            {/* Audio controls with Tailwind animation */}
-            <div
-              className={`z-[9999] select-none flex flex-col p-4 w-auto gradient-keyboard bg-gradient-to-b from-[#39393960] to-[#61616160] rounded-3xl backdrop-blur-xl custom-box-shadow pointer-events-auto transform transition-all duration-500 ease-out ${
-                showAudioControl && sceneFadeIn
-                  ? "opacity-100 translate-y-0"
-                  : "opacity-0 translate-y-5"
-              }`}
-            >
-              <div className="flex items-center space-x-4">
-                <div className="flex-shrink-0 w-16 h-16">
-                  {/* Key attribute forces re-render when isAudioPlaying changes */}
-                  <DotLottieReact
-                    key={lottieKey}
-                    ref={lottieRef}
-                    src="audio/Sound_ONFFICE_v2.lottie"
-                    loop={isAudioPlaying}
-                    autoplay={true}
-                    style={{
-                      opacity: isAudioPlaying ? 1 : 0.5,
-                      width: "100%",
-                      height: "100%",
-                    }}
+          <>
+            <div className="absolute top-[2%] right-[2%] flex flex-col gap-4">
+              <img
+                className={`z-[9999] pointer-events-none transform transition-all duration-500 ease-out ${
+                  showAudioControl && sceneFadeIn
+                    ? "opacity-100 translate-y-0"
+                    : "opacity-0 translate-y-5"
+                }`}
+                src={"/svg/TheOnffice.svg"}
+                alt="Logo"
+              />
+            </div>
+            <div className="absolute bottom-[2%] left-[2%] flex flex-col gap-4">
+              {/* Audio controls with Tailwind animation */}
+              <div
+                className={`z-[9999] select-none flex flex-col p-4 w-auto gradient-keyboard bg-gradient-to-b from-[#39393960] to-[#61616160] rounded-3xl backdrop-blur-xl custom-box-shadow pointer-events-auto transform transition-all duration-500 ease-out ${
+                  showAudioControl && sceneFadeIn
+                    ? "opacity-100 translate-y-0"
+                    : "opacity-0 translate-y-5"
+                }`}
+              >
+                <div className="flex items-center space-x-4">
+                  <div className="flex-shrink-0 w-16 h-16">
+                    {/* Key attribute forces re-render when isAudioPlaying changes */}
+                    <DotLottieReact
+                      key={lottieKey}
+                      ref={lottieRef}
+                      src="audio/Sound_ONFFICE_v2.lottie"
+                      loop={isAudioPlaying}
+                      autoplay={true}
+                      style={{
+                        opacity: isAudioPlaying ? 1 : 0.5,
+                        width: "100%",
+                        height: "100%",
+                      }}
+                    />
+                  </div>
+                  <div className="flex flex-col">
+                    <span className="text-xs opacity-70">Now Playing:</span>
+                    <span className="font-medium">
+                      {isAudioPlaying
+                        ? formatAudioName(selectedAudio?.name)
+                        : "Audio Paused"}
+                    </span>
+                    <span className="text-xs opacity-70 mt-1">
+                      Press M to toggle audio
+                    </span>
+                  </div>
+                </div>
+              </div>
+
+              {/* Keyboard controls with Tailwind animation */}
+              <div
+                className={`z-[9999] select-none flex flex-col p-4 w-60 h-64 gradient-keyboard bg-gradient-to-b from-[#39393960] to-[#61616160] rounded-3xl backdrop-blur-xl custom-box-shadow pointer-events-auto transform transition-all duration-500 ease-out ${
+                  showKeyboardControl && sceneFadeIn
+                    ? "opacity-100 translate-y-0"
+                    : "opacity-0 translate-y-5"
+                }`}
+              >
+                {/* Upper section with Escape and Mute keys */}
+                <div className="flex h-2/5 justify-center items-center w-full">
+                  <div className="flex flex-row gap-8 justify-center items-center w-full">
+                    {/* Escape key with fixed width container */}
+                    <div className="flex flex-col gap-1 items-center w-20">
+                      <Key
+                        keyName="escapeKeyPressed"
+                        keyLetter="Esc"
+                        keyTitle="Stop"
+                        keyIcon="pause"
+                      />
+                    </div>
+
+                    {/* Mute key with fixed width container */}
+                    <div className="flex flex-col gap-1 items-center w-20">
+                      <Key
+                        keyName="muteKeyPressed"
+                        keyLetter="M"
+                        keyTitle={isAudioPlaying ? "Mute" : "Unmute"}
+                        keyIcon={isAudioPlaying ? "volume_up" : "volume_off"}
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                {/* Lower section with WASD keys */}
+                <div className="flex flex-col h-3/5 gap-1 justify-end items-center">
+                  <Key
+                    keyName="forwardKeyPressed"
+                    keyLetter="W"
+                    keyTitle="Move"
+                    keyIcon="footprint"
                   />
-                </div>
-                <div className="flex flex-col">
-                  <span className="text-xs opacity-70">Now Playing:</span>
-                  <span className="font-medium">
-                    {isAudioPlaying
-                      ? formatAudioName(selectedAudio?.name)
-                      : "Audio Paused"}
-                  </span>
-                  <span className="text-xs opacity-70 mt-1">
-                    Press M to toggle audio
-                  </span>
-                </div>
-              </div>
-            </div>
-
-            {/* Keyboard controls with Tailwind animation */}
-            <div
-              className={`z-[9999] select-none flex flex-col p-4 w-60 h-64 gradient-keyboard bg-gradient-to-b from-[#39393960] to-[#61616160] rounded-3xl backdrop-blur-xl custom-box-shadow pointer-events-auto transform transition-all duration-500 ease-out ${
-                showKeyboardControl && sceneFadeIn
-                  ? "opacity-100 translate-y-0"
-                  : "opacity-0 translate-y-5"
-              }`}
-            >
-              {/* Upper section with Escape and Mute keys */}
-              <div className="flex h-2/5 justify-center items-center w-full">
-                <div className="flex flex-row gap-8 justify-center items-center w-full">
-                  {/* Escape key with fixed width container */}
-                  <div className="flex flex-col gap-1 items-center w-20">
-                    <Key
-                      keyName="escapeKeyPressed"
-                      keyLetter="Esc"
-                      keyTitle="Stop"
-                      keyIcon="pause"
-                    />
-                  </div>
-
-                  {/* Mute key with fixed width container */}
-                  <div className="flex flex-col gap-1 items-center w-20">
-                    <Key
-                      keyName="muteKeyPressed"
-                      keyLetter="M"
-                      keyTitle={isAudioPlaying ? "Mute" : "Unmute"}
-                      keyIcon={isAudioPlaying ? "volume_up" : "volume_off"}
-                    />
+                  <div className="flex flex-row gap-1 self-center">
+                    <Key keyName="leftKeyPressed" keyLetter="A" />
+                    <Key keyName="backwardKeyPressed" keyLetter="S" />
+                    <Key keyName="rightKeyPressed" keyLetter="D" />
                   </div>
                 </div>
               </div>
-
-              {/* Lower section with WASD keys */}
-              <div className="flex flex-col h-3/5 gap-1 justify-end items-center">
-                <Key
-                  keyName="forwardKeyPressed"
-                  keyLetter="W"
-                  keyTitle="Move"
-                  keyIcon="footprint"
-                />
-                <div className="flex flex-row gap-1 self-center">
-                  <Key keyName="leftKeyPressed" keyLetter="A" />
-                  <Key keyName="backwardKeyPressed" keyLetter="S" />
-                  <Key keyName="rightKeyPressed" keyLetter="D" />
-                </div>
-              </div>
             </div>
-          </div>
+          </>
         )}
       </div>
     </>

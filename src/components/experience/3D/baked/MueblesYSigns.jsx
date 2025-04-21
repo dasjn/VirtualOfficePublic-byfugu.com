@@ -1,8 +1,9 @@
 /* eslint-disable react/no-unknown-property */
 import { useEffect, useMemo } from "react";
-import { useGLTF, useTexture } from "@react-three/drei";
+import { Instance, Instances, useGLTF, useTexture } from "@react-three/drei";
 import * as THREE from "three";
 import { usePreloadModel, usePreloadTexture } from "@/hooks/usePreloadHooks";
+import { RigidBody } from "@react-three/rapier";
 
 // Constantes para rutas de modelos
 const MODEL_PATHS = {
@@ -53,8 +54,6 @@ export default function MueblesYSigns(props) {
       signs: new THREE.MeshBasicMaterial({
         map: texture,
         color: 0xcccccc,
-        emissive: 0x333333,
-        emissiveIntensity: 0.2,
       }),
     };
   }, [texture, nodesSetup]);
@@ -63,69 +62,85 @@ export default function MueblesYSigns(props) {
     <group {...props} dispose={null}>
       {/* Mesa de setup con sillas */}
       <group>
-        <mesh
-          castShadow
-          receiveShadow
-          geometry={nodesSetup.Mesa_SetUp002.geometry}
-          material={materials.setup}
-          position={[-2.918, 0.484, -4.449]}
-        />
-        <mesh
-          castShadow
-          receiveShadow
-          geometry={nodesSetup.Silla_01.geometry}
-          material={materials.setup}
-          position={[-2.449, 0.554, -5.099]}
-          rotation={[0, -0.682, Math.PI / 2]}
-        />
-        <mesh
-          castShadow
-          receiveShadow
-          geometry={nodesSetup.Silla_02.geometry}
-          material={materials.setup}
-          position={[-2.802, 0.554, -6.526]}
-          rotation={[0, -1.566, 1.571]}
-        />
-        <mesh
-          castShadow
-          receiveShadow
-          geometry={nodesSetup.Silla_03.geometry}
-          material={materials.setup}
-          position={[-2.802, 0.554, -8.381]}
-          rotation={[0, -1.566, 1.571]}
-        />
+        <RigidBody type="fixed" colliders="cuboid">
+          <mesh
+            castShadow
+            receiveShadow
+            geometry={nodesSetup.Mesa_SetUp002.geometry}
+            material={materials.setup}
+            position={[-2.918, 0.484, -4.449]}
+          />
+        </RigidBody>
+        <RigidBody type="fixed" colliders="cuboid">
+          <mesh
+            castShadow
+            receiveShadow
+            geometry={nodesSetup.Silla_01.geometry}
+            material={materials.setup}
+            position={[-2.449, 0.554, -5.099]}
+            rotation={[0, -0.682, Math.PI / 2]}
+          />
+        </RigidBody>
+        <RigidBody type="fixed" colliders="cuboid">
+          <mesh
+            castShadow
+            receiveShadow
+            geometry={nodesSetup.Silla_02.geometry}
+            material={materials.setup}
+            position={[-2.802, 0.554, -6.526]}
+            rotation={[0, -1.566, 1.571]}
+          />
+        </RigidBody>
+        <RigidBody type="fixed" colliders="cuboid">
+          <mesh
+            castShadow
+            receiveShadow
+            geometry={nodesSetup.Silla_03.geometry}
+            material={materials.setup}
+            position={[-2.802, 0.554, -8.381]}
+            rotation={[0, -1.566, 1.571]}
+          />
+        </RigidBody>
       </group>
 
       {/* Mesa de oficina con butacas */}
       <group>
-        <mesh
-          castShadow
-          receiveShadow
-          geometry={nodesOffice.Tablero_Mesa001.geometry}
-          material={materials.office}
-          position={[0.006, 0.252, -0.157]}
-        />
-        <mesh
-          castShadow
-          receiveShadow
-          geometry={nodesOffice.Butaca_2.geometry}
-          material={materials.office}
-          position={[-1.02, 0.01, -0.304]}
-        />
-        <mesh
-          castShadow
-          receiveShadow
-          geometry={nodesOffice.Butaca_3.geometry}
-          material={materials.office}
-          position={[-0.288, 0.01, 0.84]}
-        />
-        <mesh
-          castShadow
-          receiveShadow
-          geometry={nodesOffice.Butaca_1.geometry}
-          material={materials.office}
-          position={[0.944, 0.01, -0.63]}
-        />
+        <RigidBody type="fixed" colliders="cuboid">
+          <mesh
+            castShadow
+            receiveShadow
+            geometry={nodesOffice.Tablero_Mesa001.geometry}
+            material={materials.office}
+            position={[0.006, 0.252, -0.157]}
+          />
+        </RigidBody>
+        <RigidBody type="fixed" colliders="cuboid">
+          <mesh
+            castShadow
+            receiveShadow
+            geometry={nodesOffice.Butaca_2.geometry}
+            material={materials.office}
+            position={[-1.02, 0.01, -0.304]}
+          />
+        </RigidBody>
+        <RigidBody type="fixed" colliders="cuboid">
+          <mesh
+            castShadow
+            receiveShadow
+            geometry={nodesOffice.Butaca_3.geometry}
+            material={materials.office}
+            position={[-0.288, 0.01, 0.84]}
+          />
+        </RigidBody>
+        <RigidBody type="fixed" colliders="cuboid">
+          <mesh
+            castShadow
+            receiveShadow
+            geometry={nodesOffice.Butaca_1.geometry}
+            material={materials.office}
+            position={[0.944, 0.01, -0.63]}
+          />
+        </RigidBody>
       </group>
 
       {/* Carteles con material emissive para destacar */}
