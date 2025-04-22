@@ -1,36 +1,18 @@
 /* eslint-disable react/no-unknown-property */
 import { useEffect, useMemo } from "react";
-import { Instance, Instances, useGLTF, useTexture } from "@react-three/drei";
+import { useGLTF, useTexture } from "@react-three/drei";
 import * as THREE from "three";
-import { usePreloadModel, usePreloadTexture } from "@/hooks/usePreloadHooks";
 import { RigidBody } from "@react-three/rapier";
-
-// Constantes para rutas de modelos
-const MODEL_PATHS = {
-  SETUP: "/muebles_y_signs/TheOFFice_SetUpMesa_Bake_v06.glb",
-  OFFICE: "/muebles_y_signs/TheOFFice_OfficeMesa_Bake_v06.glb",
-  SIGN_MR: "/muebles_y_signs/TheOFFice_SignMeetingRoom_Bake_v06.glb",
-  SIGN_WC: "/muebles_y_signs/TheOFFice_SignWC_Bake_v06.glb",
-};
-
-const TEXTURE_PATH = "/muebles_y_signs/MueblesySigns_Bake_v01.webp";
+import { getAssetPath } from "@/data/assets";
 
 export default function MueblesYSigns(props) {
-  // Precargar todos los modelos
-  usePreloadModel(MODEL_PATHS.SETUP);
-  usePreloadModel(MODEL_PATHS.OFFICE);
-  usePreloadModel(MODEL_PATHS.SIGN_MR);
-  usePreloadModel(MODEL_PATHS.SIGN_WC);
-  usePreloadTexture(TEXTURE_PATH);
-
-  // Cargar los modelos
-  const { nodes: nodesSetup } = useGLTF(MODEL_PATHS.SETUP);
-  const { nodes: nodesOffice } = useGLTF(MODEL_PATHS.OFFICE);
-  const { nodes: nodesMR } = useGLTF(MODEL_PATHS.SIGN_MR);
-  const { nodes: nodesWC } = useGLTF(MODEL_PATHS.SIGN_WC);
+  const { nodes: nodesSetup } = useGLTF(getAssetPath("SETUP_MESA_BAKED"));
+  const { nodes: nodesOffice } = useGLTF(getAssetPath("MESA_OFFICE_BAKED"));
+  const { nodes: nodesMR } = useGLTF(getAssetPath("SIGN_MEETING_BAKED"));
+  const { nodes: nodesWC } = useGLTF(getAssetPath("SIGN_WC_BAKED"));
 
   // Cargar textura
-  const texture = useTexture(TEXTURE_PATH);
+  const texture = useTexture(getAssetPath("MUEBLES_SIGNS_BAKE"));
 
   // Crear varios materiales con diferentes propiedades
   const materials = useMemo(() => {

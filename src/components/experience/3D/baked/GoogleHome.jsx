@@ -63,5 +63,3 @@ export function GoogleHome({ material, ...props }) {
     </group>
   );
 }
-
-useGLTF.preload("/small_assets_baked/TheOFFice_GoogleHome_Baked_v02.glb");

@@ -27,5 +27,3 @@ export default function Office(props) {
     </group>
   );
 }
-
-useGLTF.preload("/TheOFFiceFUGU_Environment_v4.glb");

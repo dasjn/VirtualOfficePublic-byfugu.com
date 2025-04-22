@@ -21,6 +21,7 @@ import { initialPosition } from "./data/constants";
 
 // Removida la importación de useGainMapProgress
 import { useExperience } from "./hooks/useExperience";
+import { preloadAssets } from "./utils/preloadAssets";
 
 export default function App() {
   // Estado original
@@ -30,6 +31,10 @@ export default function App() {
   const [assetsAreReady, setAssetsAreReady] = useState(false);
   // Estado para controlar si el tiempo mínimo ha pasado
   const [minimumTimeElapsed, setMinimumTimeElapsed] = useState(false);
+
+  useEffect(() => {
+    preloadAssets(); // precarga todos los assets
+  }, []);
 
   // Obtener la función de actualización del tipo de dispositivo y el estado actual
   const {
@@ -46,7 +51,8 @@ export default function App() {
   const transitionTimerRef = useRef(null);
 
   // Obtener progreso solo de drei
-  const { progress } = useProgress();
+  const { progress, item, total, active, errors } = useProgress();
+  console.log(progress, item, total, active, errors);
 
   // Constante para tiempo mínimo y máximo de carga
   const MINIMUM_LOADING_TIME = 5000; // 5 segundos

@@ -34,5 +34,3 @@ export function ManetasPuertas({ material, ...props }) {
     </group>
   );
 }
-
-useGLTF.preload("small_assets_baked/TheOFFice_ManetasPuerta_Baked_v01.glb");

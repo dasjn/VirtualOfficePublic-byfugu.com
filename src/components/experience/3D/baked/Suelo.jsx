@@ -1,22 +1,14 @@
 /* eslint-disable react/no-unknown-property */
 import { useGLTF, useTexture } from "@react-three/drei";
-import { usePreloadModel, usePreloadTexture } from "@/hooks/usePreloadHooks";
 import { useEffect, useMemo } from "react";
 import * as THREE from "three";
-
-// Constantes para los recursos
-const MODEL_PATH = "/suelo/TheOFFice_Suelo_Baked_v03.glb";
-const TEXTURE_PATH = "/suelo/Bake_Suelo_v03.webp";
+import { getAssetPath } from "@/data/assets";
 
 export function Suelo(props) {
-  // Precargar el modelo (evita duplicaciones)
-  usePreloadModel(MODEL_PATH);
-  usePreloadTexture(TEXTURE_PATH);
-
-  const texture = useTexture(TEXTURE_PATH);
+  const texture = useTexture(getAssetPath("SUELO_BAKE"));
 
   // Cargar el modelo normalmente
-  const { nodes } = useGLTF(MODEL_PATH);
+  const { nodes } = useGLTF(getAssetPath("SUELO_BAKED"));
 
   const textureMaterial = useMemo(() => {
     if (!texture) {

@@ -18,5 +18,3 @@ export function Sofa(props) {
     </RigidBody>
   );
 }
-
-useGLTF.preload("/sofa/TheOFFice_Sofa_Shader_v03.glb");

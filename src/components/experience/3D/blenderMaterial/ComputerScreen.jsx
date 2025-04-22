@@ -124,5 +124,3 @@ export default function ComputerScreen(props) {
     </group>
   );
 }
-
-useGLTF.preload("/computer_screen/TheOFFice_PcOn_Screen_Shader_v01.glb");

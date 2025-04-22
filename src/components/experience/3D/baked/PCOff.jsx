@@ -92,5 +92,3 @@ export function PCOff({ material, ...props }) {
     </group>
   );
 }
-
-useGLTF.preload("small_assets_baked/TheOFFice_PcOFF_Baked_v02.glb");

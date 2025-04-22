@@ -21,5 +21,3 @@ export function MarcoCuadro02({ material, ...props }) {
     </group>
   );
 }
-
-useGLTF.preload("/big_assets_baked/TheOFFice_MarcoCuadro02_Baked_v01.glb");

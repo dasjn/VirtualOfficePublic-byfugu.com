@@ -4,20 +4,13 @@ import { meshBounds, useGLTF, useTexture } from "@react-three/drei";
 import TextComponent, { CARD_NAMES } from "../../TextComponent";
 import { usePointerInteraction } from "@/hooks/usePointerInteraction";
 import * as THREE from "three";
-import { usePreloadModel, usePreloadTexture } from "@/hooks/usePreloadHooks";
-
-const MODEL_PATH = "/paredes/TheOFFice_Paredes_v09.glb";
-const TEXTURE_PATH = "/paredes/Paredes_Bake_8k_v02.webp";
+import { getAssetPath } from "@/data/assets";
 
 export function Paredes(props) {
-  // Precargar el modelo una sola vez (evita duplicaciones)
-  usePreloadModel(MODEL_PATH);
-  usePreloadTexture(TEXTURE_PATH);
-
   // Cargar el modelo y la textura
-  const { nodes, materials } = useGLTF(MODEL_PATH);
+  const { nodes, materials } = useGLTF(getAssetPath("PAREDES"));
 
-  const texture = useTexture(TEXTURE_PATH);
+  const texture = useTexture(getAssetPath("PAREDES_BAKE"));
 
   const textureMaterial = useMemo(() => {
     if (!texture) {

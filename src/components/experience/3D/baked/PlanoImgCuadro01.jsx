@@ -53,5 +53,3 @@ export function PlanoImgCuadro01(props) {
     </group>
   );
 }
-
-useGLTF.preload("/big_assets_baked/TheOFFice_PlanoImgCuadro_v01.glb");

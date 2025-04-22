@@ -20,5 +20,3 @@ export default function GlobosCielo(props) {
     </group>
   );
 }
-
-useGLTF.preload("/globos_cielo/TheOFFice_GlobosCielo_v01.glb");

@@ -61,5 +61,3 @@ export function Tarjetas({ material, ...props }) {
     </group>
   );
 }
-
-useGLTF.preload("/small_assets_baked/TheOFFice_Tarjetas_Baked_v02.glb");

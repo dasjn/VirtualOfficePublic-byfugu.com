@@ -5,17 +5,20 @@ import TextComponent, { CARD_NAMES } from "../../TextComponent";
 import { useEffect, useRef } from "react";
 import * as THREE from "three";
 
-export function Latas(props) {
-  const { nodes, materials } = useGLTF("/latas/TheOFFice_Lata_Shader_v02.glb");
+export function Piedras(props) {
+  const { nodes, materials } = useGLTF(
+    "/piedras_jardin/TheOFFice_Piedras_Shader_v02.glb"
+  );
+
   const groupRef = useRef();
 
   const {
-    objectRef: latasRef,
+    objectRef: gardenRef,
     isNearby,
     handlePointerOver,
     handlePointerOut,
   } = usePointerInteraction({
-    maxDistance: 4,
+    maxDistance: 5,
   });
 
   // Solución para el problema de frustum culling
@@ -26,14 +29,13 @@ export function Latas(props) {
         // Crear un objeto para calcular el bounding box
         const box = new THREE.Box3();
         const positions = [
-          new THREE.Vector3(-0.036, 0.974, -0.353),
-          new THREE.Vector3(0.112, 0.974, -0.434),
-          new THREE.Vector3(0.117, 0.974, -0.32),
-          new THREE.Vector3(-0.268, 0.974, -0.48),
+          new THREE.Vector3(-6.765, 0.555, 3.204),
+          new THREE.Vector3(-8.192, 0.534, 0.863),
+          new THREE.Vector3(-6.236, 0.537, -0.088),
         ];
 
         // Ampliar el tamaño del box para cada instancia
-        const instanceSize = 0.1; // Ajustar según el tamaño real de las latas
+        const instanceSize = 0.5; // Ajustar según el tamaño real de las piedras
         positions.forEach((pos) => {
           box.expandByPoint(
             new THREE.Vector3(
@@ -59,7 +61,7 @@ export function Latas(props) {
             box.getBoundingSphere(sphere);
 
             // Hacer la bounding sphere ligeramente más grande para asegurarnos
-            sphere.radius *= 1.2;
+            sphere.radius *= 1.5; // Incrementado para piedras que pueden ser más grandes
 
             // Actualizar la bounding sphere de la mesh
             child.boundingSphere = sphere;
@@ -74,41 +76,30 @@ export function Latas(props) {
   }, []);
 
   return (
-    <group
-      ref={(node) => {
-        // Asignar ambas referencias
-        groupRef.current = node;
-        if (latasRef) latasRef.current = node;
-      }}
-      {...props}
-      dispose={null}
-      onPointerOver={handlePointerOver}
-      onPointerOut={handlePointerOut}
-      raycast={meshBounds}
-    >
-      <Instances geometry={nodes.Lata_2001.geometry} material={materials.Lata}>
-        <Instance position={[-0.036, 0.974, -0.353]} scale={0.015} />
+    <group ref={groupRef} {...props} dispose={null}>
+      <Instances
+        geometry={nodes.Cube070.geometry}
+        material={materials["Piedra Volcanica LOW"]}
+      >
+        <Instance position={[-6.765, 0.555, 3.204]} rotation={[0, 0.726, 0]} />
         <Instance
-          position={[0.112, 0.974, -0.434]}
-          rotation={[0, 1.403, 0]}
-          scale={0.015}
+          position={[-8.192, 0.534, 0.863]}
+          rotation={[-1.585, 0.037, -0.941]}
         />
         <Instance
-          position={[0.117, 0.974, -0.32]}
-          rotation={[Math.PI, -1.152, Math.PI]}
-          scale={0.015}
-        />
-        <Instance
-          position={[-0.268, 0.974, -0.48]}
-          rotation={[0, 0.185, 0]}
-          scale={0.015}
-        />
+          ref={gardenRef}
+          onPointerOver={handlePointerOver}
+          onPointerOut={handlePointerOut}
+          position={[-6.236, 0.537, -0.088]}
+          rotation={[0.109, 1.179, -1.665]}
+        >
+          <TextComponent
+            position={[0, 1, 0]}
+            cardName={CARD_NAMES.Piedras}
+            isNearby={isNearby}
+          />
+        </Instance>
       </Instances>
-      <TextComponent
-        position={[0, 1, 0]}
-        cardName={CARD_NAMES.Latas}
-        isNearby={isNearby}
-      />
     </group>
   );
 }

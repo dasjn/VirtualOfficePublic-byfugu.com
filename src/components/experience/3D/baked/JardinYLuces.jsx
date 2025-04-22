@@ -4,26 +4,14 @@ import { Instance, Instances, useGLTF, useTexture } from "@react-three/drei";
 import TextComponent, { CARD_NAMES } from "../../TextComponent";
 import { usePointerInteraction } from "@/hooks/usePointerInteraction";
 import * as THREE from "three";
-import { usePreloadModel, usePreloadTexture } from "@/hooks/usePreloadHooks";
-
-// Definir rutas como constantes
-const SUELO_PATH = "/jardin_y_luces/TheOFFice_SueloJardin_Baked_v02.glb";
-const LUCES_PATH = "/jardin_y_luces/TheOFFice_Luces_Baked_v02.glb";
-const PIEDRAS_PATH = "/jardin_y_luces/TheOFFice_Piedras_Baked_v02.glb";
-const TEXTURE_PATH = "/jardin_y_luces/JardinLuces_Bake_v01.webp";
+import { getAssetPath } from "@/data/assets";
 
 export default function JardinYluces(props) {
-  // Precargar recursos
-  usePreloadModel(SUELO_PATH);
-  usePreloadModel(LUCES_PATH);
-  usePreloadModel(PIEDRAS_PATH);
-  usePreloadTexture(TEXTURE_PATH);
-
   // Cargar modelos y textura
-  const { nodes: nodesSuelo } = useGLTF(SUELO_PATH);
-  const { nodes: nodesLuces } = useGLTF(LUCES_PATH);
-  const { nodes: nodesPiedras } = useGLTF(PIEDRAS_PATH);
-  const texture = useTexture(TEXTURE_PATH);
+  const { nodes: nodesSuelo } = useGLTF(getAssetPath("JARDIN_SUELO_BAKED"));
+  const { nodes: nodesLuces } = useGLTF(getAssetPath("JARDIN_LUCES_BAKED"));
+  const { nodes: nodesPiedras } = useGLTF(getAssetPath("JARDIN_PIEDRAS_BAKED"));
+  const texture = useTexture(getAssetPath("JARDIN_LUCES_BAKE"));
 
   const piedrasRef = useRef();
 

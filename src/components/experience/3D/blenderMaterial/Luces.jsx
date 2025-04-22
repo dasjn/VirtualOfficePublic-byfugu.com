@@ -29,5 +29,3 @@ export function Luces(props) {
     </group>
   );
 }
-
-useGLTF.preload("/luces/TheOFFice_Luces_Shader_v01.glb");

@@ -1,5 +1,5 @@
 /* eslint-disable react/no-unknown-property */
-import React, { useState } from "react";
+import React, { useRef } from "react";
 import { useGLTF, meshBounds } from "@react-three/drei";
 import * as THREE from "three";
 import { useFrame } from "@react-three/fiber";
@@ -10,30 +10,32 @@ import TextComponent, { CARD_NAMES } from "../../TextComponent";
 
 export function GardenSpine(props) {
   const { nodes, materials } = useGLTF("/FUGU_Jardin_Espina_v01.glb");
-  const [dummy] = useState(() => new THREE.Object3D());
+  const dummy = useRef(new THREE.Object3D());
 
   const {
     objectRef: spineRef,
     isNearby,
     handlePointerOver,
     handlePointerOut,
-  } = usePointerInteraction({
-    maxDistance: 4,
-  });
+  } = usePointerInteraction({ maxDistance: 4 });
 
   useFrame((state, dt) => {
-    const { x, y, z } = state.camera.position;
+    const { x, z } = state.camera.position;
 
     if (spineRef.current) {
-      // Make the spine always face the camera
-      dummy.position.copy(spineRef.current.position);
-      dummy.lookAt(x, -10, z);
-      easing.dampQ(spineRef.current.quaternion, dummy.quaternion, 0.5, dt);
+      dummy.current.position.copy(spineRef.current.position);
+      dummy.current.lookAt(x, -10, z); // keep -10 if that's what works
+      easing.dampQ(
+        spineRef.current.quaternion,
+        dummy.current.quaternion,
+        0.5,
+        dt
+      );
     }
   });
 
   return (
-    <group {...props} dispose={null}>
+    <group {...props}>
       <mesh
         ref={spineRef}
         castShadow
@@ -47,7 +49,6 @@ export function GardenSpine(props) {
         onPointerOut={handlePointerOut}
         raycast={meshBounds}
       >
-        {/* Usar CARD_NAMES para autocompletado */}
         <TextComponent
           position={[1, 0, 0]}
           cardName={CARD_NAMES.GardenSpine}

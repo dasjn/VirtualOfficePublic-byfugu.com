@@ -23,5 +23,3 @@ export function MarcoTV({ material, ...props }) {
     </group>
   );
 }
-
-useGLTF.preload("/big_assets_baked/TheOFFice_MarcoTV_v01.glb");

@@ -32,17 +32,10 @@ import { PCOff } from "./3D/baked/PCOff";
 import { PCOn } from "./3D/baked/PCOn";
 import { Tarjetas } from "./3D/baked/Tarjetas";
 import { Latas } from "./3D/blenderMaterial/Latas";
-import { SetUpMesa } from "./3D/blenderMaterial/SetUpMesa";
-import { OfficeMesa } from "./3D/blenderMaterial/OfficeMesa";
-import { SueloJardin } from "./3D/blenderMaterial/SueloJardin";
-import { Piedras } from "./3D/blenderMaterial/Piedras";
-import { MeetingRoomSign } from "./3D/blenderMaterial/MeetingRoomSign";
-import { WCSign } from "./3D/blenderMaterial/WCSign";
 import { Sofa } from "./3D/blenderMaterial/Sofa";
 import { MarcoTV } from "./3D/baked/MarcoTV";
 import { CameraController } from "@/controllers/CameraController";
 import { useThree } from "@react-three/fiber";
-import TextComponent from "./TextComponent";
 import { GardenSpine } from "./3D/blenderMaterial/GardenSpine";
 import GardenGlass from "./3D/blenderMaterial/GardenGlass";
 import { MobileJoysticksLogic } from "./MobileJoysticks";
@@ -74,7 +67,7 @@ export default function Experience() {
     // Notificar que la experiencia está montada
     setTimeout(() => {
       setExperienceMounted(true);
-    }, 100); // Pequeño retraso para asegurar que todo está renderizado
+    }, 1000); // Pequeño retraso para asegurar que todo está renderizado
 
     return () => {
       // Limpiar el estado cuando el componente se desmonta

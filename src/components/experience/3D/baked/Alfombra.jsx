@@ -2,17 +2,14 @@
 import { useGLTF } from "@react-three/drei";
 import * as THREE from "three";
 import PropTypes from "prop-types";
-import { usePreloadModel } from "@/hooks/usePreloadHooks";
-
-const MODEL_PATH = "/big_assets_baked/TheOFFice_Alfombra_Baked_v01.glb";
+import { getAssetPath } from "@/data/assets";
 
 Alfombra.propTypes = {
   material: PropTypes.instanceOf(THREE.Material),
 };
 
 export function Alfombra({ material, ...props }) {
-  usePreloadModel(MODEL_PATH);
-  const { nodes } = useGLTF(MODEL_PATH);
+  const { nodes } = useGLTF(getAssetPath("ALFOMBRA"));
 
   return (
     <group {...props} dispose={null}>

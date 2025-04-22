@@ -32,8 +32,6 @@ export default function UI3D() {
   const [lottieKey, setLottieKey] = useState(0);
   // Añade este estado al componente UI3D
   const [inWelcomeTransition, setInWelcomeTransition] = useState(false);
-  // Reference to Lottie component
-  const lottieRef = useRef(null);
 
   useEffect(() => {
     if (
@@ -192,7 +190,6 @@ export default function UI3D() {
                     {/* Key attribute forces re-render when isAudioPlaying changes */}
                     <DotLottieReact
                       key={lottieKey}
-                      ref={lottieRef}
                       src="audio/Sound_ONFFICE_v2.lottie"
                       loop={isAudioPlaying}
                       autoplay={true}

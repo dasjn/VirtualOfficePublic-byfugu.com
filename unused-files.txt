@@ -1,0 +1,14 @@
+src/App.css
+src/assets/react.svg
+src/data/gainmaps-config.js
+src/hooks/useGainMapPreloader.js
+src/hooks/useGainMapTexture.js
+src/hooks/usePreloadHooks.js
+src/utils/utils.js
+src/components/experience/RotationMessage.jsx
+src/components/experience/3D/blenderMaterial/MeetingRoomSign.jsx
+src/components/experience/3D/blenderMaterial/OfficeMesa.jsx
+src/components/experience/3D/blenderMaterial/Piedras.jsx
+src/components/experience/3D/blenderMaterial/SetUpMesa.jsx
+src/components/experience/3D/blenderMaterial/SueloJardin.jsx
+src/components/experience/3D/blenderMaterial/WCSign.jsx

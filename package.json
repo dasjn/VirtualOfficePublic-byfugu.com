@@ -7,7 +7,8 @@
     "dev": "vite --host",
     "build": "vite build",
     "lint": "eslint .",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "generate:asset-types": "node scripts/generate-asset-types.mjs"
   },
   "dependencies": {
     "@lottiefiles/dotlottie-react": "^0.13.3",
@@ -46,6 +47,7 @@
     "globals": "^15.11.0",
     "postcss": "^8.4.47",
     "tailwindcss": "^3.4.14",
-    "vite": "^6.2.6"
+    "vite": "^6.2.6",
+    "vite-plugin-unused-files": "^0.1.5"
   }
 }

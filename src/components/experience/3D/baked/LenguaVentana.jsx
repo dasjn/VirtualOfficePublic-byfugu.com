@@ -44,5 +44,3 @@ export function LenguaVentana({ material, ...props }) {
     </group>
   );
 }
-
-useGLTF.preload("/big_assets_baked/TheOFFice_LenguaVentana_Baked_v01.glb");

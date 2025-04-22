@@ -27,5 +27,3 @@ export function BotonPuerta({ material, ...props }) {
     </group>
   );
 }
-
-useGLTF.preload("/small_assets_baked/TheOFFice_BotonPuerta_Baked_v01.glb");

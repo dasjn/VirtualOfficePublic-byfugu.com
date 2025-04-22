@@ -69,5 +69,3 @@ export default function Sobres(props) {
     </group>
   );
 }
-
-useGLTF.preload("/sobres/TheONFFICE_Sobres_v01.glb");

@@ -21,5 +21,3 @@ export function MarcoVentana({ material, ...props }) {
     </group>
   );
 }
-
-useGLTF.preload("/big_assets_baked/TheOFFice_MarcoVentana_Baked_v01.glb");

@@ -205,5 +205,3 @@ export function PCOn({ material: bakedMaterial, ...props }) {
     </group>
   );
 }
-
-useGLTF.preload("/small_assets_baked/TheOFFice_PcOn_Baked_v02.glb");

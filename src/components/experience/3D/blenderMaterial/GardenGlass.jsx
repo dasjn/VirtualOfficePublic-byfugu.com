@@ -44,5 +44,3 @@ export default function GardenGlass({ ...props }) {
     </group>
   );
 }
-
-useGLTF.preload("/cristal_jardin/TheOFFice_CristalJardin_v01.glb");
