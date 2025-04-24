@@ -20,7 +20,7 @@ export function Tarjetas({ material, ...props }) {
     handlePointerOver,
     handlePointerOut,
   } = usePointerInteraction({
-    maxDistance: 4,
+    maxDistance: 3,
   });
 
   return (

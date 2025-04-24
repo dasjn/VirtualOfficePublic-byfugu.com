@@ -1,1 +1,1 @@
-export const initialPosition = [-1.429, 2, 3.018];
+export const initialPosition = [-1.429, -0.24, 3.018];

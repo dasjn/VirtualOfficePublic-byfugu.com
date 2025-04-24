@@ -11,6 +11,9 @@
     "generate:asset-types": "node scripts/generate-asset-types.mjs"
   },
   "dependencies": {
+    "@loaders.gl/basis": "^2.3.13",
+    "@loaders.gl/core": "^4.3.3",
+    "@loaders.gl/textures": "^4.3.3",
     "@lottiefiles/dotlottie-react": "^0.13.3",
     "@monogrid/gainmap-js": "^3.1.0",
     "@react-spring/three": "^9.7.5",
@@ -31,6 +34,7 @@
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "three": "^0.169.0",
+    "three-stdlib": "^2.35.15",
     "zustand": "^5.0.3"
   },
   "devDependencies": {

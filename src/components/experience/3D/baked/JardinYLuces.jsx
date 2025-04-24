@@ -6,7 +6,7 @@ import { usePointerInteraction } from "@/hooks/usePointerInteraction";
 import * as THREE from "three";
 import { getAssetPath } from "@/data/assets";
 
-export default function JardinYluces(props) {
+export default function JardinYLuces(props) {
   // Cargar modelos y textura
   const { nodes: nodesSuelo } = useGLTF(getAssetPath("JARDIN_SUELO_BAKED"));
   const { nodes: nodesLuces } = useGLTF(getAssetPath("JARDIN_LUCES_BAKED"));

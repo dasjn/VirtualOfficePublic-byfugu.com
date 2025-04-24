@@ -1,7 +1,7 @@
 // src/hooks/usePreloadHooks.js
 import { useEffect } from "react";
 import { useGLTF, useTexture } from "@react-three/drei";
-import preloadManager from "../utils/PreloadManager";
+import preloadManager from "./PreloadManager";
 import { TextureLoader } from "three";
 
 /**

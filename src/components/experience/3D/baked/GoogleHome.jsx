@@ -23,7 +23,7 @@ export function GoogleHome({ material, ...props }) {
     handlePointerOver,
     handlePointerOut,
   } = usePointerInteraction({
-    maxDistance: 4,
+    maxDistance: 3,
   });
 
   const handleAudioChange = () => {

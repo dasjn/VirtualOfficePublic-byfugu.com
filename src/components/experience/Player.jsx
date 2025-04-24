@@ -86,7 +86,8 @@ const Player = () => {
   );
 
   // Optimización: Frame update con comprobaciones tempranas
-  useFrame(() => {
+  // En tu componente Player.jsx
+  useFrame((state) => {
     if (!rigidBodyRef.current) return;
 
     // Optimización: Salir temprano si hay restricciones de movimiento
@@ -123,6 +124,18 @@ const Player = () => {
     if (!cameraMovement.isMoving && !animationCooldown) {
       const translation = rigidBodyRef.current.translation();
       vectors.currentPosition.set(translation.x, translation.y, translation.z);
+
+      // Aplicar la restricción de altura mínima aquí, dentro del mismo flujo
+      if (translation.y < initialPosition[1] + 0.1) {
+        vectors.currentPosition.y = initialPosition[1];
+        // También actualizar la posición física para mantener sincronía
+        rigidBodyRef.current.setTranslation({
+          x: translation.x,
+          y: initialPosition[1],
+          z: translation.z,
+        });
+      }
+
       camera.position.copy(vectors.currentPosition);
     }
   });

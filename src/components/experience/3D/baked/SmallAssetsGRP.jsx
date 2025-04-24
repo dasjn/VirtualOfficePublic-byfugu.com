@@ -1,18 +1,19 @@
 /* eslint-disable react/no-unknown-property */
-import { Html, meshBounds, useGLTF } from "@react-three/drei";
-import * as THREE from "three";
+import React, { useCallback, useMemo, useRef, useState } from "react";
+import { meshBounds, useGLTF } from "@react-three/drei";
+import { getAssetPath } from "@/data/assets";
 import PropTypes from "prop-types";
+import * as THREE from "three";
 import { useFrame, useThree } from "@react-three/fiber";
-import { useEffect, useRef, useState, useMemo, useCallback } from "react";
 import { useExperience } from "@/hooks/useExperience";
 import ComputerScreen from "../blenderMaterial/ComputerScreen";
 
-PCOn.propTypes = {
+SmallAssetsGRP.propTypes = {
   material: PropTypes.instanceOf(THREE.Material),
 };
 
-export function PCOn({ material: bakedMaterial, ...props }) {
-  const { nodes } = useGLTF("/small_assets_baked/TheOFFice_PcOn_Baked_v02.glb");
+export function SmallAssetsGRP({ material, ...props }) {
+  const { nodes } = useGLTF(getAssetPath("SMALL_ASSETS_GRP"));
   const { setCursorHover } = useExperience();
 
   // Optimización: usar useMemo para el material
@@ -37,7 +38,6 @@ export function PCOn({ material: bakedMaterial, ...props }) {
     cameraMovement,
   } = useExperience();
 
-  const computerRef = useRef();
   const { camera } = useThree();
   const [isMouseOver, setIsMouseOver] = useState(false);
   const [distance, setDistance] = useState(10);
@@ -50,14 +50,13 @@ export function PCOn({ material: bakedMaterial, ...props }) {
 
   // Actualización cada frame con mejor rendimiento
   useFrame(() => {
-    if (computerRef.current && meshComputerRef.current) {
+    if (meshComputerRef.current) {
       meshComputerRef.current.getWorldPosition(worldPositionComputer);
       camera.getWorldPosition(worldPositionCamera);
 
       const currentDistance = worldPositionCamera.distanceTo(
         worldPositionComputer
       );
-
       setDistance(currentDistance);
 
       // Si el ratón está cerca y sobre el objeto, aumentamos la intensidad
@@ -149,57 +148,31 @@ export function PCOn({ material: bakedMaterial, ...props }) {
   ]);
 
   return (
-    <group ref={computerRef} {...props} dispose={null}>
-      <mesh
-        geometry={nodes.Mac_Body006.geometry}
-        material={bakedMaterial}
-        position={[-3.537, 1.182, -4.864]}
-      />
+    <group {...props} dispose={null}>
       <mesh
         geometry={nodes.Screen_Body006.geometry}
-        material={bakedMaterial} // Usamos bakedMaterial (no tiene emisión)
+        material={material}
         position={[-3.526, 1.184, -4.864]}
         visible={distance > 3 && !isMouseOver}
       />
       <mesh
         ref={meshComputerRef}
+        castShadow
+        receiveShadow
         geometry={nodes.Screen_Body006.geometry}
-        material={emissiveMaterial} // Usamos testMaterial con emisión
+        material={emissiveMaterial}
         position={[-3.526, 1.184, -4.864]}
         onPointerOver={handlePointerOver}
         onPointerOut={handlePointerOut}
         onClick={handleComputerClick}
-        raycast={meshBounds} // Añadimos la funcionalidad de bounds para las interacciones
-      />
-
-      {/* Resto de los componentes del PC */}
-      <mesh
-        geometry={nodes.Soporte006.geometry}
-        material={bakedMaterial}
-        position={[-3.578, 0.831, -4.865]}
-        rotation={[-Math.PI / 2, 0, 0]}
+        raycast={meshBounds}
       />
       <ComputerScreen />
       <mesh
-        geometry={nodes.Cable006.geometry}
-        material={bakedMaterial}
-        position={[-3.657, 0.888, -4.861]}
-      />
-      <mesh
-        geometry={nodes.polySurface43006.geometry}
-        material={bakedMaterial}
-        position={[-3.262, 0.742, -4.866]}
-        rotation={[Math.PI / 2, 0, -1.536]}
-      />
-      <mesh
-        geometry={nodes.mouse006.geometry}
-        material={bakedMaterial}
-        position={[-3.264, 0.74, -5.219]}
-        rotation={[0, Math.PI / 2, 0]}
-      />
-      <mesh
+        castShadow
+        receiveShadow
         geometry={nodes.Cube065.geometry}
-        material={bakedMaterial}
+        material={material}
         position={[-3.55, 0.799, -5.179]}
         rotation={[0, Math.PI / 2, 0]}
       />

@@ -127,13 +127,13 @@ export default function UI3D() {
   return (
     <>
       {/* Scene transition overlay with Tailwind animation */}
-      {(!sceneFadeIn || !experienceMounted) && (
+      {/* {(!sceneFadeIn || !experienceMounted) && (
         <div
           className={`absolute inset-0 bg-black z-[10000] pointer-events-none transition-opacity duration-1500 ease-in-out ${
             experienceMounted ? "opacity-0" : "opacity-100"
           }`}
         />
-      )}
+      )} */}
 
       <div className="absolute w-screen h-screen text-white pointer-events-none">
         {/* Pointer (only visible on non-touch devices when locked) */}

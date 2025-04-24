@@ -1,7 +1,7 @@
 // src/hooks/useGainMapTexture.js
 import { useState, useEffect, useMemo } from "react";
 import * as THREE from "three";
-import gainMapPreloader from "../utils/GainMapPreloader";
+import gainMapPreloader from "./GainMapPreloader";
 
 /**
  * Hook para acceder a una textura GainMap ya cargada centralmente

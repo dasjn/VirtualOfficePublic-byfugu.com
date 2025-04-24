@@ -1,6 +1,6 @@
 /* eslint-disable react/no-unknown-property */
 import { useMemo } from "react";
-import { meshBounds, useGLTF, useTexture } from "@react-three/drei";
+import { meshBounds, useGLTF, useKTX2, useTexture } from "@react-three/drei";
 import TextComponent, { CARD_NAMES } from "../../TextComponent";
 import { usePointerInteraction } from "@/hooks/usePointerInteraction";
 import * as THREE from "three";
@@ -11,6 +11,7 @@ export function Paredes(props) {
   const { nodes, materials } = useGLTF(getAssetPath("PAREDES"));
 
   const texture = useTexture(getAssetPath("PAREDES_BAKE"));
+  // const texture = useKTX2("/paredes/Paredes_Bake_8k_v02.ktx2");
 
   const textureMaterial = useMemo(() => {
     if (!texture) {

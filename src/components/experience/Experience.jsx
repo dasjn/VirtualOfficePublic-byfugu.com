@@ -1,51 +1,33 @@
-import {
-  Environment,
-  Html,
-  PointerLockControls,
-  useTexture,
-} from "@react-three/drei";
-import {
-  EffectComposer,
-  Bloom,
-  ToneMapping,
-} from "@react-three/postprocessing";
-import { useRef, useMemo, useCallback, useEffect } from "react";
+/* eslint-disable react/no-unknown-property */
+import { Environment, PointerLockControls } from "@react-three/drei";
+import { useMemo, useCallback, useEffect } from "react";
 import { Physics } from "@react-three/rapier";
 import * as THREE from "three";
 import Player from "./Player";
 import Office from "./Office";
 import { useExperience } from "@/hooks/useExperience";
-
-import { Alfombra } from "./3D/baked/Alfombra";
-import { LenguaVentana } from "./3D/baked/LenguaVentana";
-import { MarcoCuadro01 } from "./3D/baked/MarcoCuadro01";
-import { MarcoCuadro02 } from "./3D/baked/MarcoCuadro02";
-import { MarcoVentana } from "./3D/baked/MarcoVentana";
 import { PanelTV } from "./3D/baked/PanelTV";
 import { PlanoImgCuadro01 } from "./3D/baked/PlanoImgCuadro01";
 import { PlanoImgCuadro02 } from "./3D/baked/PlanoImgCuadro02";
-import { BotonPuerta } from "./3D/baked/BotonPuerta";
-import { CuerdaMesa } from "./3D/baked/CuerdaMesa";
 import { GoogleHome } from "./3D/baked/GoogleHome";
-import { ManetasPuertas } from "./3D/baked/ManetasPuertas";
-import { PCOff } from "./3D/baked/PCOff";
-import { PCOn } from "./3D/baked/PCOn";
 import { Tarjetas } from "./3D/baked/Tarjetas";
 import { Latas } from "./3D/blenderMaterial/Latas";
 import { Sofa } from "./3D/blenderMaterial/Sofa";
-import { MarcoTV } from "./3D/baked/MarcoTV";
 import { CameraController } from "@/controllers/CameraController";
 import { useThree } from "@react-three/fiber";
 import { GardenSpine } from "./3D/blenderMaterial/GardenSpine";
 import GardenGlass from "./3D/blenderMaterial/GardenGlass";
-import { MobileJoysticksLogic } from "./MobileJoysticks";
 import GlobosCielo from "./3D/blenderMaterial/GlobosCielo";
-
-import MueblesYSigns from "./3D/baked/MueblesYSigns";
-import JardinYluces from "./3D/baked/JardinYLuces";
 import Sobres from "./3D/baked/Sobres";
+import JardinYLucesGRP from "./3D/baked/JardinYLucesGRP";
+import { BigAssetsGRP } from "./3D/baked/BigAssetsGRP";
+import { useKTX2Asset } from "@/hooks/useKTX2Asset";
+import { Perf } from "r3f-perf";
+import { SmallAssetsGRP } from "./3D/baked/SmallAssetsGRP";
+import { MueblesYSignsGRP } from "./3D/baked/MueblesYSignsGRP";
+import MueblesYSigns from "./3D/baked/MueblesYSigns";
 
-export default function Experience() {
+export default function Experience({ showLoader }) {
   const {
     isPointerLocked,
     setIsPointerLocked,
@@ -62,7 +44,7 @@ export default function Experience() {
   const { camera } = useThree();
 
   useEffect(() => {
-    camera.lookAt(-1, 1.5, 0);
+    camera.lookAt(-1, 0, 0);
 
     // Notificar que la experiencia está montada
     setTimeout(() => {
@@ -133,30 +115,22 @@ export default function Experience() {
   }, [pointerLockRef, setIsPointerLocked]);
 
   // Optimización: Memoizar texturas y materiales
-  const bigAssetsTextureBaked = useTexture(
-    "/big_assets_baked/Bake_Assets_Big_v03.jpg"
-  );
-  bigAssetsTextureBaked.flipY = false;
+  const bigAssetsTextureBaked = useKTX2Asset("BIG_ASSETS_GRP_KTX2");
 
   const bigAssetsTextureBakedMaterial = useMemo(
     () =>
       new THREE.MeshBasicMaterial({
         map: bigAssetsTextureBaked,
-        color: new THREE.Color(0x888888), // Un color gris oscuro que oscurecerá la textura
       }),
     [bigAssetsTextureBaked]
   );
 
-  const smallAssetsTextureBaked = useTexture(
-    "/small_assets_baked/SmallAssets_Bake_v01.jpg"
-  );
-  smallAssetsTextureBaked.flipY = false;
+  const smallAssetsTextureBaked = useKTX2Asset("SMALL_ASSETS_GRP_KTX2");
 
   const smallAssetsTextureBakedMaterial = useMemo(
     () =>
       new THREE.MeshBasicMaterial({
         map: smallAssetsTextureBaked,
-        color: new THREE.Color(0x888888),
       }),
     [smallAssetsTextureBaked]
   );
@@ -165,15 +139,17 @@ export default function Experience() {
   const renderBigAssets = useCallback(
     () => (
       <group position={[0, -2, 0]}>
-        <Alfombra material={bigAssetsTextureBakedMaterial} />
+        {/* <Alfombra material={bigAssetsTextureBakedMaterial} />
         <LenguaVentana material={bigAssetsTextureBakedMaterial} />
         <MarcoCuadro01 material={bigAssetsTextureBakedMaterial} />
         <MarcoCuadro02 material={bigAssetsTextureBakedMaterial} />
         <MarcoVentana material={bigAssetsTextureBakedMaterial} />
-        <MarcoTV material={bigAssetsTextureBakedMaterial} />
+        <MarcoTV material={bigAssetsTextureBakedMaterial} /> */}
+        <BigAssetsGRP material={bigAssetsTextureBakedMaterial} />
 
-        <JardinYluces />
-        <MueblesYSigns />
+        <JardinYLucesGRP />
+
+        <MueblesYSignsGRP />
 
         <PanelTV />
         <PlanoImgCuadro01 />
@@ -186,12 +162,14 @@ export default function Experience() {
   const renderSmallAssets = useCallback(
     () => (
       <group position={[0, -2, 0]}>
-        <BotonPuerta material={smallAssetsTextureBakedMaterial} />
+        <SmallAssetsGRP material={smallAssetsTextureBakedMaterial} />
+        {/* <BotonPuerta material={smallAssetsTextureBakedMaterial} />
         <CuerdaMesa material={smallAssetsTextureBakedMaterial} />
-        <GoogleHome material={smallAssetsTextureBakedMaterial} />
         <ManetasPuertas material={smallAssetsTextureBakedMaterial} />
         <PCOff material={smallAssetsTextureBakedMaterial} />
-        <PCOn material={smallAssetsTextureBakedMaterial} />
+        <PCOn material={smallAssetsTextureBakedMaterial} /> */}
+
+        <GoogleHome material={smallAssetsTextureBakedMaterial} />
         <Tarjetas material={smallAssetsTextureBakedMaterial} />
         <Sobres />
       </group>
@@ -211,6 +189,7 @@ export default function Experience() {
 
   return (
     <>
+      <RendererInfo />
       <Environment
         files={[
           "/hdr/HDRI_v02.webp",
@@ -229,6 +208,7 @@ export default function Experience() {
         <Office />
         <Player />
       </Physics>
+      <Perf />
 
       <group position={[0, -2, 0]}>
         <GardenSpine />
@@ -256,4 +236,21 @@ export default function Experience() {
       </EffectComposer> */}
     </>
   );
+}
+
+function RendererInfo() {
+  const { gl } = useThree();
+
+  useEffect(() => {
+    // gl es la instancia del renderer
+    console.log("Renderer info:");
+    console.table(gl.info);
+
+    // Para ver información más detallada:
+    console.log("Renderer info - render:", gl.info.render);
+    console.log("Renderer info - memory:", gl.info.memory);
+    console.log("Renderer info - programs:", gl.info.programs);
+  }, [gl]);
+
+  return null; // Este componente no renderiza nada
 }

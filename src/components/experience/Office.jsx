@@ -6,6 +6,8 @@ import WallColliders from "./WallColliders";
 import { Suelo } from "./3D/baked/Suelo";
 import { Paredes } from "./3D/baked/Paredes";
 import { Luces } from "./3D/blenderMaterial/Luces";
+import CustomCollider from "./CustomColliders";
+import CustomColliders from "./CustomColliders";
 
 export default function Office(props) {
   const { nodes } = useGLTF("/TheOFFiceFUGU_Environment_v4.glb");
@@ -17,6 +19,7 @@ export default function Office(props) {
   });
   return (
     <group {...props} dispose={null} position={[0, -2, 0]}>
+      <CustomColliders />
       <WallColliders />
       {/* Entrance wall */}
       <RigidBody type="fixed" friction={0} restitution={0}>

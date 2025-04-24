@@ -3,22 +3,53 @@ import PropTypes from "prop-types";
 import { useEffect, useState } from "react";
 import Landing from "./Landing";
 import { useExperience } from "@/hooks/useExperience";
+import { preloadAssets } from "@/utils/preloadAssets";
+import { useThree } from "@react-three/fiber";
+import { ktx2TextureManager } from "@/utils/KTX2TextureManager";
 
 Loader.propTypes = {
   progress: PropTypes.number.isRequired,
   enterExperience: PropTypes.bool.isRequired,
   setEnterExperience: PropTypes.func.isRequired,
-  setIsPreLoading: PropTypes.func.isRequired,
+  setAssetsPreloaded: PropTypes.func.isRequired,
 };
 
 export default function Loader({
   progress,
   enterExperience,
   setEnterExperience,
-  setIsPreLoading,
+  setAssetsPreloaded,
 }) {
   const [progressState, setProgressState] = useState(0);
   const { setCursorHover } = useExperience();
+  const { gl } = useThree();
+
+  // Precargar assets cuando el componente se monta
+  useEffect(() => {
+    const loadAssets = async () => {
+      if (!gl) return; // Asegurarse que gl esté disponible
+
+      try {
+        // Inicializar el manager de texturas KTX2
+        ktx2TextureManager.initialize(gl);
+
+        // Ahora precargar todos los assets
+        await preloadAssets(gl);
+
+        // Cuando termine, actualizamos el estado
+        setAssetsPreloaded(true);
+      } catch (error) {
+        console.error("Error preloading assets:", error);
+        // Aún así marcamos como precargados para no bloquear la app
+        setAssetsPreloaded(true);
+      }
+    };
+
+    // Solo cargar si tenemos gl
+    if (gl) {
+      loadAssets();
+    }
+  }, [gl, setAssetsPreloaded]);
 
   // Animación suave del progreso
   useEffect(() => {
@@ -44,14 +75,8 @@ export default function Loader({
       animationFrameId = requestAnimationFrame(animateProgress);
     }
 
-    // Al alcanzar el 100% de carga, desactiva `isPreLoading` después de un breve retardo
-    if (progress === 100 && progressState >= 99) {
-      const delayTimer = setTimeout(() => setIsPreLoading(false), 1000);
-      return () => clearTimeout(delayTimer);
-    }
-
     return () => cancelAnimationFrame(animationFrameId);
-  }, [progress, progressState, setIsPreLoading, enterExperience]);
+  }, [progress, progressState, enterExperience]);
 
   return (
     <>

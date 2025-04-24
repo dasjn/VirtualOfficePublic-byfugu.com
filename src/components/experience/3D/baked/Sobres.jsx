@@ -6,7 +6,7 @@ import { usePointerInteraction } from "@/hooks/usePointerInteraction";
 import TextComponent, { CARD_NAMES } from "../../TextComponent";
 
 export default function Sobres(props) {
-  const { nodes } = useGLTF("/sobres/TheONFFICE_Sobres_v01.glb");
+  const { nodes } = useGLTF("/sobres/TheONFFICE_Sobres_v02.glb");
 
   const texture = useTexture("/sobres/Sobre-Bake-02.webp");
   texture.flipY = false;

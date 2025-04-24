@@ -1,21 +1,26 @@
 // assets/assets.js
 
+import PropTypes from "prop-types";
+
 // assets/assets.js
+
+const isDevelopment = import.meta.env ? import.meta.env.DEV : false;
 
 export const AssetTypes = {
   GLTF: "gltf",
   TEXTURE: "texture",
+  KTX2: "ktx2",
 };
 
 /**
- * @typedef {"ALFOMBRA" | "BAKED_ALL" | "BIG_BAKE" | "BOTON_PUERTA" | "CRISTAL_JARDIN" |
+ * @typedef {"ALFOMBRA" | "BAKED_ALL" | "BIG_ASSETS_GRP" | "BIG_ASSETS_GRP_KTX2" | "BIG_BAKE" | "BOTON_PUERTA" | "CRISTAL_JARDIN" |
  *  "CUADRO_02" | "CUERDA_MESA" | "ENVIRONMENT" | "ESPINA" | "GLOBOS_CIELO" |
- *  "GOOGLE_HOME" | "HDR" | "JARDIN_LUCES_BAKE" | "JARDIN_LUCES_BAKED" | "JARDIN_PIEDRAS_BAKED" |
+ *  "GOOGLE_HOME" | "HDR"  | "JARDIN_LUCES_BAKE" | "JARDIN_LUCES_BAKED" | "JARDIN_LUCES_GRP" | "JARDIN_LUCES_GRP_KTX2" | "JARDIN_PIEDRAS_BAKED" |
  *  "JARDIN_SUELO_BAKED" | "LATAS" | "LENGUA_VENTANA" | "LUCES" | "MANETAS_PUERTA" |
  *  "MARCO_CUADRO_01" | "MARCO_CUADRO_02" | "MARCO_TV" | "MARCO_VENTANA" | "MESA_OFFICE" |
  *  "MESA_OFFICE_BAKED" | "MUEBLES_SIGNS_BAKE" | "PAREDES" | "PAREDES_BAKE" | "PC_OFF" |
  *  "PC_ON" | "PC_SCREEN_SHADER" | "PIEDRAS_JARDIN" | "PLANO_IMG_CUADRO" | "SETUP_MESA" |
- *  "SETUP_MESA_BAKED" | "SIGN_MEETING" | "SIGN_MEETING_BAKED" | "SIGN_WC" | "SIGN_WC_BAKED" |
+ *  "SETUP_MESA_BAKED" | "SIGN_MEETING" | "SIGN_MEETING_BAKED" | "SIGN_WC" | "SIGN_WC_BAKED" | "SMALL_ASSETS_GRP" | "SMALL_ASSETS_GRP_KTX2" |
  *  "SMALL_BAKE" | "SOBRES" | "SOBRES_BAKE" | "SOFA" | "SUELO_BAKE" | "SUELO_BAKED" |
  *  "SUELO_JARDIN" | "TARJETAS"} AssetKey
  */
@@ -34,6 +39,21 @@ export const assets = [
   },
 
   // Big baked
+  {
+    key: "BIG_ASSETS_GRP",
+    path: "/big_assets_baked/TheOFFice_BigAssets_GRP_v01.glb",
+    type: AssetTypes.GLTF,
+  },
+  {
+    key: "SMALL_ASSETS_GRP",
+    path: "/small_assets_baked/TheOFFice_SmallAssets_GRP_v01.glb",
+    type: AssetTypes.GLTF,
+  },
+  {
+    key: "MUEBLES_SIGNS_GRP",
+    path: "/muebles_y_signs/TheOFFice_MueblesySigns_GRP_v01.glb",
+    type: AssetTypes.GLTF,
+  },
   {
     key: "ALFOMBRA",
     path: "/big_assets_baked/TheOFFice_Alfombra_Baked_v01.glb",
@@ -155,6 +175,11 @@ export const assets = [
 
   // Garden
   {
+    key: "JARDIN_LUCES_GRP",
+    path: "/jardin_y_luces/TheOFFice_JardinyLuces_GRP_v01.glb",
+    type: AssetTypes.GLTF,
+  },
+  {
     key: "PIEDRAS_JARDIN",
     path: "/piedras_jardin/TheOFFice_Piedras_Shader_v02.glb",
     type: AssetTypes.GLTF,
@@ -229,7 +254,7 @@ export const assets = [
   },
   {
     key: "SOBRES",
-    path: "/sobres/TheONFFICE_Sobres_v01.glb",
+    path: "/sobres/TheONFFICE_Sobres_v02.glb",
     type: AssetTypes.GLTF,
   },
 
@@ -271,14 +296,59 @@ export const assets = [
     type: AssetTypes.TEXTURE,
   },
   { key: "HDR", path: "/hdr/HDRI_v02.webp", type: AssetTypes.TEXTURE },
+
+  // TEXTURAS KTX2
+  {
+    key: "JARDIN_LUCES_GRP_KTX2",
+    path: "/jardin_y_luces/JardinLuces_Bake_v01.ktx2",
+    type: AssetTypes.KTX2,
+  },
+  {
+    key: "BIG_ASSETS_GRP_KTX2",
+    path: "/big_assets_baked/Bake_Assets_Big_v03.ktx2",
+    type: AssetTypes.KTX2,
+  },
+  {
+    key: "SMALL_ASSETS_GRP_KTX2",
+    path: "/small_assets_baked/SmallAssets_Bake_v01.ktx2",
+    type: AssetTypes.KTX2,
+  },
+  {
+    key: "MUEBLES_SIGNS_GRP_KTX2",
+    path: "/muebles_y_signs/MueblesySigns_Bake_v02_8Bits.ktx2",
+    type: AssetTypes.KTX2,
+  },
 ];
+
+// Extraemos todas las claves de assets
+export const VALID_ASSET_KEYS = assets.map((asset) => asset.key);
+
+// Creamos un validador para las claves de assets usando PropTypes
+export const AssetKeyPropType = PropTypes.oneOf(VALID_ASSET_KEYS);
+
+// Validador para objetos de asset completos
+export const AssetPropType = PropTypes.shape({
+  key: AssetKeyPropType.isRequired,
+  path: PropTypes.string.isRequired,
+  type: PropTypes.oneOf(Object.values(AssetTypes)).isRequired,
+});
 
 /**
  * Obtiene un asset según la clave proporcionada.
- * @param {AssetKey} key - La clave del asset.
- * @returns {{ key: AssetKey, path: string, type: string }} El objeto del asset.
+ * @param {string} key - La clave del asset.
+ * @returns {{ key: string, path: string, type: string }} El objeto del asset.
  */
 export const getAsset = (key) => {
+  // Validación solo en desarrollo
+  if (isDevelopment) {
+    PropTypes.checkPropTypes(
+      { key: AssetKeyPropType },
+      { key },
+      "argument",
+      "getAsset"
+    );
+  }
+
   const asset = assets.find((a) => a.key === key);
   if (!asset) throw new Error(`No se encontró el asset con key: "${key}"`);
   return asset;
@@ -286,13 +356,55 @@ export const getAsset = (key) => {
 
 /**
  * Obtiene la ruta de un asset dado su key.
- * @param {AssetKey} key - La clave del asset.
+ * @param {string} key - La clave del asset.
  * @returns {string} La ruta del asset.
  */
-export const getAssetPath = (key) => getAsset(key).path;
+export const getAssetPath = (key) => {
+  // Validación solo en desarrollo
+  if (isDevelopment) {
+    PropTypes.checkPropTypes(
+      { key: AssetKeyPropType },
+      { key },
+      "argument",
+      "getAssetPath"
+    );
+  }
+
+  return getAsset(key).path;
+};
 
 /**
  * Obtiene todas las claves válidas de los assets.
- * @returns {Array<AssetKey>} Array de claves de assets.
+ * @returns {Array<string>} Array de claves de assets.
  */
-export const getValidAssetKeys = () => assets.map((a) => a.key);
+export const getValidAssetKeys = () => VALID_ASSET_KEYS;
+
+/**
+ * Filtra los assets por tipo.
+ * @param {string} type - El tipo de asset a filtrar.
+ * @returns {Array<{key: string, path: string, type: string}>} Los assets del tipo especificado.
+ */
+export const getAssetsByType = (type) => {
+  if (isDevelopment) {
+    PropTypes.checkPropTypes(
+      { type: PropTypes.oneOf(Object.values(AssetTypes)) },
+      { type },
+      "argument",
+      "getAssetsByType"
+    );
+  }
+
+  return assets.filter((asset) => asset.type === type);
+};
+
+/**
+ * Obtiene todas las claves de assets de un tipo específico.
+ * @param {string} type - El tipo de asset.
+ * @returns {Array<string>} Array de claves de assets del tipo especificado.
+ */
+export const getAssetKeysByType = (type) => {
+  return getAssetsByType(type).map((asset) => asset.key);
+};
+
+// Exporta todas las claves de KTX2 para facilitar su uso
+export const KTX2_ASSET_KEYS = getAssetKeysByType(AssetTypes.KTX2);

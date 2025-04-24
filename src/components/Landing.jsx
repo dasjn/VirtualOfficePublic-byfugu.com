@@ -1,7 +1,6 @@
 import { useEffect, useState } from "react";
 import logo from "../assets/ONFICCE_logo.svg";
 import flightsData from "../assets/json/Flights_To_LPA.json";
-import audioSrc from "../assets/frogAudio.mp3";
 import PropTypes from "prop-types";
 import { useCursorHover } from "@/hooks/useCursorHover";
 
@@ -45,10 +44,7 @@ export default function Landing({ setEnterExperience, setCursorHover }) {
     setInputText(""); // Limpia el input
   };
 
-  const audio = new Audio(audioSrc);
-
   const handleAccess = () => {
-    // audio.play();
     setEnterExperience(true);
   };
 

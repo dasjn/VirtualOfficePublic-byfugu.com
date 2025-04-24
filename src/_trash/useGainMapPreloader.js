@@ -1,7 +1,7 @@
 // src/hooks/useGainMapPreloader.js
 import { useState, useEffect, useCallback } from "react";
 import { useThree } from "@react-three/fiber";
-import gainMapPreloader from "../utils/GainMapPreloader";
+import gainMapPreloader from "./GainMapPreloader";
 
 /**
  * Hook para inicializar el GainMapPreloader

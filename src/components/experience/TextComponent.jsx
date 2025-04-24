@@ -2,6 +2,7 @@
 import { Html } from "@react-three/drei";
 import PropTypes from "prop-types";
 import { useState, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 
 // Definimos aquí las constantes para tener autocompletado
 export const CARD_NAMES = {
@@ -85,86 +86,76 @@ const cardData = [
   },
 ];
 
+// Versión optimizada con animaciones de entrada y salida correctas
 export default function TextComponent({
   position = [0, 0, 0],
   cardName,
   isNearby = false,
 }) {
+  // Estado para controlar la visibilidad de la tarjeta
+  const [isVisible, setIsVisible] = useState(false);
+
+  // Estado separado para controlar el montaje del componente HTML
+  const [shouldRender, setShouldRender] = useState(false);
+
   // Buscar la tarjeta por nombre
   const card = cardData.find((item) => item.name === cardName) || {
     title: "Título no encontrado",
     description: "Descripción no encontrada",
   };
 
-  // Estado para controlar la visibilidad del componente en el DOM
-  const [showComponent, setShowComponent] = useState(false);
-  // Estado para controlar la animación
-  const [animationState, setAnimationState] = useState("hidden"); // "hidden", "entering", "visible", "exiting"
-
-  // Efecto para manejar la aparición y desaparición con un ligero retraso
+  // Efecto para manejar la visibilidad basado en isNearby
   useEffect(() => {
-    let showTimer, animateInTimer, animateOutTimer, hideTimer;
+    let showTimer, hideTimer;
 
     if (isNearby) {
-      // Mostrar el componente
-      setShowComponent(true);
+      // Siempre renderizamos primero
+      setShouldRender(true);
 
-      // Iniciar animación de entrada después de un pequeño delay
-      animateInTimer = setTimeout(() => {
-        setAnimationState("entering");
-
-        // Cambiar a estado visible cuando termina la animación
-        showTimer = setTimeout(() => {
-          setAnimationState("visible");
-        }, 500); // Duración de la animación de entrada
+      // Pequeño delay para evitar parpadeos y luego mostramos
+      showTimer = setTimeout(() => {
+        setIsVisible(true);
       }, 50);
     } else {
-      // Si estaba visible, iniciar animación de salida
-      if (showComponent) {
-        setAnimationState("exiting");
+      // Cuando ya no estamos cerca, primero ocultamos
+      setIsVisible(false);
 
-        // Ocultar el componente cuando termina la animación de salida
-        hideTimer = setTimeout(() => {
-          setShowComponent(false);
-          setAnimationState("hidden");
-        }, 500); // Duración de la animación de salida
-      }
+      // Y luego de que termine la animación, dejamos de renderizar
+      hideTimer = setTimeout(() => {
+        setShouldRender(false);
+      }, 300); // Este tiempo debe coincidir con la duración de la animación
     }
 
-    // Limpiar temporizadores
     return () => {
       clearTimeout(showTimer);
-      clearTimeout(animateInTimer);
-      clearTimeout(animateOutTimer);
       clearTimeout(hideTimer);
     };
-  }, [isNearby, showComponent]);
+  }, [isNearby]);
 
-  // Determinar clases de animación según el estado
-  const getAnimationClasses = () => {
-    switch (animationState) {
-      case "entering":
-      case "visible":
-        return "opacity-100 scale-100";
-      case "exiting":
-        return "opacity-0 scale-95";
-      default:
-        return "opacity-0 scale-95";
-    }
-  };
+  // Si no deberíamos renderizar nada, retornamos null
+  if (!shouldRender) return null;
 
   return (
-    <Html position={position} center>
-      {showComponent && (
-        <div className="flex items-center justify-center w-screen h-screen">
-          <div
-            className={`text-white gap-2 select-none flex flex-col p-4 w-96 gradient-keyboard bg-gradient-to-b from-[#39393960] to-[#61616160] rounded-3xl backdrop-blur-xl custom-box-shadow transform transition-all duration-500 ease-in-out ${getAnimationClasses()}`}
+    <Html position={position} center zIndexRange={[100, 1000]} sprite>
+      <AnimatePresence>
+        {isVisible && (
+          <motion.div
+            key={`card-${cardName}`}
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            exit={{ opacity: 0, scale: 0.9 }}
+            transition={{
+              duration: 0.3,
+              ease: "easeInOut",
+            }}
+            className="text-white gap-2 select-none flex flex-col p-4 w-96 gradient-keyboard bg-gradient-to-b from-[#39393960] to-[#61616160] rounded-3xl backdrop-blur-xl custom-box-shadow z-50"
+            style={{ pointerEvents: "none" }}
           >
             <p className="text-xl font-bold">{card.title}</p>
             <p>{card.description}</p>
-          </div>
-        </div>
-      )}
+          </motion.div>
+        )}
+      </AnimatePresence>
     </Html>
   );
 }
