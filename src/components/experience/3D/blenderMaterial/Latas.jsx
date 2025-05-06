@@ -15,7 +15,7 @@ export function Latas(props) {
     handlePointerOver,
     handlePointerOut,
   } = usePointerInteraction({
-    maxDistance: 4,
+    maxDistance: 3,
   });
 
   // Solución para el problema de frustum culling

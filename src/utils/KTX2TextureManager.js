@@ -1,4 +1,4 @@
-// utils/KTX2TextureManager.js
+// src/utils/KTX2TextureManager.js
 import { KTX2Loader } from "three-stdlib";
 import * as THREE from "three";
 import { getAssetPath } from "@/data/assets";
@@ -131,7 +131,7 @@ class KTX2TextureManager {
   }
 
   /**
-   * Obtiene una textura por clave de asset
+   * Obtiene una textura por clave de asset, considerando el nivel de calidad actual
    * @param {string} assetKey - Clave del asset
    * @param {Function} onLoad - Callback cuando se carga
    * @param {Function} onProgress - Callback de progreso
@@ -150,7 +150,7 @@ class KTX2TextureManager {
     const path = getAssetPath(assetKey);
     this.loadTexture(
       path,
-      () => console.log(`Textura KTX2 precargada: ${assetKey}`),
+      () => console.log(`Textura KTX2 precargada: ${assetKey} (${path})`),
       undefined,
       (error) =>
         console.warn(`Error precargando textura KTX2 ${assetKey}:`, error)
@@ -171,9 +171,7 @@ class KTX2TextureManager {
    * @returns {THREE.Texture|null} La textura o null si no está cargada
    */
   getCachedTextureByAssetKey(assetKey) {
-    console.log("Getting cached texture for asset key:", assetKey);
     const path = getAssetPath(assetKey);
-    console.log("Path resolved to:", path);
     return this.textureCache.has(path) ? this.textureCache.get(path) : null;
   }
 

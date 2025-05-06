@@ -25,7 +25,7 @@ import { useKTX2Asset } from "@/hooks/useKTX2Asset";
 import { Perf } from "r3f-perf";
 import { SmallAssetsGRP } from "./3D/baked/SmallAssetsGRP";
 import { MueblesYSignsGRP } from "./3D/baked/MueblesYSignsGRP";
-import MueblesYSigns from "./3D/baked/MueblesYSigns";
+import { MobileJoysticksLogic } from "./MobileJoysticks";
 
 export default function Experience({ showLoader }) {
   const {
@@ -139,12 +139,6 @@ export default function Experience({ showLoader }) {
   const renderBigAssets = useCallback(
     () => (
       <group position={[0, -2, 0]}>
-        {/* <Alfombra material={bigAssetsTextureBakedMaterial} />
-        <LenguaVentana material={bigAssetsTextureBakedMaterial} />
-        <MarcoCuadro01 material={bigAssetsTextureBakedMaterial} />
-        <MarcoCuadro02 material={bigAssetsTextureBakedMaterial} />
-        <MarcoVentana material={bigAssetsTextureBakedMaterial} />
-        <MarcoTV material={bigAssetsTextureBakedMaterial} /> */}
         <BigAssetsGRP material={bigAssetsTextureBakedMaterial} />
 
         <JardinYLucesGRP />
@@ -163,11 +157,6 @@ export default function Experience({ showLoader }) {
     () => (
       <group position={[0, -2, 0]}>
         <SmallAssetsGRP material={smallAssetsTextureBakedMaterial} />
-        {/* <BotonPuerta material={smallAssetsTextureBakedMaterial} />
-        <CuerdaMesa material={smallAssetsTextureBakedMaterial} />
-        <ManetasPuertas material={smallAssetsTextureBakedMaterial} />
-        <PCOff material={smallAssetsTextureBakedMaterial} />
-        <PCOn material={smallAssetsTextureBakedMaterial} /> */}
 
         <GoogleHome material={smallAssetsTextureBakedMaterial} />
         <Tarjetas material={smallAssetsTextureBakedMaterial} />
@@ -189,7 +178,7 @@ export default function Experience({ showLoader }) {
 
   return (
     <>
-      <RendererInfo />
+      {/* <RendererInfo /> */}
       <Environment
         files={[
           "/hdr/HDRI_v02.webp",
@@ -199,7 +188,7 @@ export default function Experience({ showLoader }) {
         environmentIntensity={0.8}
         background
       />
-      {/* {deviceType?.isTouchDevice && <MobileJoysticksLogic />} */}
+      {deviceType?.isTouchDevice && <MobileJoysticksLogic />}
       <CameraController />
       <Physics gravity={[0, -9.8, 0]}>
         {renderBigAssets()}
@@ -208,7 +197,7 @@ export default function Experience({ showLoader }) {
         <Office />
         <Player />
       </Physics>
-      <Perf />
+      {/* {!deviceType?.isTouchDevice && <Perf />} */}
 
       <group position={[0, -2, 0]}>
         <GardenSpine />
@@ -216,11 +205,14 @@ export default function Experience({ showLoader }) {
         <GlobosCielo />
       </group>
 
-      <PointerLockControls
-        ref={pointerLockRef}
-        onLock={handlePointerLock}
-        onUnlock={handlePointerUnlock}
-      />
+      {/* Sólo renderizar PointerLockControls en dispositivos no táctiles */}
+      {!deviceType?.isTouchDevice && (
+        <PointerLockControls
+          ref={pointerLockRef}
+          onLock={handlePointerLock}
+          onUnlock={handlePointerUnlock}
+        />
+      )}
 
       {/* Efectos de post-procesamiento */}
       {/* <EffectComposer disableNormalPass multisampling={4}>

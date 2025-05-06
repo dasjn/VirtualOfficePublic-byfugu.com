@@ -5,13 +5,13 @@ import TextComponent, { CARD_NAMES } from "../../TextComponent";
 import { usePointerInteraction } from "@/hooks/usePointerInteraction";
 import * as THREE from "three";
 import { getAssetPath } from "@/data/assets";
+import { useKTX2Asset } from "@/hooks/useKTX2Asset";
 
 export function Paredes(props) {
   // Cargar el modelo y la textura
   const { nodes, materials } = useGLTF(getAssetPath("PAREDES"));
 
-  const texture = useTexture(getAssetPath("PAREDES_BAKE"));
-  // const texture = useKTX2("/paredes/Paredes_Bake_8k_v02.ktx2");
+  const texture = useKTX2Asset("PAREDES_BAKE");
 
   const textureMaterial = useMemo(() => {
     if (!texture) {
@@ -19,7 +19,7 @@ export function Paredes(props) {
       return materials["Paredes LOW"];
     }
     // Crear un material con la textura GainMap
-    return new THREE.MeshBasicMaterial({ map: texture, color: 0xbbbbbb });
+    return new THREE.MeshBasicMaterial({ map: texture });
   }, [texture, materials]);
 
   // Hooks para interacción

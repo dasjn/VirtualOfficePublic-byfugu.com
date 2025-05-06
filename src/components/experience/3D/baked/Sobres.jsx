@@ -4,18 +4,18 @@ import { meshBounds, useGLTF, useTexture } from "@react-three/drei";
 import * as THREE from "three";
 import { usePointerInteraction } from "@/hooks/usePointerInteraction";
 import TextComponent, { CARD_NAMES } from "../../TextComponent";
+import { getAssetPath } from "@/data/assets";
+import { useKTX2Asset } from "@/hooks/useKTX2Asset";
 
 export default function Sobres(props) {
-  const { nodes } = useGLTF("/sobres/TheONFFICE_Sobres_v02.glb");
+  const { nodes } = useGLTF(getAssetPath("SOBRES"));
 
-  const texture = useTexture("/sobres/Sobre-Bake-02.webp");
-  texture.flipY = false;
+  const texture = useKTX2Asset("SOBRES_BAKE");
 
   const textureMaterial = useMemo(() => {
     // Crear un material con la textura GainMap
     return new THREE.MeshBasicMaterial({
       map: texture,
-      color: new THREE.Color(0x666666),
     });
   }, [texture]);
 
@@ -29,43 +29,25 @@ export default function Sobres(props) {
   });
 
   return (
-    <group
-      ref={sobresRef}
-      onPointerOver={handlePointerOver}
-      onPointerOut={handlePointerOut}
-      raycast={meshBounds}
-    >
+    <group>
       <mesh
-        scale={1.5}
+        ref={sobresRef}
+        onPointerOver={handlePointerOver}
+        onPointerOut={handlePointerOut}
+        raycast={meshBounds}
         castShadow
         receiveShadow
         geometry={nodes.Cube074.geometry}
         material={textureMaterial}
         position={[-3.464, 0.734, -7.682]}
-      />
-      <mesh
-        scale={1.5}
-        castShadow
-        receiveShadow
-        geometry={nodes.Cube075.geometry}
-        material={textureMaterial}
-        position={[-3.39, 0.737, -7.785]}
-        rotation={[-0.015, -0.984, -0.018]}
-      />
-      <mesh
-        scale={1.5}
-        castShadow
-        receiveShadow
-        geometry={nodes.Cube076.geometry}
-        material={textureMaterial}
-        position={[-3.431, 0.735, -7.636]}
-        rotation={[0, 0.166, 0]}
-      />
-      <TextComponent
-        position={[0, 1, 0]}
-        cardName={CARD_NAMES.Sobres}
-        isNearby={isNearby}
-      />
+        scale={1.173}
+      >
+        <TextComponent
+          position={[0, 0.2, 0]}
+          cardName={CARD_NAMES.Sobres}
+          isNearby={isNearby}
+        />
+      </mesh>
     </group>
   );
 }

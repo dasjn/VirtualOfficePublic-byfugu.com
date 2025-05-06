@@ -4,13 +4,27 @@ import { useExperience } from "@/hooks/useExperience";
 import { useFrame, useThree } from "@react-three/fiber";
 import * as THREE from "three";
 
+// Constants
+const MOVE_SPEED = 100; // Match desktop speed
+const CAMERA_SENSITIVITY = 0.7;
+const MAX_DELTA_TIME = 1 / 30; // Maximum allowed deltaTime
+const MAX_VELOCITY = 100; // Maximum allowed velocity magnitude
+
 export default function MobileJoysticks() {
+  const { cursorHover } = useExperience();
   // Esto se renderizará en el DOM normal, no dentro del canvas de Three.js
   return (
     <div
       id="mobile-controls"
       className="absolute inset-0 z-[9000] pointer-events-none"
     >
+      <div className="absolute top-[2%] right-[2%] flex flex-col gap-4">
+        <img
+          className={`z-[9999] pointer-events-none`}
+          src={"/svg/TheOnffice.svg"}
+          alt="Logo"
+        />
+      </div>
       {/* Joystick izquierdo - Movimiento */}
       <div
         id="left-joystick"
@@ -25,33 +39,12 @@ export default function MobileJoysticks() {
         style={{ touchAction: "none" }}
       />
 
-      {/* Botón de escape táctil (siempre visible) */}
-      <div className="absolute top-4 right-4 z-[9999]">
-        <button
-          className="w-14 h-14 rounded-full bg-white bg-opacity-30 border border-white flex items-center justify-center pointer-events-auto"
-          onClick={() => {
-            document.dispatchEvent(
-              new KeyboardEvent("keydown", { key: "Escape" })
-            );
-          }}
-        >
-          <span className="text-2xl font-bold">×</span>
-        </button>
-      </div>
-
       {/* Botón de interacción/acción */}
-      <div className="absolute bottom-[25%] left-[50%] transform -translate-x-1/2 z-[9999]">
-        <button
-          className="w-16 h-16 rounded-full bg-white bg-opacity-30 border border-white flex items-center justify-center pointer-events-auto"
-          onClick={() => {
-            document.dispatchEvent(
-              new KeyboardEvent("keydown", { key: "Space" })
-            );
-          }}
-        >
-          <span className="text-xl">👆</span>
-        </button>
-      </div>
+      <div
+        className={`z-[9999] absolute bottom-[50%] left-[50%] transform -translate-x-1/2  rounded-full border border-white bg-white bg-opacity-40 pointer-events-none 
+          ${cursorHover ? "w-6 h-6" : "w-4 h-4"} 
+          transition-[width,height] duration-300 ease-in-out`}
+      />
     </div>
   );
 }
@@ -62,6 +55,12 @@ export function MobileJoysticksLogic() {
   const rightManagerRef = useRef(null);
   const leftVectorRef = useRef({ x: 0, y: 0 });
   const rightVectorRef = useRef({ x: 0, y: 0 });
+
+  // Track visibility and timing
+  const visibilityRef = useRef({
+    wasHidden: false,
+    lastActiveTime: performance.now(),
+  });
 
   // Use useMemo to create the Euler object only once
   const euler = useMemo(() => new THREE.Euler(0, 0, 0, "YXZ"), []);
@@ -80,12 +79,39 @@ export function MobileJoysticksLogic() {
   // Vector reutilizable para cálculos
   const movementVector = useMemo(() => new THREE.Vector3(), []);
 
-  // Sensibilidad del movimiento de cámara (ajustar según sea necesario)
-  const CAMERA_SENSITIVITY = 0.7;
+  // Add visibility change detection
+  useEffect(() => {
+    const handleVisibilityChange = () => {
+      if (document.hidden) {
+        visibilityRef.current.wasHidden = true;
+      } else {
+        // When returning from hidden state, prepare for next frame
+        if (visibilityRef.current.wasHidden) {
+          visibilityRef.current.lastActiveTime = performance.now();
+          visibilityRef.current.wasHidden = false;
+
+          // Force zero velocity when returning to prevent jumps
+          if (rigidBodyRef.current) {
+            const currentVel = rigidBodyRef.current.linvel();
+            rigidBodyRef.current.setLinvel({ x: 0, y: currentVel.y, z: 0 });
+          }
+
+          // Reset joystick vectors
+          leftVectorRef.current = { x: 0, y: 0 };
+          rightVectorRef.current = { x: 0, y: 0 };
+        }
+      }
+    };
+
+    document.addEventListener("visibilitychange", handleVisibilityChange);
+    return () => {
+      document.removeEventListener("visibilitychange", handleVisibilityChange);
+    };
+  }, [rigidBodyRef]);
 
   // Crear los joysticks cuando el componente se monta
   useEffect(() => {
-    if (!deviceType?.isTouchDevice || !isPointerLocked) return;
+    if (!deviceType?.isTouchDevice) return;
 
     // Obtener referencias a los elementos DOM
     const leftJoystickElement = document.getElementById("left-joystick");
@@ -188,15 +214,26 @@ export function MobileJoysticksLogic() {
     euler,
   ]);
 
-  // Aplicar el movimiento del joystick a cada frame
-  useFrame(() => {
+  // Aplicar el movimiento del joystick a cada frame con delta time compensation
+  useFrame((state, deltaTime) => {
+    // Update activity tracking
+    visibilityRef.current.lastActiveTime = performance.now();
+
+    // Safety: Clamp deltaTime to prevent huge movements
+    const safeDeltaTime = Math.min(deltaTime, MAX_DELTA_TIME);
+
+    // Check if we should use a fixed delta when returning from background
+    const timeSinceActive =
+      performance.now() - visibilityRef.current.lastActiveTime;
+    const useFixedDelta = timeSinceActive < 100; // Within 100ms of becoming active
+    const effectiveDelta = useFixedDelta ? 1 / 60 : safeDeltaTime;
+
     if (
       !deviceType?.isTouchDevice ||
       !rigidBodyRef.current ||
       cameraMovement.isMoving ||
       animationCooldown ||
-      !canMovePlayer ||
-      !isPointerLocked
+      !canMovePlayer
     ) {
       return;
     }
@@ -215,14 +252,24 @@ export function MobileJoysticksLogic() {
       // Aplicar orientación de la cámara al movimiento
       movementVector.applyQuaternion(camera.quaternion);
 
-      // Establecer la velocidad (ajustada a una velocidad razonable)
+      // Calculate frame-rate independent movement
+      const frameAdjustedSpeed = MOVE_SPEED * effectiveDelta * 60; // Normalizado a 60fps
+      movementVector.multiplyScalar(frameAdjustedSpeed);
+
+      // Safety: Clamp velocity magnitude
+      const speed = movementVector.length();
+      if (speed > MAX_VELOCITY) {
+        movementVector.multiplyScalar(MAX_VELOCITY / speed);
+      }
+
+      // Establecer la velocidad
       rigidBodyRef.current.setLinvel({
-        x: movementVector.x * 70,
+        x: movementVector.x,
         y: currentVel.y,
-        z: movementVector.z * 70,
+        z: movementVector.z,
       });
-    } else {
-      // Detener el movimiento cuando no hay input
+    } else if (currentVel.x !== 0 || currentVel.z !== 0) {
+      // Detener el movimiento cuando no hay input (solo si es necesario)
       rigidBodyRef.current.setLinvel({
         x: 0,
         y: currentVel.y,
@@ -232,17 +279,34 @@ export function MobileJoysticksLogic() {
 
     // PARTE 2: Manejo de la rotación de cámara con joystick derecho
     if (rightVectorRef.current.x !== 0 || rightVectorRef.current.y !== 0) {
+      // Ajustar sensibilidad basada en delta time para movimientos consistentes
+      const rotationSpeed = 1.0 * effectiveDelta * 60; // Normalizado a 60fps
+
       // Actualizar rotación X (mirar arriba/abajo)
-      euler.x -= rightVectorRef.current.y;
+      euler.x -= rightVectorRef.current.y * rotationSpeed;
 
       // Limitar rotación X para evitar dar la vuelta completa
       euler.x = Math.max(-PI_2, Math.min(PI_2, euler.x));
 
       // Actualizar rotación Y (mirar izquierda/derecha)
-      euler.y -= rightVectorRef.current.x;
+      euler.y -= rightVectorRef.current.x * rotationSpeed;
 
       // Aplicar rotaciones a la cámara usando quaternion
       camera.quaternion.setFromEuler(euler);
+    }
+
+    // Check for emergency velocity correction
+    const playerSpeed = Math.sqrt(
+      currentVel.x * currentVel.x + currentVel.z * currentVel.z
+    );
+
+    if (playerSpeed > MAX_VELOCITY * 1.5) {
+      // Emergency velocity correction - player is moving too fast
+      rigidBodyRef.current.setLinvel({
+        x: 0,
+        y: currentVel.y,
+        z: 0,
+      });
     }
   });
 

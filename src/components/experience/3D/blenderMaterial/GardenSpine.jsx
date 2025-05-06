@@ -24,7 +24,7 @@ export function GardenSpine(props) {
 
     if (spineRef.current) {
       dummy.current.position.copy(spineRef.current.position);
-      dummy.current.lookAt(x, -10, z); // keep -10 if that's what works
+      dummy.current.lookAt(x, -10, z);
       easing.dampQ(
         spineRef.current.quaternion,
         dummy.current.quaternion,

@@ -14,14 +14,17 @@ export function usePointerInteraction({
   const [distance, setDistance] = useState(10);
   const objectRef = useRef(null);
 
-  // Memoized vector instances to reduce garbage collection
+  const raycaster = useMemo(() => new THREE.Raycaster(), []);
+  const direction = useMemo(() => new THREE.Vector3(), []);
+
   const worldPositionObject = useMemo(() => new THREE.Vector3(), []);
   const worldPositionCamera = useMemo(() => new THREE.Vector3(), []);
 
   const { camera } = useThree();
   const { setCursorHover } = useExperience();
 
-  // Actualizar el cursor basado en isNearby
+  const { deviceType } = useExperience();
+
   useEffect(() => {
     if (setCursorHover) {
       setCursorHover(isNearby);
@@ -34,36 +37,52 @@ export function usePointerInteraction({
     };
   }, [isNearby, setCursorHover]);
 
-  // Optimized pointer event handlers
-  const handlePointerOver = useCallback(() => {
-    setIsMouseOver(true);
-    if (onInteractionStart) {
-      onInteractionStart();
-    }
-  }, [onInteractionStart]);
-
-  const handlePointerOut = useCallback(() => {
-    setIsMouseOver(false);
-    if (onInteractionEnd) {
-      onInteractionEnd();
-    }
-  }, [onInteractionEnd]);
-
-  // Frame-based distance and interaction logic
   useFrame(() => {
-    if (objectRef.current) {
-      objectRef.current.getWorldPosition(worldPositionObject);
-      camera.getWorldPosition(worldPositionCamera);
+    if (!objectRef.current) return;
 
-      const currentDistance =
-        worldPositionCamera.distanceTo(worldPositionObject);
-      setDistance(currentDistance);
+    objectRef.current.getWorldPosition(worldPositionObject);
+    camera.getWorldPosition(worldPositionCamera);
 
-      // Check if object is nearby
-      const nearbyStatus = currentDistance < maxDistance && isMouseOver;
-      setIsNearby(nearbyStatus);
+    const currentDistance = worldPositionCamera.distanceTo(worldPositionObject);
+    setDistance(currentDistance);
+
+    let intersects = [];
+
+    if (deviceType?.isTouchDevice) {
+      camera.getWorldDirection(direction);
+      raycaster.set(camera.position, direction);
+      intersects = raycaster.intersectObject(objectRef.current, true);
+    }
+
+    const nearbyStatus =
+      currentDistance < maxDistance &&
+      (deviceType?.isTouchDevice ? intersects.length > 0 : isMouseOver);
+    setIsNearby(nearbyStatus);
+
+    if (deviceType?.isTouchDevice) {
+      if (intersects.length > 0 && !isMouseOver) {
+        setIsMouseOver(true);
+        onInteractionStart?.();
+      } else if (intersects.length === 0 && isMouseOver) {
+        setIsMouseOver(false);
+        onInteractionEnd?.();
+      }
     }
   });
+
+  const handlePointerOver = useCallback(() => {
+    if (!deviceType?.isTouchDevice) {
+      setIsMouseOver(true);
+      onInteractionStart?.();
+    }
+  }, [deviceType?.isTouchDevice, onInteractionStart]);
+
+  const handlePointerOut = useCallback(() => {
+    if (!deviceType?.isTouchDevice) {
+      setIsMouseOver(false);
+      onInteractionEnd?.();
+    }
+  }, [deviceType?.isTouchDevice, onInteractionEnd]);
 
   return {
     objectRef,
@@ -75,7 +94,6 @@ export function usePointerInteraction({
   };
 }
 
-// PropTypes for the hook configuration
 usePointerInteraction.propTypes = {
   maxDistance: PropTypes.number,
   onInteractionStart: PropTypes.func,

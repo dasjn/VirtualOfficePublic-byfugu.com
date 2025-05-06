@@ -3,9 +3,10 @@ import { useGLTF, useTexture } from "@react-three/drei";
 import { useEffect, useMemo } from "react";
 import * as THREE from "three";
 import { getAssetPath } from "@/data/assets";
+import { useKTX2Asset } from "@/hooks/useKTX2Asset";
 
 export function Suelo(props) {
-  const texture = useTexture(getAssetPath("SUELO_BAKE"));
+  const texture = useKTX2Asset("SUELO_BAKE");
 
   // Cargar el modelo normalmente
   const { nodes } = useGLTF(getAssetPath("SUELO_BAKED"));
@@ -16,7 +17,7 @@ export function Suelo(props) {
       return nodes.Suelo003.material;
     }
     // Crear un material con la textura GainMap
-    return new THREE.MeshBasicMaterial({ map: texture, color: 0x999999 });
+    return new THREE.MeshBasicMaterial({ map: texture });
   }, [nodes, texture]);
 
   return (

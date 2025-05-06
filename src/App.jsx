@@ -100,11 +100,14 @@ export default function App() {
       setEnterExperience(true);
       startTimeRef.current = Date.now();
 
+      // Solo establecer PointerLock en dispositivos táctiles si es necesario para alguna funcionalidad específica
+      // Aquí estamos evitando activar el PointerLock en dispositivos táctiles
       if (deviceType?.isTouchDevice) {
-        setTimeout(() => setIsPointerLocked(true), 100);
+        // Comentamos esta línea para que no se active el PointerLock en dispositivos táctiles
+        // setTimeout(() => setIsPointerLocked(true), 100);
       }
     });
-  }, [deviceType, setIsPointerLocked]);
+  }, [deviceType]);
 
   // Manejar finalización de carga - ahora con useCallback para evitar recreaciones
   const handleLoadingComplete = useCallback(() => {

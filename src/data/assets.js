@@ -1,87 +1,38 @@
-// assets/assets.js
-
+// src/data/assets.js
+import { useExperienceStore } from "@/store/experienceStore";
 import PropTypes from "prop-types";
-
-// assets/assets.js
 
 const isDevelopment = import.meta.env ? import.meta.env.DEV : false;
 
+// Tipos de assets definidos como constantes para mejor mantenibilidad
 export const AssetTypes = {
   GLTF: "gltf",
   TEXTURE: "texture",
   KTX2: "ktx2",
 };
 
-/**
- * @typedef {"ALFOMBRA" | "BAKED_ALL" | "BIG_ASSETS_GRP" | "BIG_ASSETS_GRP_KTX2" | "BIG_BAKE" | "BOTON_PUERTA" | "CRISTAL_JARDIN" |
- *  "CUADRO_02" | "CUERDA_MESA" | "ENVIRONMENT" | "ESPINA" | "GLOBOS_CIELO" |
- *  "GOOGLE_HOME" | "HDR"  | "JARDIN_LUCES_BAKE" | "JARDIN_LUCES_BAKED" | "JARDIN_LUCES_GRP" | "JARDIN_LUCES_GRP_KTX2" | "JARDIN_PIEDRAS_BAKED" |
- *  "JARDIN_SUELO_BAKED" | "LATAS" | "LENGUA_VENTANA" | "LUCES" | "MANETAS_PUERTA" |
- *  "MARCO_CUADRO_01" | "MARCO_CUADRO_02" | "MARCO_TV" | "MARCO_VENTANA" | "MESA_OFFICE" |
- *  "MESA_OFFICE_BAKED" | "MUEBLES_SIGNS_BAKE" | "PAREDES" | "PAREDES_BAKE" | "PC_OFF" |
- *  "PC_ON" | "PC_SCREEN_SHADER" | "PIEDRAS_JARDIN" | "PLANO_IMG_CUADRO" | "SETUP_MESA" |
- *  "SETUP_MESA_BAKED" | "SIGN_MEETING" | "SIGN_MEETING_BAKED" | "SIGN_WC" | "SIGN_WC_BAKED" | "SMALL_ASSETS_GRP" | "SMALL_ASSETS_GRP_KTX2" |
- *  "SMALL_BAKE" | "SOBRES" | "SOBRES_BAKE" | "SOFA" | "SUELO_BAKE" | "SUELO_BAKED" |
- *  "SUELO_JARDIN" | "TARJETAS"} AssetKey
- */
+// Niveles de calidad para texturas y KTX2
+export const QualityLevels = {
+  HIGH: "high",
+  LOW: "low",
+};
 
 /**
  * Lista de assets disponibles.
- * @type {Array<{key: AssetKey, path: string, type: string}>}
+ * @type {Array<{key: string, path: string, type: string, lowQualityPath?: string}>}
  */
 export const assets = [
-  // MODELOS
-  // Main environment
+  // Archivos en la raíz
   {
-    key: "ENVIRONMENT",
-    path: "/TheOFFiceFUGU_Environment_v4.glb",
+    key: "ESPINA",
+    path: "/FUGU_Jardin_Espina_v01.glb",
     type: AssetTypes.GLTF,
   },
 
-  // Big baked
+  // /big_assets_baked/
   {
     key: "BIG_ASSETS_GRP",
     path: "/big_assets_baked/TheOFFice_BigAssets_GRP_v01.glb",
-    type: AssetTypes.GLTF,
-  },
-  {
-    key: "SMALL_ASSETS_GRP",
-    path: "/small_assets_baked/TheOFFice_SmallAssets_GRP_v01.glb",
-    type: AssetTypes.GLTF,
-  },
-  {
-    key: "MUEBLES_SIGNS_GRP",
-    path: "/muebles_y_signs/TheOFFice_MueblesySigns_GRP_v01.glb",
-    type: AssetTypes.GLTF,
-  },
-  {
-    key: "ALFOMBRA",
-    path: "/big_assets_baked/TheOFFice_Alfombra_Baked_v01.glb",
-    type: AssetTypes.GLTF,
-  },
-  {
-    key: "LENGUA_VENTANA",
-    path: "/big_assets_baked/TheOFFice_LenguaVentana_Baked_v01.glb",
-    type: AssetTypes.GLTF,
-  },
-  {
-    key: "MARCO_CUADRO_01",
-    path: "/big_assets_baked/TheOFFice_MarcoCuadro01_Baked_v03.glb",
-    type: AssetTypes.GLTF,
-  },
-  {
-    key: "MARCO_CUADRO_02",
-    path: "/big_assets_baked/TheOFFice_MarcoCuadro02_Baked_v01.glb",
-    type: AssetTypes.GLTF,
-  },
-  {
-    key: "MARCO_VENTANA",
-    path: "/big_assets_baked/TheOFFice_MarcoVentana_Baked_v01.glb",
-    type: AssetTypes.GLTF,
-  },
-  {
-    key: "MARCO_TV",
-    path: "/big_assets_baked/TheOFFice_MarcoTV_v01.glb",
     type: AssetTypes.GLTF,
   },
   {
@@ -94,16 +45,84 @@ export const assets = [
     path: "/big_assets_baked/TheOFFice_Cuadro02_v02.glb",
     type: AssetTypes.GLTF,
   },
-
-  // Small baked
   {
-    key: "BOTON_PUERTA",
-    path: "/small_assets_baked/TheOFFice_BotonPuerta_Baked_v01.glb",
+    key: "BIG_ASSETS_GRP_KTX2",
+    path: "/big_assets_baked/Bake_Assets_Big_v03.ktx2",
+    lowQualityPath: "/big_assets_baked/Bake_Assets_Big_v03.ktx2", // Se usará la misma ruta inicialmente
+    type: AssetTypes.KTX2,
+  },
+
+  // /computer_screen/
+  {
+    key: "PC_SCREEN_SHADER",
+    path: "/computer_screen/TheOFFice_PcOn_Screen_Shader_v01.glb",
+    type: AssetTypes.GLTF,
+  },
+
+  // /cristal_jardin/
+  {
+    key: "CRISTAL_JARDIN",
+    path: "/cristal_jardin/TheOFFice_CristalJardin_v01.glb",
+    type: AssetTypes.GLTF,
+  },
+
+  // /globos_cielo/
+  {
+    key: "GLOBOS_CIELO",
+    path: "/globos_cielo/TheOFFice_GlobosCielo_v01.glb",
+    type: AssetTypes.GLTF,
+  },
+
+  // /jardin_y_luces/
+  {
+    key: "JARDIN_LUCES_GRP",
+    path: "/jardin_y_luces/TheOFFice_JardinyLuces_GRP_v01.glb",
     type: AssetTypes.GLTF,
   },
   {
-    key: "CUERDA_MESA",
-    path: "/small_assets_baked/TheOFFice_CuerdaMesaSetUp_Baked_v02.glb",
+    key: "JARDIN_LUCES_GRP_KTX2",
+    path: "/jardin_y_luces/JardinLuces_Bake_v01.ktx2",
+    lowQualityPath: "/jardin_y_luces/JardinLuces_Bake_v01.ktx2", // Se usará la misma ruta inicialmente
+    type: AssetTypes.KTX2,
+  },
+
+  // /latas/
+  {
+    key: "LATAS",
+    path: "/latas/TheOFFice_Lata_Shader_v02.glb",
+    type: AssetTypes.GLTF,
+  },
+
+  // /muebles_y_signs/
+  {
+    key: "MUEBLES_SIGNS_GRP",
+    path: "/muebles_y_signs/TheOFFice_MueblesySigns_GRP_v01.glb",
+    type: AssetTypes.GLTF,
+  },
+  {
+    key: "MUEBLES_SIGNS_GRP_KTX2",
+    path: "/muebles_y_signs/MueblesySigns_Bake_v02_8Bits.ktx2",
+    lowQualityPath: "/muebles_y_signs/MueblesySigns_Bake_v02_8Bits.ktx2", // Se usará la misma ruta inicialmente
+    type: AssetTypes.KTX2,
+  },
+
+  // /paredes/
+  {
+    key: "PAREDES",
+    path: "/paredes/TheOFFice_Paredes_v10.glb",
+    type: AssetTypes.GLTF,
+  },
+  {
+    key: "PAREDES_BAKE",
+    path: "/paredes/Paredes_Bake_4k_v02.ktx2",
+    lowQualityPath: "/paredes/Paredes_Bake_2k_v02.ktx2", // Se usará la misma ruta inicialmente
+    type: AssetTypes.KTX2,
+  },
+
+  // /small_assets_baked/
+  {
+    key: "SMALL_ASSETS_GRP",
+    path: "/small_assets_baked/TheOFFice_SmallAssets_GRP_v01.glb",
     type: AssetTypes.GLTF,
   },
   {
@@ -112,210 +131,47 @@ export const assets = [
     type: AssetTypes.GLTF,
   },
   {
-    key: "MANETAS_PUERTA",
-    path: "/small_assets_baked/TheOFFice_ManetasPuerta_Baked_v01.glb",
-    type: AssetTypes.GLTF,
-  },
-  {
-    key: "PC_OFF",
-    path: "/small_assets_baked/TheOFFice_PcOFF_Baked_v02.glb",
-    type: AssetTypes.GLTF,
-  },
-  {
-    key: "PC_ON",
-    path: "/small_assets_baked/TheOFFice_PcOn_Baked_v02.glb",
-    type: AssetTypes.GLTF,
-  },
-  {
     key: "TARJETAS",
     path: "/small_assets_baked/TheOFFice_Tarjetas_Baked_v02.glb",
     type: AssetTypes.GLTF,
   },
-
-  // Computer screen
   {
-    key: "PC_SCREEN_SHADER",
-    path: "/computer_screen/TheOFFice_PcOn_Screen_Shader_v01.glb",
-    type: AssetTypes.GLTF,
+    key: "SMALL_ASSETS_GRP_KTX2",
+    path: "/small_assets_baked/SmallAssets_Bake_v01.ktx2",
+    lowQualityPath: "/small_assets_baked/SmallAssets_Bake_v01.ktx2", // Se usará la misma ruta inicialmente
+    type: AssetTypes.KTX2,
   },
 
-  // Furniture
+  // /sobres/
   {
-    key: "MESA_OFFICE",
-    path: "/mesa_office/TheOFFice_OfficeMesa_Shader_v02.glb",
+    key: "SOBRES",
+    path: "/sobres/TheONFFICE_Sobres_v03.glb",
     type: AssetTypes.GLTF,
   },
   {
-    key: "SETUP_MESA",
-    path: "/mesa_set_up/TheOFFice_SetUpMesa_Shader_v02.glb",
-    type: AssetTypes.GLTF,
+    key: "SOBRES_BAKE",
+    path: "/sobres/Sobre-Bake-02.ktx2",
+    lowQualityPath: "/sobres/Sobre-Bake-02.ktx2", // Se usará la misma ruta inicialmente
+    type: AssetTypes.KTX2,
   },
-  {
-    key: "SUELO_JARDIN",
-    path: "/suelo_jardin/TheOFFice_SueloJardin_v01.glb",
-    type: AssetTypes.GLTF,
-  },
+
+  // /sofa/
   {
     key: "SOFA",
     path: "/sofa/TheOFFice_Sofa_Shader_v03.glb",
     type: AssetTypes.GLTF,
   },
 
-  // Signs
-  {
-    key: "SIGN_MEETING",
-    path: "/signs/TheOFFice_SignMeetingRoom_Shader_v01.glb",
-    type: AssetTypes.GLTF,
-  },
-  {
-    key: "SIGN_WC",
-    path: "/signs/TheOFFice_SignWC_Shader_v01.glb",
-    type: AssetTypes.GLTF,
-  },
-
-  // Garden
-  {
-    key: "JARDIN_LUCES_GRP",
-    path: "/jardin_y_luces/TheOFFice_JardinyLuces_GRP_v01.glb",
-    type: AssetTypes.GLTF,
-  },
-  {
-    key: "PIEDRAS_JARDIN",
-    path: "/piedras_jardin/TheOFFice_Piedras_Shader_v02.glb",
-    type: AssetTypes.GLTF,
-  },
-  { key: "ESPINA", path: "/FUGU_Jardin_Espina_v01.glb", type: AssetTypes.GLTF },
-  {
-    key: "CRISTAL_JARDIN",
-    path: "/cristal_jardin/TheOFFice_CristalJardin_v01.glb",
-    type: AssetTypes.GLTF,
-  },
-  {
-    key: "LATAS",
-    path: "/latas/TheOFFice_Lata_Shader_v02.glb",
-    type: AssetTypes.GLTF,
-  },
-  {
-    key: "GLOBOS_CIELO",
-    path: "/globos_cielo/TheOFFice_GlobosCielo_v01.glb",
-    type: AssetTypes.GLTF,
-  },
-  {
-    key: "LUCES",
-    path: "/luces/TheOFFice_Luces_Shader_v01.glb",
-    type: AssetTypes.GLTF,
-  },
-
-  // Sectional
+  // /suelo/
   {
     key: "SUELO_BAKED",
     path: "/suelo/TheOFFice_Suelo_Baked_v03.glb",
     type: AssetTypes.GLTF,
   },
   {
-    key: "PAREDES",
-    path: "/paredes/TheOFFice_Paredes_v09.glb",
-    type: AssetTypes.GLTF,
-  },
-  {
-    key: "JARDIN_SUELO_BAKED",
-    path: "/jardin_y_luces/TheOFFice_SueloJardin_Baked_v02.glb",
-    type: AssetTypes.GLTF,
-  },
-  {
-    key: "JARDIN_LUCES_BAKED",
-    path: "/jardin_y_luces/TheOFFice_Luces_Baked_v02.glb",
-    type: AssetTypes.GLTF,
-  },
-  {
-    key: "JARDIN_PIEDRAS_BAKED",
-    path: "/jardin_y_luces/TheOFFice_Piedras_Baked_v02.glb",
-    type: AssetTypes.GLTF,
-  },
-  {
-    key: "SETUP_MESA_BAKED",
-    path: "/muebles_y_signs/TheOFFice_SetUpMesa_Bake_v06.glb",
-    type: AssetTypes.GLTF,
-  },
-  {
-    key: "MESA_OFFICE_BAKED",
-    path: "/muebles_y_signs/TheOFFice_OfficeMesa_Bake_v06.glb",
-    type: AssetTypes.GLTF,
-  },
-  {
-    key: "SIGN_MEETING_BAKED",
-    path: "/muebles_y_signs/TheOFFice_SignMeetingRoom_Bake_v06.glb",
-    type: AssetTypes.GLTF,
-  },
-  {
-    key: "SIGN_WC_BAKED",
-    path: "/muebles_y_signs/TheOFFice_SignWC_Bake_v06.glb",
-    type: AssetTypes.GLTF,
-  },
-  {
-    key: "SOBRES",
-    path: "/sobres/TheONFFICE_Sobres_v02.glb",
-    type: AssetTypes.GLTF,
-  },
-
-  // TEXTURAS
-  { key: "BAKED_ALL", path: "/Baked_All_001.jpg", type: AssetTypes.TEXTURE },
-  {
-    key: "BIG_BAKE",
-    path: "/big_assets_baked/Bake_Assets_Big_v03.jpg",
-    type: AssetTypes.TEXTURE,
-  },
-  {
-    key: "SMALL_BAKE",
-    path: "/small_assets_baked/SmallAssets_Bake_v01.jpg",
-    type: AssetTypes.TEXTURE,
-  },
-  {
     key: "SUELO_BAKE",
-    path: "/suelo/Bake_Suelo_v03.webp",
-    type: AssetTypes.TEXTURE,
-  },
-  {
-    key: "PAREDES_BAKE",
-    path: "/paredes/Paredes_Bake_8k_v02.webp",
-    type: AssetTypes.TEXTURE,
-  },
-  {
-    key: "JARDIN_LUCES_BAKE",
-    path: "/jardin_y_luces/JardinLuces_Bake_v01.webp",
-    type: AssetTypes.TEXTURE,
-  },
-  {
-    key: "MUEBLES_SIGNS_BAKE",
-    path: "/muebles_y_signs/MueblesySigns_Bake_v01.webp",
-    type: AssetTypes.TEXTURE,
-  },
-  {
-    key: "SOBRES_BAKE",
-    path: "/sobres/Sobre-Bake-02.webp",
-    type: AssetTypes.TEXTURE,
-  },
-  { key: "HDR", path: "/hdr/HDRI_v02.webp", type: AssetTypes.TEXTURE },
-
-  // TEXTURAS KTX2
-  {
-    key: "JARDIN_LUCES_GRP_KTX2",
-    path: "/jardin_y_luces/JardinLuces_Bake_v01.ktx2",
-    type: AssetTypes.KTX2,
-  },
-  {
-    key: "BIG_ASSETS_GRP_KTX2",
-    path: "/big_assets_baked/Bake_Assets_Big_v03.ktx2",
-    type: AssetTypes.KTX2,
-  },
-  {
-    key: "SMALL_ASSETS_GRP_KTX2",
-    path: "/small_assets_baked/SmallAssets_Bake_v01.ktx2",
-    type: AssetTypes.KTX2,
-  },
-  {
-    key: "MUEBLES_SIGNS_GRP_KTX2",
-    path: "/muebles_y_signs/MueblesySigns_Bake_v02_8Bits.ktx2",
+    path: "/suelo/Bake_Suelo_4k_v03.ktx2",
+    lowQualityPath: "/suelo/Bake_Suelo_2k_v03.ktx2",
     type: AssetTypes.KTX2,
   },
 ];
@@ -331,12 +187,13 @@ export const AssetPropType = PropTypes.shape({
   key: AssetKeyPropType.isRequired,
   path: PropTypes.string.isRequired,
   type: PropTypes.oneOf(Object.values(AssetTypes)).isRequired,
+  lowQualityPath: PropTypes.string,
 });
 
 /**
  * Obtiene un asset según la clave proporcionada.
  * @param {string} key - La clave del asset.
- * @returns {{ key: string, path: string, type: string }} El objeto del asset.
+ * @returns {{ key: string, path: string, type: string, lowQualityPath?: string }} El objeto del asset.
  */
 export const getAsset = (key) => {
   // Validación solo en desarrollo
@@ -355,9 +212,9 @@ export const getAsset = (key) => {
 };
 
 /**
- * Obtiene la ruta de un asset dado su key.
+ * Obtiene la ruta de un asset dado su key, considerando el nivel de calidad actual.
  * @param {string} key - La clave del asset.
- * @returns {string} La ruta del asset.
+ * @returns {string} La ruta del asset según el nivel de calidad.
  */
 export const getAssetPath = (key) => {
   // Validación solo en desarrollo
@@ -370,7 +227,18 @@ export const getAssetPath = (key) => {
     );
   }
 
-  return getAsset(key).path;
+  const asset = getAsset(key);
+
+  // Obtener el nivel de calidad del store
+  const qualityLevel = useExperienceStore.getState().qualityLevel;
+
+  // Si estamos en calidad baja y el asset tiene una ruta de baja calidad, usar esa
+  if (qualityLevel === QualityLevels.LOW && asset.lowQualityPath) {
+    return asset.lowQualityPath;
+  }
+
+  // De lo contrario, usar la ruta predeterminada (alta calidad)
+  return asset.path;
 };
 
 /**
@@ -382,7 +250,7 @@ export const getValidAssetKeys = () => VALID_ASSET_KEYS;
 /**
  * Filtra los assets por tipo.
  * @param {string} type - El tipo de asset a filtrar.
- * @returns {Array<{key: string, path: string, type: string}>} Los assets del tipo especificado.
+ * @returns {Array<{key: string, path: string, type: string, lowQualityPath?: string}>} Los assets del tipo especificado.
  */
 export const getAssetsByType = (type) => {
   if (isDevelopment) {

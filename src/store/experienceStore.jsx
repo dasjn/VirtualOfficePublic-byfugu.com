@@ -2,6 +2,7 @@ import { create } from "zustand";
 import { createRef } from "react";
 import * as THREE from "three";
 import audioData from "@/data/audios.json";
+import { QualityLevels } from "@/data/assets";
 
 // Optimización: Vectores reutilizables para animaciones
 const sharedVectors = {
@@ -43,6 +44,76 @@ export const useExperienceStore = create((set, get) => ({
   // Estados de dispositivo
   deviceType: detectDeviceType(),
   updateDeviceType: () => set({ deviceType: detectDeviceType() }),
+
+  // Estado de calidad
+  qualityLevel: QualityLevels.HIGH,
+  setQualityLevel: (quality) => set({ qualityLevel: quality }),
+
+  // Función para determinar si se debe usar calidad baja
+  shouldUseLowQuality: () => {
+    const { deviceType } = get();
+
+    // Verificar si es un dispositivo móvil
+    const isMobile = deviceType.isPhone || deviceType.isTablet;
+    console.log(
+      `[QualityDetection] Es dispositivo móvil: ${isMobile ? "Sí" : "No"}`
+    );
+
+    // Verificar si es un dispositivo con poca memoria o GPU limitada
+    const hasLimitedGPU = !window.navigator.gpu; // WebGPU no disponible
+    console.log(
+      `[QualityDetection] GPU limitada (sin WebGPU): ${
+        hasLimitedGPU ? "Sí" : "No"
+      }`
+    );
+
+    // Verificar memoria disponible (si el navegador lo permite)
+    const hasLimitedMemory =
+      window.navigator.deviceMemory && window.navigator.deviceMemory < 4;
+    console.log(
+      `[QualityDetection] Memoria limitada: ${hasLimitedMemory ? "Sí" : "No"} ${
+        window.navigator.deviceMemory
+          ? `(${window.navigator.deviceMemory}GB)`
+          : "(No detectable)"
+      }`
+    );
+
+    // Verificar ancho de pantalla pequeño
+    const hasSmallScreen = window.innerWidth < 768;
+    console.log(
+      `[QualityDetection] Pantalla pequeña: ${hasSmallScreen ? "Sí" : "No"} (${
+        window.innerWidth
+      }px de ancho)`
+    );
+
+    // Si cualquiera de estas condiciones es verdadera, usar calidad baja
+    const shouldUseLow =
+      isMobile || hasLimitedGPU || hasLimitedMemory || hasSmallScreen;
+    console.log(
+      `[QualityDetection] Decisión final: ${
+        shouldUseLow ? "USAR CALIDAD BAJA" : "USAR CALIDAD ALTA"
+      }`
+    );
+
+    // Información adicional sobre el navegador y dispositivo
+    console.log(`[QualityDetection] User Agent: ${navigator.userAgent}`);
+    console.log(
+      `[QualityDetection] Resolución: ${window.innerWidth}x${window.innerHeight}`
+    );
+    console.log(`[QualityDetection] Pixel Ratio: ${window.devicePixelRatio}`);
+
+    return shouldUseLow;
+  },
+
+  // Inicializar nivel de calidad basado en el dispositivo
+  initializeQualityLevel: () => {
+    const { shouldUseLowQuality, setQualityLevel } = get();
+    const quality = shouldUseLowQuality()
+      ? QualityLevels.LOW
+      : QualityLevels.HIGH;
+    setQualityLevel(quality);
+    return quality;
+  },
 
   // Estado para controlar la transición de la experiencia
   experienceMounted: false,

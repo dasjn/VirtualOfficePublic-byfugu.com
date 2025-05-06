@@ -1,7 +1,8 @@
-// hooks/useKTX2Asset.js
+// src/hooks/useKTX2Asset.jsx
 import { useState, useEffect } from "react";
 import { useThree } from "@react-three/fiber";
 import { ktx2TextureManager } from "../utils/KTX2TextureManager";
+import { useExperienceStore } from "@/store/experienceStore";
 
 /**
  * Hook para usar texturas KTX2 con el manager singleton
@@ -17,9 +18,15 @@ export function useKTX2Asset(assetKey, preload = false) {
     // Inicializar el manager con el renderer
     ktx2TextureManager.initialize(gl);
 
+    // Obtener la calidad actual desde el store
+    const currentQuality = useExperienceStore.getState().qualityLevel;
+
     // Si es solo precarga, no actualizamos el estado
     if (preload) {
       ktx2TextureManager.preloadTextureByAssetKey(assetKey);
+      console.log(
+        `[useKTX2Asset] Precargando ${assetKey} (calidad: ${currentQuality})`
+      );
       return;
     }
 
@@ -27,11 +34,15 @@ export function useKTX2Asset(assetKey, preload = false) {
     const cachedTexture =
       ktx2TextureManager.getCachedTextureByAssetKey(assetKey);
     if (cachedTexture) {
+      console.log(`[useKTX2Asset] Usando textura en caché para ${assetKey}`);
       setTexture(cachedTexture);
       return;
     }
 
     // Cargar la textura
+    console.log(
+      `[useKTX2Asset] Cargando ${assetKey} (calidad: ${currentQuality})`
+    );
     ktx2TextureManager.getTextureByAssetKey(assetKey, (loadedTexture) => {
       setTexture(loadedTexture);
     });
@@ -50,6 +61,13 @@ export function usePreloadKTX2Assets(assetKeys) {
   useEffect(() => {
     // Inicializar el manager con el renderer
     ktx2TextureManager.initialize(gl);
+
+    // Obtener la calidad actual desde el store
+    const currentQuality = useExperienceStore.getState().qualityLevel;
+
+    console.log(
+      `[usePreloadKTX2Assets] Precargando ${assetKeys.length} texturas (calidad: ${currentQuality})`
+    );
 
     // Precargar todas las texturas
     ktx2TextureManager.preloadTexturesByAssetKeys(assetKeys);
